@@ -20,7 +20,7 @@ class SchoolCrawler(BaseCrawler):
     def get_enhanced_school_list(self, page=1, size=20, local_type_id=""):
         """
         获取增强版学校列表（包含label_list等新字段）
-        使用GET请求到api-gaokao.zjzw.cn
+        使用POST请求但参数在URL中
         """
         enhanced_url = "https://api-gaokao.zjzw.cn/apidata/web"
         
@@ -37,16 +37,19 @@ class SchoolCrawler(BaseCrawler):
             "spe_ids": "",
             "top_school_id": "",
             "uri": "v1/school/lists",
-            "signsafe": ""  # 可能需要签名，但先尝试空值
+            "signsafe": ""  # 可能需要签名，但可以尝试空值
         }
         
         try:
-            response = self.session.get(
+            # POST请求，但参数在URL中
+            response = self.session.post(
                 enhanced_url,
-                params=params,
+                params=params,  # 参数会被添加到URL
                 headers={
                     "accept": "application/json, text/plain, */*",
                     "accept-language": "zh-CN,zh;q=0.9",
+                    "content-type": "application/json",
+                    "origin": "https://www.gaokao.cn",
                     "referer": "https://www.gaokao.cn/",
                     "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"
                 },
@@ -57,6 +60,7 @@ class SchoolCrawler(BaseCrawler):
                 return response.json()
             else:
                 print(f"增强接口请求失败，状态码: {response.status_code}")
+                print(f"请求URL: {response.url}")
                 
         except Exception as e:
             print(f"增强接口请求出错: {str(e)}")
@@ -65,7 +69,6 @@ class SchoolCrawler(BaseCrawler):
     
     def merge_enhanced_data(self, schools_basic, max_pages=None):
         """将增强数据合并到基础学校列表"""
-        # 创建一个字典用于快速查找增强数据
         enhanced_dict = {}
         
         if max_pages is None:
@@ -78,7 +81,6 @@ class SchoolCrawler(BaseCrawler):
         page = 1
         total_fetched = 0
         
-        # 持续爬取直到覆盖所有基础学校
         while page <= max_pages:
             enhanced_data = self.get_enhanced_school_list(page=page, size=20)
             
