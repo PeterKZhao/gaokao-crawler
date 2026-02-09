@@ -66,6 +66,97 @@ class GaoKaoCrawler:
                 continue
         
         return schools
+
+    def get_majors(self):
+        """获取专业列表"""
+        majors = []
+        page = 1
+        
+        while True:
+            payload = {
+                "page": page,
+                "size": 20,
+                "uri": "apidata/api/gkv3/major/lists"
+            }
+            
+            try:
+                response = requests.post(
+                    self.base_url,
+                    headers=self.headers,
+                    json=payload,
+                    timeout=10
+                )
+                
+                if response.status_code == 200:
+                    data = response.json()
+                    if 'data' in data and 'item' in data['data']:
+                        items = data['data']['item']
+                        if not items:
+                            break
+                        
+                        for item in items:
+                            major_info = {
+                                'special_id': item.get('special_id'),
+                                'name': item.get('name'),
+                                'level1_name': item.get('level1_name'),
+                                'level2_name': item.get('level2_name'),
+                                'degree': item.get('degree')
+                            }
+                            majors.append(major_info)
+                        print(f"专业第{page}页爬取成功，获取{len(items)}个专业")
+                        page += 1
+                    else:
+                        break
+                
+                time.sleep(1)
+                
+            except Exception as e:
+                print(f"专业第{page}页爬取出错: {str(e)}")
+                break
+        
+        return majors
+
+    def get_school_scores(self, school_id, province_id="", year="2024"):
+        """获取学校专业分数线和招生计划"""
+        scores = []
+        
+        payload = {
+            "school_id": school_id,
+            "province_id": province_id,
+            "year": year,
+            "uri": "apidata/api/gkv3/school/scoreline"
+        }
+        
+        try:
+            response = requests.post(
+                self.base_url,
+                headers=self.headers,
+                json=payload,
+                timeout=10
+            )
+            
+            if response.status_code == 200:
+                data = response.json()
+                if 'data' in data and 'item' in data['data']:
+                    items = data['data']['item']
+                    for item in items:
+                        score_info = {
+                            'school_id': school_id,
+                            'year': year,
+                            'province': item.get('province_name'),
+                            'major': item.get('spname'),
+                            'min_score': item.get('min'),
+                            'avg_score': item.get('avg'),
+                            'min_section': item.get('min_section'),
+                            'proscore': item.get('proscore'),
+                            'sg_info': item.get('sg_info')
+                        }
+                        scores.append(score_info)
+            return scores
+            
+        except Exception as e:
+            print(f"学校{school_id}分数线爬取出错: {str(e)}")
+            return []
     
     def save_to_json(self, data, filename):
         """保存数据到JSON文件"""
@@ -84,3 +175,11 @@ if __name__ == "__main__":
     schools = crawler.get_schools(max_pages=5)  # 先测试5页
     crawler.save_to_json(schools, 'schools.json')
     print(f"共爬取 {len(schools)} 所大学")
+
+    # 测试专业列表
+    print("\n开始爬取专业列表...")
+    majors = crawler.get_majors()
+    crawler.save_to_json(majors, 'majors.json')
+    print(f"共爬取 {len(majors)} 个专业")
+
+
