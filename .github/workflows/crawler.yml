@@ -23,6 +23,14 @@ on:
           - 'true'
           - 'false'
         default: 'true'
+      fetch_enhanced:
+        description: '获取增强数据（label_list等新字段）'
+        required: true
+        type: choice
+        options:
+          - 'true'
+          - 'false'
+        default: 'true'
       crawl_majors:
         description: '爬取专业数据'
         required: true
@@ -73,6 +81,7 @@ jobs:
       env:
         MAX_PAGES: ${{ github.event.inputs.max_school_pages }}
         FETCH_DETAIL: ${{ github.event.inputs.fetch_school_detail }}
+        FETCH_ENHANCED: ${{ github.event.inputs.fetch_enhanced }}
       run: python -m crawlers.schools
     
     - name: 爬取专业数据
