@@ -1,5 +1,6 @@
 import time
 import os
+import hashlib
 from .base import BaseCrawler
 
 class SchoolCrawler(BaseCrawler):
@@ -17,47 +18,64 @@ class SchoolCrawler(BaseCrawler):
             return data['data']
         return None
     
+    def generate_signsafe(self, params):
+        """
+        生成signsafe签名（如果需要）
+        这个函数可能需要根据实际情况调整
+        """
+        # 暂时返回空，如果需要签名再调整
+        return ""
+    
     def get_enhanced_school_list(self, page=1, size=20, local_type_id=""):
         """
         获取增强版学校列表（包含label_list等新字段）
-        使用POST请求但参数在URL中
+        POST请求，参数在URL中，body可能需要为空或JSON
         """
         enhanced_url = "https://api-gaokao.zjzw.cn/apidata/web"
         
+        # 构建参数字典 - 注意数字类型
         params = {
             "autosign": "",
             "keyword": "",
-            "local_type_id": local_type_id,
-            "page": page,
+            "local_type_id": str(local_type_id) if local_type_id else "",
+            "page": str(page),
             "platform": "2",
             "province_id": "",
             "ranktype": "",
             "request_type": "1",
-            "size": size,
+            "size": str(size),
             "spe_ids": "",
             "top_school_id": "",
             "uri": "v1/school/lists",
-            "signsafe": ""  # 可能需要签名，但可以尝试空值
+            "signsafe": self.generate_signsafe(locals())
         }
         
         try:
-            # POST请求，但参数在URL中
+            # 方案1: POST with params in URL, empty body
             response = self.session.post(
                 enhanced_url,
-                params=params,  # 参数会被添加到URL
+                params=params,
+                json={},  # 尝试空JSON body
                 headers={
                     "accept": "application/json, text/plain, */*",
                     "accept-language": "zh-CN,zh;q=0.9",
                     "content-type": "application/json",
                     "origin": "https://www.gaokao.cn",
                     "referer": "https://www.gaokao.cn/",
-                    "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"
+                    "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"
                 },
                 timeout=15
             )
             
             if response.status_code == 200:
-                return response.json()
+                result = response.json()
+                if result.get('code') == 0:
+                    return result
+                else:
+                    # 如果失败，打印详细信息
+                    print(f"API返回错误: {result.get('message', '未知')}")
+                    print(f"请求URL: {response.url}")
+                    return result
             else:
                 print(f"增强接口请求失败，状态码: {response.status_code}")
                 print(f"请求URL: {response.url}")
@@ -109,6 +127,14 @@ class SchoolCrawler(BaseCrawler):
             else:
                 error_msg = enhanced_data.get('message', '未知错误') if enhanced_data else '请求失败'
                 print(f"✗ 增强数据第 {page} 页：{error_msg}")
+                
+                # 如果是第一页就失败，说明需要调试
+                if page == 1:
+                    print("\n【调试建议】")
+                    print("1. 检查是否需要signsafe签名")
+                    print("2. 尝试在浏览器中手动访问API并复制完整请求")
+                    print("3. 考虑暂时禁用增强数据获取: fetch_enhanced=False\n")
+                
                 break
         
         # 合并数据
@@ -204,64 +230,39 @@ class SchoolCrawler(BaseCrawler):
                         detail = self.get_school_detail(school_id)
                         if detail:
                             school_info.update({
-                                # Logo和图片
                                 'logo': detail.get('logo'),
                                 'img': detail.get('img'),
-                                
-                                # 详细地址
                                 'address': detail.get('address'),
                                 'postcode': detail.get('postcode'),
-                                
-                                # 联系方式
                                 'phone': detail.get('phone'),
                                 'email': detail.get('email'),
                                 'website': detail.get('site'),
-                                
-                                # 学校特色
                                 'tags': detail.get('tags'),
                                 'feature': detail.get('feature'),
                                 'school_feature': detail.get('school_feature'),
-                                
-                                # 院士和重点学科
                                 'academician': detail.get('academician'),
                                 'national_feature': detail.get('national_feature'),
                                 'key_discipline': detail.get('key_discipline'),
-                                
-                                # 硕博点
                                 'master_degree': detail.get('master_degree'),
                                 'doctor_degree': detail.get('doctor_degree'),
-                                
-                                # 招生信息
                                 'recruit': detail.get('recruit'),
                                 'admission_brochure': detail.get('admissions_brochure'),
-                                
-                                # 历史信息
                                 'history': detail.get('content'),
                                 'found_time': detail.get('create_date'),
-                                
-                                # 面积和规模
                                 'area': detail.get('area'),
                                 'student_num': detail.get('student_num'),
                                 'teacher_num': detail.get('teacher_num'),
-                                
-                                # 其他
                                 'motto': detail.get('motto'),
                                 'anniversary': detail.get('anniversary'),
                                 'old_name': detail.get('old_name'),
                                 'dorm_condition': detail.get('dorm_condition'),
                                 'canteen_condition': detail.get('canteen_condition'),
-                                
-                                # 特殊标记
                                 'is_985': detail.get('f985'),
                                 'is_211': detail.get('f211'),
                                 'is_double_first_class': detail.get('dual_class'),
                                 'has_graduate_school': detail.get('graduate_school'),
                                 'has_independent_enrollment': detail.get('independent_enrollment'),
-                                
-                                # 学科评估
                                 'subject_evaluate': detail.get('subject_evaluate'),
-                                
-                                # 双一流学科
                                 'dual_class_disciplines': detail.get('dual_class_name_dict'),
                             })
                             time.sleep(0.5)
