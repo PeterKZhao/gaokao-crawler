@@ -1,7 +1,7 @@
 name: 测试Selenium调试
 
 on:
-  workflow_dispatch:
+  workflow_dispatch:  # 手动触发
 
 permissions:
   contents: write
@@ -19,8 +19,12 @@ jobs:
       with:
         python-version: '3.10'
     
-    - name: 安装Chrome
+    - name: 安装Chrome浏览器
       run: |
+        sudo apt-get update
+        sudo apt-get install -y wget gnupg
+        wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo gpg --dearmor -o /usr/share/keyrings/google-chrome.gpg
+        echo "deb [arch=amd64 signed-by=/usr/share/keyrings/google-chrome.gpg] http://dl.google.com/linux/chrome/deb/ stable main" | sudo tee /etc/apt/sources.list.d/google-chrome.list
         sudo apt-get update
         sudo apt-get install -y google-chrome-stable
         
@@ -29,19 +33,55 @@ jobs:
         google-chrome --version
         which google-chrome
         
-    - name: 安装依赖
+    - name: 安装Python依赖
       run: |
         python -m pip install --upgrade pip
         pip install selenium beautifulsoup4 lxml requests
         
     - name: 测试1 - Requests方法
+      id: test-requests
       continue-on-error: true
-      run: python test_requests_method.py
+      run: |
+        echo "::group::测试Requests方法"
+        python test_requests_method.py
+        echo "::endgroup::"
       
     - name: 测试2 - Selenium方法
+      id: test-selenium
       continue-on-error: true
-      run: python test_selenium_debug.py
+      run: |
+        echo "::group::测试Selenium方法"
+        python test_selenium_debug.py
+        echo "::endgroup::"
       
+    - name: 列出生成的文件
+      if: always()
+      run: |
+        echo "=== 当前目录文件 ==="
+        ls -lah
+        echo ""
+        echo "=== Debug文件 ==="
+        ls -lah debug_* 2>/dev/null || echo "没有找到debug文件"
+        
+    - name: 显示页面源码摘要
+      if: always()
+      run: |
+        if [ -f debug_page_source.html ]; then
+          echo "=== Selenium页面源码（前1000字符）==="
+          head -c 1000 debug_page_source.html
+          echo ""
+          echo "=== Selenium页面源码（后1000字符）==="
+          tail -c 1000 debug_page_source.html
+        fi
+        echo ""
+        if [ -f debug_requests_page.html ]; then
+          echo "=== Requests页面源码（前1000字符）==="
+          head -c 1000 debug_requests_page.html
+          echo ""
+          echo "=== Requests页面源码（后1000字符）==="
+          tail -c 1000 debug_requests_page.html
+        fi
+        
     - name: 上传调试文件
       if: always()
       uses: actions/upload-artifact@v4
@@ -53,28 +93,12 @@ jobs:
         retention-days: 7
         if-no-files-found: warn
         
-    - name: 显示调试信息
+    - name: 测试结果汇总
       if: always()
       run: |
-        echo "=== 系统信息 ==="
-        uname -a
-        echo ""
-        echo "=== Chrome版本 ==="
-        google-chrome --version
-        echo ""
-        echo "=== Python包 ==="
-        pip list | grep -i selenium
-        echo ""
-        echo "=== 生成的文件 ==="
-        ls -lh debug_* 2>/dev/null || echo "没有debug文件"
-        echo ""
-        if [ -f debug_page_source.html ]; then
-          echo "=== 页面源码前1000字符 ==="
-          head -c 1000 debug_page_source.html
-          echo ""
-        fi
-        if [ -f debug_requests_page.html ]; then
-          echo "=== Requests页面源码前1000字符 ==="
-          head -c 1000 debug_requests_page.html
-          echo ""
-        fi
+        echo "=================================="
+        echo "测试结果汇总"
+        echo "=================================="
+        echo "Requests测试: ${{ steps.test-requests.outcome }}"
+        echo "Selenium测试: ${{ steps.test-selenium.outcome }}"
+        echo "=================================="
