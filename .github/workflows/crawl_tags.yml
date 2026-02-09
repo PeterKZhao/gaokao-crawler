@@ -26,6 +26,8 @@ jobs:
     steps:
     - name: 检出代码
       uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
       
     - name: 设置Python环境
       uses: actions/setup-python@v5
@@ -73,3 +75,5 @@ jobs:
         file_pattern: 'data/school_tags*.json'
         commit_user_name: GitHub Action
         commit_user_email: action@github.com
+        push_options: '--force-with-lease'
+        skip_fetch: false
