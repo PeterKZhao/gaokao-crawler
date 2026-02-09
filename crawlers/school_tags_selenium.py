@@ -3,45 +3,51 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.chrome.options import Options
+from selenium.common.exceptions import TimeoutException
 import time
 import json
 
 class SchoolTagsSeleniumScraper:
-    """使用Selenium从掌上高考搜索页面爬取学校标签"""
+    """使用Selenium爬取学校标签"""
     
-    def __init__(self):
-        chrome_options = Options()
-        chrome_options.add_argument('--headless')  # 无头模式
-        chrome_options.add_argument('--no-sandbox')
-        chrome_options.add_argument('--disable-dev-shm-usage')
-        chrome_options.add_argument('user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36')
+    def __init__(self, headless=True):
+        options = Options()
+        if headless:
+            options.add_argument('--headless')
+        options.add_argument('--no-sandbox')
+        options.add_argument('--disable-dev-shm-usage')
+        options.add_argument('--disable-gpu')
+        options.add_argument('user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36')
         
-        self.driver = webdriver.Chrome(options=chrome_options)
+        self.driver = webdriver.Chrome(options=options)
         self.base_url = "https://www.gaokao.cn/school/search"
     
     def scrape_page(self, page_num):
-        """爬取指定页的学校标签"""
+        """爬取指定页"""
         url = f"{self.base_url}?page={page_num}"
-        schools_with_tags = []
         
         try:
             self.driver.get(url)
             
             # 等待学校列表加载
-            WebDriverWait(self.driver, 10).until(
+            WebDriverWait(self.driver, 15).until(
                 EC.presence_of_element_located((By.CLASS_NAME, "school-search_schoolItem__3q7R2"))
             )
             
-            # 找到所有学校项
+            # 等待额外时间确保内容加载完成
+            time.sleep(2)
+            
+            # 获取所有学校项
             school_items = self.driver.find_elements(By.CLASS_NAME, "school-search_schoolItem__3q7R2")
             
+            schools = []
             for item in school_items:
                 try:
-                    # 提取学校名称
+                    # 学校名称
                     name_elem = item.find_element(By.CLASS_NAME, "school-search_schoolName__1L7pc")
                     school_name = name_elem.text.split('\n')[0].strip()
                     
-                    # 提取标签
+                    # 标签
                     tags = []
                     try:
                         tags_div = item.find_element(By.CLASS_NAME, "school-search_tags__ZPsHs")
@@ -50,7 +56,7 @@ class SchoolTagsSeleniumScraper:
                     except:
                         pass
                     
-                    schools_with_tags.append({
+                    schools.append({
                         'name': school_name,
                         'tags': tags
                     })
@@ -58,12 +64,15 @@ class SchoolTagsSeleniumScraper:
                 except Exception as e:
                     continue
             
-            print(f"✓ 第{page_num}页：获取{len(schools_with_tags)}所学校")
-            return schools_with_tags
+            print(f"✓ 第{page_num}页: {len(schools)}所学校")
+            return schools
         
+        except TimeoutException:
+            print(f"✗ 第{page_num}页超时")
+            return None
         except Exception as e:
-            print(f"✗ 第{page_num}页爬取失败: {e}")
-            return []
+            print(f"✗ 第{page_num}页出错: {e}")
+            return None
     
     def scrape_all(self, max_pages=150):
         """爬取所有页面"""
@@ -76,25 +85,32 @@ class SchoolTagsSeleniumScraper:
         for page in range(1, max_pages + 1):
             schools = self.scrape_page(page)
             
+            if schools is None:
+                print(f"第{page}页失败，重试...")
+                time.sleep(5)
+                schools = self.scrape_page(page)
+                if schools is None:
+                    continue
+            
             if not schools:
-                print(f"第{page}页无数据，停止爬取")
+                print(f"第{page}页无数据，完成")
                 break
             
             for school in schools:
                 all_tags[school['name']] = school['tags']
             
-            # 每10页保存一次
+            # 每10页保存
             if page % 10 == 0:
-                self.save_tags(all_tags, f'data/school_tags_temp.json')
-                print(f"  已保存{len(all_tags)}所学校的标签\n")
+                self.save_tags(all_tags, 'data/school_tags_temp.json')
+                print(f"  💾 已保存（{len(all_tags)}所学校）\n")
             
-            time.sleep(1)
+            time.sleep(3)
         
         self.save_tags(all_tags, 'data/school_tags.json')
         self.driver.quit()
         
         print(f"\n{'='*60}")
-        print(f"完成！共{len(all_tags)}所学校")
+        print(f"✓ 完成！共 {len(all_tags)} 所学校")
         print(f"{'='*60}\n")
         
         return all_tags
@@ -105,5 +121,8 @@ class SchoolTagsSeleniumScraper:
             json.dump(tags_dict, f, ensure_ascii=False, indent=2)
 
 if __name__ == "__main__":
-    scraper = SchoolTagsSeleniumScraper()
-    scraper.scrape_all(max_pages=2)  # 先测试2页
+    import sys
+    scraper = SchoolTagsSeleniumScraper(headless=True)
+    
+    test_pages = int(sys.argv[1]) if len(sys.argv) > 1 else 3
+    scraper.scrape_all(max_pages=test_pages)
