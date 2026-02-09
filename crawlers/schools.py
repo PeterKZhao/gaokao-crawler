@@ -20,23 +20,48 @@ class SchoolCrawler(BaseCrawler):
     def get_enhanced_school_list(self, page=1, size=20, local_type_id=""):
         """
         获取增强版学校列表（包含label_list等新字段）
-        使用v1版本的API，返回更多标签信息
+        使用GET请求到api-gaokao.zjzw.cn
         """
-        payload = {
+        enhanced_url = "https://api-gaokao.zjzw.cn/apidata/web"
+        
+        params = {
+            "autosign": "",
             "keyword": "",
-            "local_type_id": local_type_id,  # 可以筛选学校类型，如2073
+            "local_type_id": local_type_id,
             "page": page,
-            "platform": 2,
+            "platform": "2",
             "province_id": "",
             "ranktype": "",
-            "request_type": 1,
+            "request_type": "1",
             "size": size,
             "spe_ids": "",
             "top_school_id": "",
-            "uri": "v1/school/lists"  # 使用v1版本的API
+            "uri": "v1/school/lists",
+            "signsafe": ""  # 可能需要签名，但先尝试空值
         }
         
-        return self.make_request(payload, retry=2)
+        try:
+            response = self.session.get(
+                enhanced_url,
+                params=params,
+                headers={
+                    "accept": "application/json, text/plain, */*",
+                    "accept-language": "zh-CN,zh;q=0.9",
+                    "referer": "https://www.gaokao.cn/",
+                    "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"
+                },
+                timeout=15
+            )
+            
+            if response.status_code == 200:
+                return response.json()
+            else:
+                print(f"增强接口请求失败，状态码: {response.status_code}")
+                
+        except Exception as e:
+            print(f"增强接口请求出错: {str(e)}")
+        
+        return None
     
     def merge_enhanced_data(self, schools_basic, max_pages=None):
         """将增强数据合并到基础学校列表"""
@@ -191,8 +216,8 @@ class SchoolCrawler(BaseCrawler):
                                 'website': detail.get('site'),
                                 
                                 # 学校特色
-                                'tags': detail.get('tags'),  # 所有标签
-                                'feature': detail.get('feature'),  # 特色专业
+                                'tags': detail.get('tags'),
+                                'feature': detail.get('feature'),
                                 'school_feature': detail.get('school_feature'),
                                 
                                 # 院士和重点学科
@@ -218,11 +243,11 @@ class SchoolCrawler(BaseCrawler):
                                 'teacher_num': detail.get('teacher_num'),
                                 
                                 # 其他
-                                'motto': detail.get('motto'),  # 校训
-                                'anniversary': detail.get('anniversary'),  # 校庆
-                                'old_name': detail.get('old_name'),  # 曾用名
-                                'dorm_condition': detail.get('dorm_condition'),  # 宿舍条件
-                                'canteen_condition': detail.get('canteen_condition'),  # 食堂条件
+                                'motto': detail.get('motto'),
+                                'anniversary': detail.get('anniversary'),
+                                'old_name': detail.get('old_name'),
+                                'dorm_condition': detail.get('dorm_condition'),
+                                'canteen_condition': detail.get('canteen_condition'),
                                 
                                 # 特殊标记
                                 'is_985': detail.get('f985'),
@@ -237,7 +262,7 @@ class SchoolCrawler(BaseCrawler):
                                 # 双一流学科
                                 'dual_class_disciplines': detail.get('dual_class_name_dict'),
                             })
-                            time.sleep(0.5)  # 详情请求需要延时
+                            time.sleep(0.5)
                     
                     schools.append(school_info)
                 
@@ -251,7 +276,6 @@ class SchoolCrawler(BaseCrawler):
         
         # 如果开启增强模式，获取并合并增强数据
         if fetch_enhanced and schools:
-            # 需要爬取足够多的增强数据页来覆盖基础数据
             enhanced_pages = max(max_pages, (len(schools) // 20) + 2)
             schools = self.merge_enhanced_data(schools, max_pages=enhanced_pages)
         
@@ -265,7 +289,6 @@ class SchoolCrawler(BaseCrawler):
 if __name__ == "__main__":
     import sys
     
-    # 支持命令行参数
     max_pages = int(sys.argv[1]) if len(sys.argv) > 1 else 5
     fetch_detail = sys.argv[2].lower() == 'true' if len(sys.argv) > 2 else True
     fetch_enhanced = sys.argv[3].lower() == 'true' if len(sys.argv) > 3 else True
