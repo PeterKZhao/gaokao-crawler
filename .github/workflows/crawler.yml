@@ -1,16 +1,43 @@
 name: 掌上高考数据爬虫
 
 on:
-  workflow_dispatch:  # 允许手动触发
+  workflow_dispatch:
     inputs:
+      crawl_schools:
+        description: '爬取学校数据'
+        required: true
+        type: choice
+        options:
+          - 'true'
+          - 'false'
+        default: 'true'
       max_school_pages:
-        description: '爬取学校的最大页数'
+        description: '学校最大页数'
         required: false
         default: '10'
+      crawl_majors:
+        description: '爬取专业数据'
+        required: true
+        type: choice
+        options:
+          - 'true'
+          - 'false'
+        default: 'true'
       crawl_scores:
-        description: '是否爬取分数线(true/false)'
-        required: false
+        description: '爬取分数线数据'
+        required: true
+        type: choice
+        options:
+          - 'true'
+          - 'false'
         default: 'false'
+      sample_schools:
+        description: '爬取分数线的学校数量'
+        required: false
+        default: '10'
+
+permissions:
+  contents: write
 
 jobs:
   crawl:
@@ -32,17 +59,27 @@ jobs:
         
     - name: 创建数据目录
       run: mkdir -p data
-        
-    - name: 运行爬虫
+    
+    - name: 爬取学校数据
+      if: ${{ github.event.inputs.crawl_schools == 'true' }}
       env:
-        MAX_PAGES: ${{ github.event.inputs.max_school_pages || '10' }}
-        CRAWL_SCORES: ${{ github.event.inputs.crawl_scores || 'false' }}
-      run: python crawler.py
+        MAX_PAGES: ${{ github.event.inputs.max_school_pages }}
+      run: python -m crawlers.schools
+    
+    - name: 爬取专业数据
+      if: ${{ github.event.inputs.crawl_majors == 'true' }}
+      run: python -m crawlers.majors
+    
+    - name: 爬取分数线数据
+      if: ${{ github.event.inputs.crawl_scores == 'true' }}
+      env:
+        SAMPLE_SCHOOLS: ${{ github.event.inputs.sample_schools }}
+      run: python -m crawlers.scores
       
-    - name: 提交数据
-      run: |
-        git config --local user.email "1771289347@qq.com"
-        git config --local user.name "GitHub Action"
-        git add data/*.json
-        git diff --quiet && git diff --staged --quiet || git commit -m "更新数据 $(date +'%Y-%m-%d %H:%M:%S')"
-        git push
+    - name: 提交并推送更改
+      uses: stefanzweifel/git-auto-commit-action@v5
+      with:
+        commit_message: 更新数据 ${{ github.run_number }}
+        file_pattern: 'data/*.json'
+        commit_user_name: GitHub Action
+        commit_user_email: action@github.com
