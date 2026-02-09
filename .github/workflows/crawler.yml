@@ -54,7 +54,9 @@ jobs:
     steps:
     - name: 检出代码
       uses: actions/checkout@v4
-      
+      with:
+        fetch-depth: 0  # 获取完整历史，避免冲突
+        
     - name: 设置Python环境
       uses: actions/setup-python@v5
       with:
@@ -92,3 +94,6 @@ jobs:
         file_pattern: 'data/*.json'
         commit_user_name: GitHub Action
         commit_user_email: action@github.com
+        push_options: '--force-with-lease'  # 安全的强制推送
+        skip_fetch: false  # 确保fetch最新代码
+        skip_checkout: false
