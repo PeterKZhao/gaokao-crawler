@@ -15,6 +15,14 @@ on:
         description: '学校最大页数'
         required: false
         default: '10'
+      fetch_school_detail:
+        description: '获取学校详细信息（更全但更慢）'
+        required: true
+        type: choice
+        options:
+          - 'true'
+          - 'false'
+        default: 'true'
       crawl_majors:
         description: '爬取专业数据'
         required: true
@@ -22,7 +30,7 @@ on:
         options:
           - 'true'
           - 'false'
-        default: 'true'
+        default: 'false'
       crawl_scores:
         description: '爬取分数线数据'
         required: true
@@ -64,6 +72,7 @@ jobs:
       if: ${{ github.event.inputs.crawl_schools == 'true' }}
       env:
         MAX_PAGES: ${{ github.event.inputs.max_school_pages }}
+        FETCH_DETAIL: ${{ github.event.inputs.fetch_school_detail }}
       run: python -m crawlers.schools
     
     - name: 爬取专业数据
