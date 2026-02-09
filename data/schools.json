@@ -1,1 +1,546 @@
-
+{
+  "update_time": "2026-02-09 08:24:15",
+  "count": 60,
+  "data": [
+    {
+      "school_id": 140,
+      "name": "清华大学",
+      "province": "北京",
+      "type": "综合类",
+      "rank": "1",
+      "level": "本科",
+      "dual_class": "双一流"
+    },
+    {
+      "school_id": 31,
+      "name": "北京大学",
+      "province": "北京",
+      "type": "综合类",
+      "rank": "2",
+      "level": "本科",
+      "dual_class": "双一流"
+    },
+    {
+      "school_id": 114,
+      "name": "浙江大学",
+      "province": "浙江",
+      "type": "综合类",
+      "rank": "3",
+      "level": "本科",
+      "dual_class": "双一流"
+    },
+    {
+      "school_id": 125,
+      "name": "上海交通大学",
+      "province": "上海",
+      "type": "综合类",
+      "rank": "4",
+      "level": "本科",
+      "dual_class": "双一流"
+    },
+    {
+      "school_id": 132,
+      "name": "复旦大学",
+      "province": "上海",
+      "type": "综合类",
+      "rank": "5",
+      "level": "本科",
+      "dual_class": "双一流"
+    },
+    {
+      "school_id": 111,
+      "name": "南京大学",
+      "province": "江苏",
+      "type": "综合类",
+      "rank": "6",
+      "level": "本科",
+      "dual_class": "双一流"
+    },
+    {
+      "school_id": 66,
+      "name": "中国科学技术大学",
+      "province": "安徽",
+      "type": "理工类",
+      "rank": "7",
+      "level": "本科",
+      "dual_class": "双一流"
+    },
+    {
+      "school_id": 42,
+      "name": "武汉大学",
+      "province": "湖北",
+      "type": "综合类",
+      "rank": "8",
+      "level": "本科",
+      "dual_class": "双一流"
+    },
+    {
+      "school_id": 127,
+      "name": "华中科技大学",
+      "province": "湖北",
+      "type": "综合类",
+      "rank": "9",
+      "level": "本科",
+      "dual_class": "双一流"
+    },
+    {
+      "school_id": 330,
+      "name": "西安交通大学",
+      "province": "陕西",
+      "type": "综合类",
+      "rank": "10",
+      "level": "本科",
+      "dual_class": "双一流"
+    },
+    {
+      "school_id": 47,
+      "name": "北京航空航天大学",
+      "province": "北京",
+      "type": "理工类",
+      "rank": "11",
+      "level": "本科",
+      "dual_class": "双一流"
+    },
+    {
+      "school_id": 104,
+      "name": "中山大学",
+      "province": "广东",
+      "type": "综合类",
+      "rank": "12",
+      "level": "本科",
+      "dual_class": "双一流"
+    },
+    {
+      "school_id": 143,
+      "name": "北京理工大学",
+      "province": "北京",
+      "type": "理工类",
+      "rank": "13",
+      "level": "本科",
+      "dual_class": "双一流"
+    },
+    {
+      "school_id": 573,
+      "name": "北京协和医学院",
+      "province": "北京",
+      "type": "医药类",
+      "rank": "14",
+      "level": "本科",
+      "dual_class": "双一流"
+    },
+    {
+      "school_id": 34,
+      "name": "哈尔滨工业大学",
+      "province": "黑龙江",
+      "type": "理工类",
+      "rank": "15",
+      "level": "本科",
+      "dual_class": "双一流"
+    },
+    {
+      "school_id": 99,
+      "name": "四川大学",
+      "province": "四川",
+      "type": "综合类",
+      "rank": "16",
+      "level": "本科",
+      "dual_class": "双一流"
+    },
+    {
+      "school_id": 109,
+      "name": "东南大学",
+      "province": "江苏",
+      "type": "综合类",
+      "rank": "17",
+      "level": "本科",
+      "dual_class": "双一流"
+    },
+    {
+      "school_id": 46,
+      "name": "中国人民大学",
+      "province": "北京",
+      "type": "综合类",
+      "rank": "18",
+      "level": "本科",
+      "dual_class": "双一流"
+    },
+    {
+      "school_id": 73,
+      "name": "同济大学",
+      "province": "上海",
+      "type": "综合类",
+      "rank": "19",
+      "level": "本科",
+      "dual_class": "双一流"
+    },
+    {
+      "school_id": 52,
+      "name": "北京师范大学",
+      "province": "北京",
+      "type": "综合类",
+      "rank": "20",
+      "level": "本科",
+      "dual_class": "双一流"
+    },
+    {
+      "school_id": 60,
+      "name": "天津大学",
+      "province": "天津",
+      "type": "综合类",
+      "rank": "21",
+      "level": "本科",
+      "dual_class": "双一流"
+    },
+    {
+      "school_id": 107,
+      "name": "西北工业大学",
+      "province": "陕西",
+      "type": "理工类",
+      "rank": "22",
+      "level": "本科",
+      "dual_class": "双一流"
+    },
+    {
+      "school_id": 126,
+      "name": "山东大学",
+      "province": "山东",
+      "type": "综合类",
+      "rank": "23",
+      "level": "本科",
+      "dual_class": "双一流"
+    },
+    {
+      "school_id": 59,
+      "name": "南开大学",
+      "province": "天津",
+      "type": "综合类",
+      "rank": "24",
+      "level": "本科",
+      "dual_class": "双一流"
+    },
+    {
+      "school_id": 102,
+      "name": "厦门大学",
+      "province": "福建",
+      "type": "综合类",
+      "rank": "25",
+      "level": "本科",
+      "dual_class": "双一流"
+    },
+    {
+      "school_id": 557,
+      "name": "中国农业大学",
+      "province": "北京",
+      "type": "农林类",
+      "rank": "26",
+      "level": "本科",
+      "dual_class": "双一流"
+    },
+    {
+      "school_id": 122,
+      "name": "吉林大学",
+      "province": "吉林",
+      "type": "综合类",
+      "rank": "27",
+      "level": "本科",
+      "dual_class": "双一流"
+    },
+    {
+      "school_id": 123,
+      "name": "中南大学",
+      "province": "湖南",
+      "type": "综合类",
+      "rank": "28",
+      "level": "本科",
+      "dual_class": "双一流"
+    },
+    {
+      "school_id": 138,
+      "name": "大连理工大学",
+      "province": "辽宁",
+      "type": "理工类",
+      "rank": "29",
+      "level": "本科",
+      "dual_class": "双一流"
+    },
+    {
+      "school_id": 44,
+      "name": "湖南大学",
+      "province": "湖南",
+      "type": "综合类",
+      "rank": "30",
+      "level": "本科",
+      "dual_class": "双一流"
+    },
+    {
+      "school_id": 131,
+      "name": "华东师范大学",
+      "province": "上海",
+      "type": "师范类",
+      "rank": "31",
+      "level": "本科",
+      "dual_class": "双一流"
+    },
+    {
+      "school_id": 105,
+      "name": "华南理工大学",
+      "province": "广东",
+      "type": "综合类",
+      "rank": "32",
+      "level": "本科",
+      "dual_class": "双一流"
+    },
+    {
+      "school_id": 2941,
+      "name": "南方科技大学",
+      "province": "广东",
+      "type": "理工类",
+      "rank": "33",
+      "level": "本科",
+      "dual_class": "双一流"
+    },
+    {
+      "school_id": 661,
+      "name": "电子科技大学",
+      "province": "四川",
+      "type": "理工类",
+      "rank": "34",
+      "level": "本科",
+      "dual_class": "双一流"
+    },
+    {
+      "school_id": 119,
+      "name": "重庆大学",
+      "province": "重庆",
+      "type": "综合类",
+      "rank": "35",
+      "level": "本科",
+      "dual_class": "双一流"
+    },
+    {
+      "school_id": 144,
+      "name": "北京科技大学",
+      "province": "北京",
+      "type": "理工类",
+      "rank": "36",
+      "level": "本科",
+      "dual_class": "双一流"
+    },
+    {
+      "school_id": 130,
+      "name": "上海财经大学",
+      "province": "上海",
+      "type": "财经类",
+      "rank": "37",
+      "level": "本科",
+      "dual_class": "双一流"
+    },
+    {
+      "school_id": 584,
+      "name": "首都医科大学",
+      "province": "北京",
+      "type": "医药类",
+      "rank": "38",
+      "level": "本科",
+      "dual_class": ""
+    },
+    {
+      "school_id": 77,
+      "name": "南京航空航天大学",
+      "province": "江苏",
+      "type": "理工类",
+      "rank": "39",
+      "level": "本科",
+      "dual_class": "双一流"
+    },
+    {
+      "school_id": 134,
+      "name": "东北大学",
+      "province": "辽宁",
+      "type": "理工类",
+      "rank": "40",
+      "level": "本科",
+      "dual_class": "双一流"
+    },
+    {
+      "school_id": 112,
+      "name": "南京理工大学",
+      "province": "江苏",
+      "type": "理工类",
+      "rank": "41",
+      "level": "本科",
+      "dual_class": "双一流"
+    },
+    {
+      "school_id": 97,
+      "name": "兰州大学",
+      "province": "甘肃",
+      "type": "综合类",
+      "rank": "42",
+      "level": "本科",
+      "dual_class": "双一流"
+    },
+    {
+      "school_id": 960,
+      "name": "南方医科大学",
+      "province": "广东",
+      "type": "医药类",
+      "rank": "43",
+      "level": "本科",
+      "dual_class": ""
+    },
+    {
+      "school_id": 57,
+      "name": "西安电子科技大学",
+      "province": "陕西",
+      "type": "理工类",
+      "rank": "44",
+      "level": "本科",
+      "dual_class": "双一流"
+    },
+    {
+      "school_id": 3151,
+      "name": "上海科技大学",
+      "province": "上海",
+      "type": "理工类",
+      "rank": "45",
+      "level": "本科",
+      "dual_class": "双一流"
+    },
+    {
+      "school_id": 38,
+      "name": "北京交通大学",
+      "province": "北京",
+      "type": "理工类",
+      "rank": "46",
+      "level": "本科",
+      "dual_class": "双一流"
+    },
+    {
+      "school_id": 124,
+      "name": "哈尔滨工程大学",
+      "province": "黑龙江",
+      "type": "理工类",
+      "rank": "47",
+      "level": "本科",
+      "dual_class": "双一流"
+    },
+    {
+      "school_id": 133,
+      "name": "华东理工大学",
+      "province": "上海",
+      "type": "理工类",
+      "rank": "48",
+      "level": "本科",
+      "dual_class": "双一流"
+    },
+    {
+      "school_id": 142,
+      "name": "东北师范大学",
+      "province": "吉林",
+      "type": "师范类",
+      "rank": "49",
+      "level": "本科",
+      "dual_class": "双一流"
+    },
+    {
+      "school_id": 566,
+      "name": "中央财经大学",
+      "province": "北京",
+      "type": "财经类",
+      "rank": "50",
+      "level": "本科",
+      "dual_class": "双一流"
+    },
+    {
+      "school_id": 3202,
+      "name": "香港中文大学（深圳）",
+      "province": "广东",
+      "type": "综合类",
+      "rank": "51",
+      "level": "本科",
+      "dual_class": ""
+    },
+    {
+      "school_id": 118,
+      "name": "苏州大学",
+      "province": "江苏",
+      "type": "综合类",
+      "rank": "52",
+      "level": "本科",
+      "dual_class": "双一流"
+    },
+    {
+      "school_id": 417,
+      "name": "华中农业大学",
+      "province": "湖北",
+      "type": "农林类",
+      "rank": "53",
+      "level": "本科",
+      "dual_class": "双一流"
+    },
+    {
+      "school_id": 128,
+      "name": "武汉理工大学",
+      "province": "湖北",
+      "type": "理工类",
+      "rank": "54",
+      "level": "本科",
+      "dual_class": "双一流"
+    },
+    {
+      "school_id": 832,
+      "name": "中国石油大学（北京）",
+      "province": "北京",
+      "type": "理工类",
+      "rank": "55",
+      "level": "本科",
+      "dual_class": "双一流"
+    },
+    {
+      "school_id": 62,
+      "name": "郑州大学",
+      "province": "河南",
+      "type": "综合类",
+      "rank": "56",
+      "level": "本科",
+      "dual_class": "双一流"
+    },
+    {
+      "school_id": 86,
+      "name": "江南大学",
+      "province": "江苏",
+      "type": "综合类",
+      "rank": "57",
+      "level": "本科",
+      "dual_class": "双一流"
+    },
+    {
+      "school_id": 51,
+      "name": "西南交通大学",
+      "province": "四川",
+      "type": "理工类",
+      "rank": "58",
+      "level": "本科",
+      "dual_class": "双一流"
+    },
+    {
+      "school_id": 168,
+      "name": "南京医科大学",
+      "province": "江苏",
+      "type": "医药类",
+      "rank": "59",
+      "level": "本科",
+      "dual_class": "双一流"
+    },
+    {
+      "school_id": 113,
+      "name": "南京农业大学",
+      "province": "江苏",
+      "type": "农林类",
+      "rank": "60",
+      "level": "本科",
+      "dual_class": "双一流"
+    }
+  ]
+}
