@@ -1,0 +1,69 @@
+name: 测试Selenium调试
+
+on:
+  workflow_dispatch:  # 手动触发
+
+permissions:
+  contents: write
+
+jobs:
+  test-selenium:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: 检出代码
+      uses: actions/checkout@v3
+      
+    - name: 设置Python环境
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'
+    
+    - name: 安装Chrome浏览器
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y wget gnupg
+        wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
+        sudo sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list'
+        sudo apt-get update
+        sudo apt-get install -y google-chrome-stable
+        
+    - name: 验证Chrome安装
+      run: |
+        google-chrome --version
+        which google-chrome
+        
+    - name: 安装依赖
+      run: |
+        python -m pip install --upgrade pip
+        pip install selenium beautifulsoup4 lxml requests
+        
+    - name: 运行Selenium调试测试
+      run: python test_selenium_debug.py
+      
+    - name: 上传调试文件
+      if: always()
+      uses: actions/upload-artifact@v3
+      with:
+        name: debug-files
+        path: |
+          debug_*.html
+          debug_*.png
+        retention-days: 7
+        
+    - name: 显示调试信息
+      if: always()
+      run: |
+        echo "=== 系统信息 ==="
+        uname -a
+        echo ""
+        echo "=== Chrome版本 ==="
+        google-chrome --version
+        echo ""
+        echo "=== Python包 ==="
+        pip list | grep -i selenium
+        echo ""
+        if [ -f debug_page_source.html ]; then
+          echo "=== 页面源码前500字符 ==="
+          head -c 500 debug_page_source.html
+        fi
