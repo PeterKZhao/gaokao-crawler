@@ -3,14 +3,35 @@ import os
 from .base import BaseCrawler
 
 class SchoolCrawler(BaseCrawler):
-    def crawl(self, max_pages=None):
-        """爬取学校列表"""
+    
+    def get_school_detail(self, school_id):
+        """获取学校详细信息"""
+        payload = {
+            "school_id": school_id,
+            "uri": "apidata/api/gkv3/school/detail"
+        }
+        
+        data = self.make_request(payload, retry=2)
+        
+        if data and 'data' in data:
+            return data['data']
+        return None
+    
+    def crawl(self, max_pages=None, fetch_detail=True):
+        """
+        爬取学校列表
+        :param max_pages: 最大页数
+        :param fetch_detail: 是否获取详细信息（会慢很多但数据更全）
+        """
         if max_pages is None:
             max_pages = int(os.getenv('MAX_PAGES', '10'))
+        
+        fetch_detail = os.getenv('FETCH_DETAIL', str(fetch_detail)).lower() == 'true'
         
         schools = []
         print(f"\n{'='*60}")
         print(f"开始爬取学校列表（最多 {max_pages} 页）")
+        print(f"详细信息模式: {'开启' if fetch_detail else '关闭'}")
         print(f"{'='*60}\n")
         
         for page in range(1, max_pages + 1):
@@ -34,20 +55,111 @@ class SchoolCrawler(BaseCrawler):
                     break
                 
                 for item in items:
+                    school_id = item.get('school_id')
+                    
+                    # 基础信息
                     school_info = {
-                        'school_id': item.get('school_id'),
+                        'school_id': school_id,
                         'name': item.get('name'),
                         'province': item.get('province_name'),
                         'city': item.get('city_name'),
+                        'county': item.get('county_name'),
                         'type': item.get('type_name'),
                         'level': item.get('level_name'),
-                        'dual_class': item.get('dual_class_name'),
+                        'belong': item.get('belong'),
                         'rank': item.get('rank'),
-                        'belong': item.get('belong')
+                        
+                        # 标签信息
+                        'dual_class': item.get('dual_class_name'),
+                        'f985': item.get('f985'),
+                        'f211': item.get('f211'),
+                        'is_dual_class': item.get('dual_class'),
+                        'central': item.get('central'),
+                        'nature': item.get('nature_name'),
+                        
+                        # 基本属性
+                        'view_month': item.get('view_month'),
+                        'view_total': item.get('view_total'),
+                        'view_week': item.get('view_week'),
+                        'alumni': item.get('alumni'),
+                        'city_id': item.get('city_id'),
+                        'county_id': item.get('county_id'),
+                        'province_id': item.get('province_id'),
+                        'type_id': item.get('type'),
+                        'level_id': item.get('level'),
                     }
+                    
+                    # 如果开启详情模式，获取更多信息
+                    if fetch_detail and school_id:
+                        detail = self.get_school_detail(school_id)
+                        if detail:
+                            school_info.update({
+                                # Logo和图片
+                                'logo': detail.get('logo'),
+                                'img': detail.get('img'),
+                                
+                                # 详细地址
+                                'address': detail.get('address'),
+                                'postcode': detail.get('postcode'),
+                                
+                                # 联系方式
+                                'phone': detail.get('phone'),
+                                'email': detail.get('email'),
+                                'website': detail.get('site'),
+                                
+                                # 学校特色
+                                'tags': detail.get('tags'),  # 所有标签
+                                'feature': detail.get('feature'),  # 特色专业
+                                'school_feature': detail.get('school_feature'),
+                                
+                                # 院士和重点学科
+                                'academician': detail.get('academician'),
+                                'national_feature': detail.get('national_feature'),
+                                'key_discipline': detail.get('key_discipline'),
+                                
+                                # 硕博点
+                                'master_degree': detail.get('master_degree'),
+                                'doctor_degree': detail.get('doctor_degree'),
+                                
+                                # 招生信息
+                                'recruit': detail.get('recruit'),
+                                'admission_brochure': detail.get('admissions_brochure'),
+                                
+                                # 历史信息
+                                'history': detail.get('content'),
+                                'found_time': detail.get('create_date'),
+                                
+                                # 面积和规模
+                                'area': detail.get('area'),
+                                'student_num': detail.get('student_num'),
+                                'teacher_num': detail.get('teacher_num'),
+                                
+                                # 其他
+                                'motto': detail.get('motto'),  # 校训
+                                'anniversary': detail.get('anniversary'),  # 校庆
+                                'old_name': detail.get('old_name'),  # 曾用名
+                                'dorm_condition': detail.get('dorm_condition'),  # 宿舍条件
+                                'canteen_condition': detail.get('canteen_condition'),  # 食堂条件
+                                
+                                # 特殊标记
+                                'is_985': detail.get('f985'),
+                                'is_211': detail.get('f211'),
+                                'is_double_first_class': detail.get('dual_class'),
+                                'has_graduate_school': detail.get('graduate_school'),
+                                'has_independent_enrollment': detail.get('independent_enrollment'),
+                                
+                                # 学科评估
+                                'subject_evaluate': detail.get('subject_evaluate'),
+                                
+                                # 双一流学科
+                                'dual_class_disciplines': detail.get('dual_class_name_dict'),
+                            })
+                            time.sleep(0.5)  # 详情请求需要延时
+                    
                     schools.append(school_info)
                 
-                print(f"✓ 第 {page} 页：获取 {len(items)} 所学校")
+                print(f"✓ 第 {page} 页：获取 {len(items)} 所学校" + 
+                      (" (含详情)" if fetch_detail else ""))
             else:
                 print(f"✗ 第 {page} 页：请求失败")
                 break
@@ -62,5 +174,11 @@ class SchoolCrawler(BaseCrawler):
         return schools
 
 if __name__ == "__main__":
+    import sys
+    
+    # 支持命令行参数
+    max_pages = int(sys.argv[1]) if len(sys.argv) > 1 else 5
+    fetch_detail = sys.argv[2].lower() == 'true' if len(sys.argv) > 2 else True
+    
     crawler = SchoolCrawler()
-    crawler.crawl(max_pages=5)
+    crawler.crawl(max_pages=max_pages, fetch_detail=fetch_detail)
