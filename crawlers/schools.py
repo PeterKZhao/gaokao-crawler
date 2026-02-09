@@ -17,44 +17,26 @@ class SchoolCrawler(BaseCrawler):
             return data['data']
         return None
     
-    def get_enhanced_school_list(self, page=1, size=20):
-        """获取增强版学校列表（包含label_list等新字段）"""
-        # 注意：这里使用新的base_url
-        enhanced_url = "https://api-gaokao.zjzw.cn/apidata/web"
-        
-        params = {
-            "autosign": "",
+    def get_enhanced_school_list(self, page=1, size=20, local_type_id=""):
+        """
+        获取增强版学校列表（包含label_list等新字段）
+        使用v1版本的API，返回更多标签信息
+        """
+        payload = {
             "keyword": "",
-            "local_type_id": "",  # 可以根据需要筛选类型
+            "local_type_id": local_type_id,  # 可以筛选学校类型，如2073
             "page": page,
-            "platform": "2",
+            "platform": 2,
             "province_id": "",
             "ranktype": "",
             "request_type": 1,
             "size": size,
             "spe_ids": "",
             "top_school_id": "",
-            "uri": "v1/school/lists",
-            "signsafe": ""  # 可能需要动态生成
+            "uri": "v1/school/lists"  # 使用v1版本的API
         }
         
-        try:
-            response = self.session.get(
-                enhanced_url,
-                params=params,
-                headers=self.headers,
-                timeout=15
-            )
-            
-            if response.status_code == 200:
-                return response.json()
-            else:
-                print(f"增强接口请求失败，状态码: {response.status_code}")
-                
-        except Exception as e:
-            print(f"增强接口请求出错: {str(e)}")
-        
-        return None
+        return self.make_request(payload, retry=2)
     
     def merge_enhanced_data(self, schools_basic, max_pages=None):
         """将增强数据合并到基础学校列表"""
@@ -68,14 +50,18 @@ class SchoolCrawler(BaseCrawler):
         print(f"开始获取增强版学校数据...")
         print(f"{'='*60}\n")
         
-        for page in range(1, max_pages + 1):
+        page = 1
+        total_fetched = 0
+        
+        # 持续爬取直到覆盖所有基础学校
+        while page <= max_pages:
             enhanced_data = self.get_enhanced_school_list(page=page, size=20)
             
             if enhanced_data and enhanced_data.get('code') == 0:
                 items = enhanced_data.get('data', {}).get('item', [])
                 
                 if not items:
-                    print(f"增强数据第 {page} 页无数据")
+                    print(f"✓ 增强数据第 {page} 页无数据，已完成")
                     break
                 
                 for item in items:
@@ -85,13 +71,17 @@ class SchoolCrawler(BaseCrawler):
                             'label_list': item.get('label_list', []),
                             'recommend_master_level': item.get('recommend_master_level'),
                             'is_top': item.get('is_top'),
-                            'attr_list': item.get('attr_list', [])
+                            'attr_list': item.get('attr_list', []),
+                            'hightitle': item.get('hightitle')
                         }
+                        total_fetched += 1
                 
-                print(f"✓ 增强数据第 {page} 页：获取 {len(items)} 所学校")
+                print(f"✓ 增强数据第 {page} 页：获取 {len(items)} 所学校（累计{total_fetched}所）")
                 time.sleep(1)
+                page += 1
             else:
-                print(f"✗ 增强数据第 {page} 页：请求失败")
+                error_msg = enhanced_data.get('message', '未知错误') if enhanced_data else '请求失败'
+                print(f"✗ 增强数据第 {page} 页：{error_msg}")
                 break
         
         # 合并数据
@@ -102,7 +92,8 @@ class SchoolCrawler(BaseCrawler):
                 school.update(enhanced_dict[school_id])
                 merged_count += 1
         
-        print(f"\n✓ 成功合并 {merged_count}/{len(schools_basic)} 所学校的增强数据\n")
+        print(f"\n✓ 成功合并 {merged_count}/{len(schools_basic)} 所学校的增强数据")
+        print(f"  (增强数据库共{len(enhanced_dict)}所，基础数据{len(schools_basic)}所)\n")
         
         return schools_basic
     
@@ -260,7 +251,9 @@ class SchoolCrawler(BaseCrawler):
         
         # 如果开启增强模式，获取并合并增强数据
         if fetch_enhanced and schools:
-            schools = self.merge_enhanced_data(schools, max_pages=max_pages)
+            # 需要爬取足够多的增强数据页来覆盖基础数据
+            enhanced_pages = max(max_pages, (len(schools) // 20) + 2)
+            schools = self.merge_enhanced_data(schools, max_pages=enhanced_pages)
         
         self.save_to_json(schools, 'schools.json')
         print(f"\n{'='*60}")
