@@ -14,14 +14,16 @@ class BaseCrawler:
             "referer": "https://www.gaokao.cn/",
             "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"
         }
+        # 创建session以便复用连接
+        self.session = requests.Session()
+        self.session.headers.update(self.headers)
     
     def make_request(self, payload, retry=3):
         """统一的请求方法"""
         for attempt in range(retry):
             try:
-                response = requests.post(
+                response = self.session.post(
                     self.base_url,
-                    headers=self.headers,
                     json=payload,
                     timeout=15
                 )
