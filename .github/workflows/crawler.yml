@@ -1,12 +1,16 @@
 name: 掌上高考数据爬虫
 
 on:
-  schedule:
-    - cron: '0 2 * * *'  # 每天UTC 2:00运行（北京时间10:00）
   workflow_dispatch:  # 允许手动触发
-  push:
-    branches:
-      - main
+    inputs:
+      max_school_pages:
+        description: '爬取学校的最大页数'
+        required: false
+        default: '10'
+      crawl_scores:
+        description: '是否爬取分数线(true/false)'
+        required: false
+        default: 'false'
 
 jobs:
   crawl:
@@ -30,6 +34,9 @@ jobs:
       run: mkdir -p data
         
     - name: 运行爬虫
+      env:
+        MAX_PAGES: ${{ github.event.inputs.max_school_pages || '10' }}
+        CRAWL_SCORES: ${{ github.event.inputs.crawl_scores || 'false' }}
       run: python crawler.py
       
     - name: 提交数据
