@@ -1,7 +1,7 @@
 name: 测试Selenium调试
 
 on:
-  workflow_dispatch:  # 手动触发
+  workflow_dispatch:
 
 permissions:
   contents: write
@@ -12,19 +12,15 @@ jobs:
     
     steps:
     - name: 检出代码
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
       
     - name: 设置Python环境
-      uses: actions/setup-python@v4
+      uses: actions/setup-python@v5
       with:
         python-version: '3.10'
     
-    - name: 安装Chrome浏览器
+    - name: 安装Chrome
       run: |
-        sudo apt-get update
-        sudo apt-get install -y wget gnupg
-        wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
-        sudo sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list'
         sudo apt-get update
         sudo apt-get install -y google-chrome-stable
         
@@ -38,18 +34,24 @@ jobs:
         python -m pip install --upgrade pip
         pip install selenium beautifulsoup4 lxml requests
         
-    - name: 运行Selenium调试测试
+    - name: 测试1 - Requests方法
+      continue-on-error: true
+      run: python test_requests_method.py
+      
+    - name: 测试2 - Selenium方法
+      continue-on-error: true
       run: python test_selenium_debug.py
       
     - name: 上传调试文件
       if: always()
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: debug-files
         path: |
           debug_*.html
           debug_*.png
         retention-days: 7
+        if-no-files-found: warn
         
     - name: 显示调试信息
       if: always()
@@ -63,7 +65,16 @@ jobs:
         echo "=== Python包 ==="
         pip list | grep -i selenium
         echo ""
+        echo "=== 生成的文件 ==="
+        ls -lh debug_* 2>/dev/null || echo "没有debug文件"
+        echo ""
         if [ -f debug_page_source.html ]; then
-          echo "=== 页面源码前500字符 ==="
-          head -c 500 debug_page_source.html
+          echo "=== 页面源码前1000字符 ==="
+          head -c 1000 debug_page_source.html
+          echo ""
+        fi
+        if [ -f debug_requests_page.html ]; then
+          echo "=== Requests页面源码前1000字符 ==="
+          head -c 1000 debug_requests_page.html
+          echo ""
         fi
