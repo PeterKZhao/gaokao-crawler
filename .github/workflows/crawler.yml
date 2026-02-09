@@ -41,7 +41,7 @@ jobs:
       
     - name: 提交数据
       run: |
-        git config --local user.email "action@github.com"
+        git config --local user.email "zhaokaipeter@gmail.com"
         git config --local user.name "GitHub Action"
         git add data/*.json
         git diff --quiet && git diff --staged --quiet || git commit -m "更新数据 $(date +'%Y-%m-%d %H:%M:%S')"
