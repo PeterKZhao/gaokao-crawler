@@ -41,9 +41,8 @@ jobs:
       if: ${{ github.event.inputs.mode == 'test' }}
       env:
         MAX_PAGES: '1'
-        FETCH_DETAIL: 'true'
+        FETCH_COMPLETE_INFO: 'true'
         FETCH_ENHANCED: 'true'
-        FETCH_STATIC_INFO: 'true'
         GAOKAO_COOKIE: ${{ secrets.GAOKAO_COOKIE }}
       run: python -m crawlers.schools
     
@@ -51,9 +50,8 @@ jobs:
       if: ${{ github.event.inputs.mode == 'full' }}
       env:
         MAX_PAGES: '200'
-        FETCH_DETAIL: 'true'
+        FETCH_COMPLETE_INFO: 'true'
         FETCH_ENHANCED: 'true'
-        FETCH_STATIC_INFO: 'true'
         GAOKAO_COOKIE: ${{ secrets.GAOKAO_COOKIE }}
       run: python -m crawlers.schools
       
