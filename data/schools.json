@@ -1,5 +1,5 @@
 {
-  "update_time": "2026-02-10 15:35:22",
+  "update_time": "2026-02-10 15:49:51",
   "count": 20,
   "data": [
     {
@@ -37,6 +37,7 @@
       "num_academician": "89",
       "num_library": "568.35万",
       "recommend_master_rate": "70.00",
+      "recommend_master_level": 5,
       "upgrading_rate": "0.00",
       "ruanke_rank": "1",
       "xyh_rank": "2",
@@ -44,6 +45,17 @@
       "qs_rank": "1",
       "us_rank": "11",
       "qs_world": "17",
+      "label_list": [
+        "985",
+        "211",
+        "双一流",
+        "强基",
+        "C9",
+        "101计划",
+        "建筑老八校",
+        "机械五虎",
+        "电气四虎"
+      ],
       "label_list_detail": [
         {
           "name": "985",
@@ -91,11 +103,13 @@
           "value": "86013"
         }
       ],
-      "attr_list_detail": [
+      "attr_list": [
         "公办",
         "综合类",
         "教育部直属"
       ],
+      "is_top": 1,
+      "hightitle": "清华大学",
       "dualclass": [
         {
           "id": "939",
@@ -663,26 +677,7 @@
         "xyh_mb_2": "0",
         "xyh_mb_3": "0",
         "tws_china": "1"
-      },
-      "label_list": [
-        "985",
-        "211",
-        "双一流",
-        "强基",
-        "101计划",
-        "C9",
-        "机械五虎",
-        "电气四虎",
-        "建筑老八校"
-      ],
-      "recommend_master_level": "5",
-      "is_top": 2,
-      "attr_list": [
-        "综合类",
-        "公办",
-        "教育部直属"
-      ],
-      "hightitle": "清华大学"
+      }
     },
     {
       "school_id": 31,
@@ -719,6 +714,7 @@
       "num_academician": "162",
       "num_library": "851.20万",
       "recommend_master_rate": "50.57",
+      "recommend_master_level": 5,
       "upgrading_rate": "0.00",
       "ruanke_rank": "2",
       "xyh_rank": "1",
@@ -726,6 +722,16 @@
       "qs_rank": "2",
       "us_rank": "25",
       "qs_world": "14",
+      "label_list": [
+        "985",
+        "211",
+        "双一流",
+        "强基",
+        "101计划",
+        "C9",
+        "五院四系",
+        "医药双雄"
+      ],
       "label_list_detail": [
         {
           "name": "985",
@@ -768,11 +774,13 @@
           "value": "86019"
         }
       ],
-      "attr_list_detail": [
+      "attr_list": [
         "公办",
         "综合类",
         "教育部直属"
       ],
+      "is_top": 1,
+      "hightitle": "北京大学",
       "dualclass": [
         {
           "id": "980",
@@ -1375,25 +1383,7 @@
         "xyh_mb_2": "0",
         "xyh_mb_3": "0",
         "tws_china": "2"
-      },
-      "label_list": [
-        "985",
-        "211",
-        "双一流",
-        "强基",
-        "101计划",
-        "C9",
-        "五院四系",
-        "医药双雄"
-      ],
-      "recommend_master_level": "5",
-      "is_top": 2,
-      "attr_list": [
-        "综合类",
-        "公办",
-        "教育部直属"
-      ],
-      "hightitle": "北京大学"
+      }
     },
     {
       "school_id": 114,
@@ -1430,6 +1420,7 @@
       "num_academician": "26",
       "num_library": "819.20万",
       "recommend_master_rate": "38.94",
+      "recommend_master_level": 4.5,
       "upgrading_rate": "0.00",
       "ruanke_rank": "3",
       "xyh_rank": "5",
@@ -1437,6 +1428,17 @@
       "qs_rank": "5",
       "us_rank": "45",
       "qs_world": "49",
+      "label_list": [
+        "985",
+        "211",
+        "双一流",
+        "强基",
+        "101计划",
+        "C9",
+        "华东五虎",
+        "电气四虎",
+        "建筑新八校"
+      ],
       "label_list_detail": [
         {
           "name": "985",
@@ -1484,11 +1486,13 @@
           "value": "86015"
         }
       ],
-      "attr_list_detail": [
+      "attr_list": [
         "公办",
         "综合类",
         "教育部直属"
       ],
+      "is_top": 1,
+      "hightitle": "浙江大学",
       "dualclass": [
         {
           "id": "661",
@@ -1991,26 +1995,7 @@
         "xyh_mb_2": "0",
         "xyh_mb_3": "0",
         "tws_china": "5"
-      },
-      "label_list": [
-        "985",
-        "211",
-        "双一流",
-        "强基",
-        "101计划",
-        "C9",
-        "华东五虎",
-        "电气四虎",
-        "建筑新八校"
-      ],
-      "recommend_master_level": "4.5",
-      "is_top": 2,
-      "attr_list": [
-        "综合类",
-        "公办",
-        "教育部直属"
-      ],
-      "hightitle": "浙江大学"
+      }
     },
     {
       "school_id": 125,
@@ -2047,6 +2032,7 @@
       "num_academician": "33",
       "num_library": "385.20万",
       "recommend_master_rate": "45.01",
+      "recommend_master_level": 5,
       "upgrading_rate": "0.00",
       "ruanke_rank": "4",
       "xyh_rank": "5",
@@ -2054,6 +2040,17 @@
       "qs_rank": "6",
       "us_rank": "46",
       "qs_world": "47",
+      "label_list": [
+        "985",
+        "211",
+        "双一流",
+        "强基",
+        "C9",
+        "101计划",
+        "建筑新八校",
+        "机械五虎",
+        "华东五虎"
+      ],
       "label_list_detail": [
         {
           "name": "985",
@@ -2101,11 +2098,13 @@
           "value": "86008"
         }
       ],
-      "attr_list_detail": [
+      "attr_list": [
         "公办",
         "综合类",
         "教育部直属"
       ],
+      "is_top": 1,
+      "hightitle": "上海交通大学",
       "dualclass": [
         {
           "id": "743",
@@ -2593,26 +2592,7 @@
         "xyh_mb_2": "0",
         "xyh_mb_3": "0",
         "tws_china": "6"
-      },
-      "label_list": [
-        "985",
-        "211",
-        "双一流",
-        "强基",
-        "101计划",
-        "C9",
-        "华东五虎",
-        "机械五虎",
-        "建筑新八校"
-      ],
-      "recommend_master_level": "5",
-      "is_top": 2,
-      "attr_list": [
-        "综合类",
-        "公办",
-        "教育部直属"
-      ],
-      "hightitle": "上海交通大学"
+      }
     },
     {
       "school_id": 132,
@@ -2649,6 +2629,7 @@
       "num_academician": "59",
       "num_library": "623.04万",
       "recommend_master_rate": "41.95",
+      "recommend_master_level": 5,
       "upgrading_rate": "0.00",
       "ruanke_rank": "5",
       "xyh_rank": "4",
@@ -2656,6 +2637,16 @@
       "qs_rank": "3",
       "us_rank": "70",
       "qs_world": "30",
+      "label_list": [
+        "985",
+        "211",
+        "双一流",
+        "强基",
+        "C9",
+        "101计划",
+        "医药双雄",
+        "华东五虎"
+      ],
       "label_list_detail": [
         {
           "name": "985",
@@ -2698,11 +2689,13 @@
           "value": "86008"
         }
       ],
-      "attr_list_detail": [
+      "attr_list": [
         "公办",
         "综合类",
         "教育部直属"
       ],
+      "is_top": 1,
+      "hightitle": "复旦大学",
       "dualclass": [
         {
           "id": "771",
@@ -3206,25 +3199,7 @@
         "xyh_mb_2": "0",
         "xyh_mb_3": "0",
         "tws_china": "4"
-      },
-      "label_list": [
-        "985",
-        "211",
-        "双一流",
-        "强基",
-        "101计划",
-        "C9",
-        "华东五虎",
-        "医药双雄"
-      ],
-      "recommend_master_level": "5",
-      "is_top": 2,
-      "attr_list": [
-        "综合类",
-        "公办",
-        "教育部直属"
-      ],
-      "hightitle": "复旦大学"
+      }
     },
     {
       "school_id": 111,
@@ -3261,6 +3236,7 @@
       "num_academician": "34",
       "num_library": "682.86万",
       "recommend_master_rate": "48.74",
+      "recommend_master_level": 5,
       "upgrading_rate": "0.00",
       "ruanke_rank": "6",
       "xyh_rank": "6",
@@ -3268,6 +3244,16 @@
       "qs_rank": "7",
       "us_rank": "86",
       "qs_world": "103",
+      "label_list": [
+        "985",
+        "211",
+        "双一流",
+        "强基",
+        "C9",
+        "101计划",
+        "建筑新八校",
+        "华东五虎"
+      ],
       "label_list_detail": [
         {
           "name": "985",
@@ -3310,11 +3296,13 @@
           "value": "86008"
         }
       ],
-      "attr_list_detail": [
+      "attr_list": [
         "公办",
         "综合类",
         "教育部直属"
       ],
+      "is_top": 1,
+      "hightitle": "南京大学",
       "dualclass": [
         {
           "id": "709",
@@ -3792,25 +3780,7 @@
         "xyh_mb_2": "0",
         "xyh_mb_3": "0",
         "tws_china": "10"
-      },
-      "label_list": [
-        "985",
-        "211",
-        "双一流",
-        "强基",
-        "101计划",
-        "C9",
-        "华东五虎",
-        "建筑新八校"
-      ],
-      "recommend_master_level": "5",
-      "is_top": 2,
-      "attr_list": [
-        "综合类",
-        "公办",
-        "教育部直属"
-      ],
-      "hightitle": "南京大学"
+      }
     },
     {
       "school_id": 66,
@@ -3847,6 +3817,7 @@
       "num_academician": "28",
       "num_library": "67.00万",
       "recommend_master_rate": "62.20",
+      "recommend_master_level": 5,
       "upgrading_rate": "0.00",
       "ruanke_rank": "7",
       "xyh_rank": "8",
@@ -3854,6 +3825,15 @@
       "qs_rank": "4",
       "us_rank": "71",
       "qs_world": "132",
+      "label_list": [
+        "985",
+        "211",
+        "双一流",
+        "强基",
+        "C9",
+        "101计划",
+        "华东五虎"
+      ],
       "label_list_detail": [
         {
           "name": "985",
@@ -3891,11 +3871,13 @@
           "value": "86008"
         }
       ],
-      "attr_list_detail": [
+      "attr_list": [
         "公办",
         "理工类",
         "中科院直属"
       ],
+      "is_top": 1,
+      "hightitle": "中国科学技术大学",
       "dualclass": [
         {
           "id": "638",
@@ -4348,24 +4330,7 @@
         "xyh_mb_2": "0",
         "xyh_mb_3": "0",
         "tws_china": "8"
-      },
-      "label_list": [
-        "985",
-        "211",
-        "双一流",
-        "强基",
-        "101计划",
-        "C9",
-        "华东五虎"
-      ],
-      "recommend_master_level": "5",
-      "is_top": 2,
-      "attr_list": [
-        "理工类",
-        "公办",
-        "中科院直属"
-      ],
-      "hightitle": "中国科学技术大学"
+      }
     },
     {
       "school_id": 42,
@@ -4402,6 +4367,7 @@
       "num_academician": "21",
       "num_library": "731.00万",
       "recommend_master_rate": "33.13",
+      "recommend_master_level": 4,
       "upgrading_rate": "0.00",
       "ruanke_rank": "8",
       "xyh_rank": "9",
@@ -4409,6 +4375,16 @@
       "qs_rank": "9",
       "us_rank": "90",
       "qs_world": "186",
+      "label_list": [
+        "985",
+        "211",
+        "双一流",
+        "强基",
+        "五院四系",
+        "101计划",
+        "电气二龙",
+        "中坚九校"
+      ],
       "label_list_detail": [
         {
           "name": "985",
@@ -4451,11 +4427,13 @@
           "value": "86009"
         }
       ],
-      "attr_list_detail": [
+      "attr_list": [
         "公办",
         "综合类",
         "教育部直属"
       ],
+      "is_top": 1,
+      "hightitle": "武汉大学",
       "dualclass": [
         {
           "id": "606",
@@ -4914,25 +4892,7 @@
         "xyh_mb_2": "0",
         "xyh_mb_3": "0",
         "tws_china": "13"
-      },
-      "label_list": [
-        "985",
-        "211",
-        "双一流",
-        "强基",
-        "101计划",
-        "五院四系",
-        "中坚九校",
-        "电气二龙"
-      ],
-      "recommend_master_level": "4",
-      "is_top": 2,
-      "attr_list": [
-        "综合类",
-        "公办",
-        "教育部直属"
-      ],
-      "hightitle": "武汉大学"
+      }
     },
     {
       "school_id": 127,
@@ -4969,6 +4929,7 @@
       "num_academician": "20",
       "num_library": "579.00万",
       "recommend_master_rate": "35.73",
+      "recommend_master_level": 4.5,
       "upgrading_rate": "0.00",
       "ruanke_rank": "9",
       "xyh_rank": "10",
@@ -4976,6 +4937,17 @@
       "qs_rank": "17",
       "us_rank": "91",
       "qs_world": "319",
+      "label_list": [
+        "985",
+        "211",
+        "双一流",
+        "强基",
+        "建筑新八校",
+        "101计划",
+        "机械五虎",
+        "电气四虎",
+        "中坚九校"
+      ],
       "label_list_detail": [
         {
           "name": "985",
@@ -5023,11 +4995,13 @@
           "value": "86009"
         }
       ],
-      "attr_list_detail": [
+      "attr_list": [
         "公办",
         "综合类",
         "教育部直属"
       ],
+      "is_top": 1,
+      "hightitle": "华中科技大学",
       "dualclass": [
         {
           "id": "595",
@@ -5476,26 +5450,7 @@
         "xyh_mb_2": "0",
         "xyh_mb_3": "0",
         "tws_china": "19"
-      },
-      "label_list": [
-        "985",
-        "211",
-        "双一流",
-        "强基",
-        "101计划",
-        "中坚九校",
-        "机械五虎",
-        "电气四虎",
-        "建筑新八校"
-      ],
-      "recommend_master_level": "4.5",
-      "is_top": 2,
-      "attr_list": [
-        "综合类",
-        "公办",
-        "教育部直属"
-      ],
-      "hightitle": "华中科技大学"
+      }
     },
     {
       "school_id": 330,
@@ -5532,6 +5487,7 @@
       "num_academician": "37",
       "num_library": "603.50万",
       "recommend_master_rate": "37.50",
+      "recommend_master_level": 4.5,
       "upgrading_rate": "0.00",
       "ruanke_rank": "10",
       "xyh_rank": "13",
@@ -5539,6 +5495,17 @@
       "qs_rank": "11",
       "us_rank": "141",
       "qs_world": "305",
+      "label_list": [
+        "985",
+        "211",
+        "双一流",
+        "强基",
+        "C9",
+        "101计划",
+        "机械五虎",
+        "电气四虎",
+        "中坚九校"
+      ],
       "label_list_detail": [
         {
           "name": "985",
@@ -5586,11 +5553,13 @@
           "value": "86009"
         }
       ],
-      "attr_list_detail": [
+      "attr_list": [
         "公办",
         "综合类",
         "教育部直属"
       ],
+      "is_top": 1,
+      "hightitle": "西安交通大学",
       "dualclass": [
         {
           "id": "517",
@@ -6034,26 +6003,7 @@
         "xyh_mb_2": "0",
         "xyh_mb_3": "0",
         "tws_china": "21"
-      },
-      "label_list": [
-        "985",
-        "211",
-        "双一流",
-        "强基",
-        "101计划",
-        "C9",
-        "中坚九校",
-        "机械五虎",
-        "电气四虎"
-      ],
-      "recommend_master_level": "4.5",
-      "is_top": 2,
-      "attr_list": [
-        "综合类",
-        "公办",
-        "教育部直属"
-      ],
-      "hightitle": "西安交通大学"
+      }
     },
     {
       "school_id": 47,
@@ -6090,6 +6040,7 @@
       "num_academician": "22",
       "num_library": "253.00万",
       "recommend_master_rate": "51.80",
+      "recommend_master_level": 5,
       "upgrading_rate": "0.00",
       "ruanke_rank": "11",
       "xyh_rank": "18",
@@ -6097,6 +6048,14 @@
       "qs_rank": "20",
       "us_rank": "207",
       "qs_world": "388",
+      "label_list": [
+        "985",
+        "211",
+        "双一流",
+        "强基",
+        "国防七子",
+        "101计划"
+      ],
       "label_list_detail": [
         {
           "name": "985",
@@ -6129,11 +6088,13 @@
           "value": "86001"
         }
       ],
-      "attr_list_detail": [
+      "attr_list": [
         "公办",
         "理工类",
         "工信部直属"
       ],
+      "is_top": 2,
+      "hightitle": "北京航空航天大学",
       "dualclass": [
         {
           "id": "889",
@@ -6571,23 +6532,7 @@
         "xyh_mb_2": "0",
         "xyh_mb_3": "0",
         "tws_china": "27"
-      },
-      "label_list": [
-        "985",
-        "211",
-        "双一流",
-        "强基",
-        "101计划",
-        "国防七子"
-      ],
-      "recommend_master_level": "5",
-      "is_top": 2,
-      "attr_list": [
-        "理工类",
-        "公办",
-        "工信部直属"
-      ],
-      "hightitle": "北京航空航天大学"
+      }
     },
     {
       "school_id": 104,
@@ -6624,6 +6569,7 @@
       "num_academician": "20",
       "num_library": "1000.00万",
       "recommend_master_rate": "28.24",
+      "recommend_master_level": 3.5,
       "upgrading_rate": "0.00",
       "ruanke_rank": "12",
       "xyh_rank": "14",
@@ -6631,6 +6577,14 @@
       "qs_rank": "8",
       "us_rank": "85",
       "qs_world": "276",
+      "label_list": [
+        "985",
+        "211",
+        "双一流",
+        "强基",
+        "101计划",
+        "中坚九校"
+      ],
       "label_list_detail": [
         {
           "name": "985",
@@ -6663,11 +6617,13 @@
           "value": "86009"
         }
       ],
-      "attr_list_detail": [
+      "attr_list": [
         "公办",
         "综合类",
         "教育部直属"
       ],
+      "is_top": 2,
+      "hightitle": "中山大学",
       "dualclass": [
         {
           "id": "564",
@@ -7126,23 +7082,7 @@
         "xyh_mb_2": "0",
         "xyh_mb_3": "0",
         "tws_china": "21"
-      },
-      "label_list": [
-        "985",
-        "211",
-        "双一流",
-        "强基",
-        "101计划",
-        "中坚九校"
-      ],
-      "recommend_master_level": "3.5",
-      "is_top": 2,
-      "attr_list": [
-        "综合类",
-        "公办",
-        "教育部直属"
-      ],
-      "hightitle": "中山大学"
+      }
     },
     {
       "school_id": 143,
@@ -7179,6 +7119,7 @@
       "num_academician": "7",
       "num_library": "429.00万",
       "recommend_master_rate": "32.00",
+      "recommend_master_level": 4,
       "upgrading_rate": "0.00",
       "ruanke_rank": "13",
       "xyh_rank": "21",
@@ -7186,6 +7127,17 @@
       "qs_rank": "19",
       "us_rank": "156",
       "qs_world": "259",
+      "label_list": [
+        "985",
+        "211",
+        "双一流",
+        "强基",
+        "E9",
+        "兵工七子",
+        "101计划",
+        "国防七子",
+        "中坚九校"
+      ],
       "label_list_detail": [
         {
           "name": "985",
@@ -7233,11 +7185,13 @@
           "value": "86009"
         }
       ],
-      "attr_list_detail": [
+      "attr_list": [
         "公办",
         "理工类",
         "工信部直属"
       ],
+      "is_top": 2,
+      "hightitle": "北京理工大学",
       "dualclass": [
         {
           "id": "881",
@@ -7655,26 +7609,7 @@
         "xyh_mb_2": "0",
         "xyh_mb_3": "0",
         "tws_china": "21"
-      },
-      "label_list": [
-        "985",
-        "211",
-        "双一流",
-        "强基",
-        "101计划",
-        "E9",
-        "国防七子",
-        "中坚九校",
-        "兵工七子"
-      ],
-      "recommend_master_level": "4",
-      "is_top": 2,
-      "attr_list": [
-        "理工类",
-        "公办",
-        "工信部直属"
-      ],
-      "hightitle": "北京理工大学"
+      }
     },
     {
       "school_id": 573,
@@ -7711,6 +7646,7 @@
       "num_academician": "24",
       "num_library": "0.00万",
       "recommend_master_rate": "36.30",
+      "recommend_master_level": 4.5,
       "upgrading_rate": "0.00",
       "ruanke_rank": "13",
       "xyh_rank": "33",
@@ -7718,6 +7654,9 @@
       "qs_rank": "0",
       "us_rank": "468",
       "qs_world": "0",
+      "label_list": [
+        "双一流"
+      ],
       "label_list_detail": [
         {
           "name": "双一流",
@@ -7725,12 +7664,14 @@
           "value": "1"
         }
       ],
-      "attr_list_detail": [
+      "attr_list": [
         "本科",
         "公办",
         "医药类",
         "国家卫健委直属"
       ],
+      "is_top": 2,
+      "hightitle": "北京协和医学院",
       "dualclass": [
         {
           "id": "859",
@@ -7959,19 +7900,7 @@
         "xyh_mb_2": "0",
         "xyh_mb_3": "0",
         "tws_china": "0"
-      },
-      "label_list": [
-        "双一流"
-      ],
-      "recommend_master_level": "4.5",
-      "is_top": 2,
-      "attr_list": [
-        "本科",
-        "医药类",
-        "公办",
-        "国家卫健委直属"
-      ],
-      "hightitle": "北京协和医学院"
+      }
     },
     {
       "school_id": 34,
@@ -8008,6 +7937,7 @@
       "num_academician": "23",
       "num_library": "357.00万",
       "recommend_master_rate": "35.60",
+      "recommend_master_level": 4.5,
       "upgrading_rate": "0.00",
       "ruanke_rank": "14",
       "xyh_rank": "12",
@@ -8015,6 +7945,19 @@
       "qs_rank": "10",
       "us_rank": "128",
       "qs_world": "256",
+      "label_list": [
+        "985",
+        "211",
+        "双一流",
+        "强基",
+        "C9",
+        "101计划",
+        "建筑老八校",
+        "国防七子",
+        "机械五虎",
+        "中坚九校",
+        "E9"
+      ],
       "label_list_detail": [
         {
           "name": "985",
@@ -8072,11 +8015,13 @@
           "value": "86003"
         }
       ],
-      "attr_list_detail": [
+      "attr_list": [
         "公办",
         "理工类",
         "工信部直属"
       ],
+      "is_top": 2,
+      "hightitle": "哈尔滨工业大学",
       "dualclass": [
         {
           "id": "783",
@@ -8514,28 +8459,7 @@
         "xyh_mb_2": "0",
         "xyh_mb_3": "0",
         "tws_china": "14"
-      },
-      "label_list": [
-        "985",
-        "211",
-        "双一流",
-        "强基",
-        "101计划",
-        "C9",
-        "E9",
-        "国防七子",
-        "中坚九校",
-        "机械五虎",
-        "建筑老八校"
-      ],
-      "recommend_master_level": "4.5",
-      "is_top": 2,
-      "attr_list": [
-        "理工类",
-        "公办",
-        "工信部直属"
-      ],
-      "hightitle": "哈尔滨工业大学"
+      }
     },
     {
       "school_id": 99,
@@ -8572,6 +8496,7 @@
       "num_academician": "11",
       "num_library": "700.00万",
       "recommend_master_rate": "26.31",
+      "recommend_master_level": 3.5,
       "upgrading_rate": "0.00",
       "ruanke_rank": "15",
       "xyh_rank": "16",
@@ -8579,6 +8504,13 @@
       "qs_rank": "24",
       "us_rank": "182",
       "qs_world": "324",
+      "label_list": [
+        "985",
+        "211",
+        "双一流",
+        "强基",
+        "101计划"
+      ],
       "label_list_detail": [
         {
           "name": "985",
@@ -8606,11 +8538,13 @@
           "value": "86001"
         }
       ],
-      "attr_list_detail": [
+      "attr_list": [
         "公办",
         "综合类",
         "教育部直属"
       ],
+      "is_top": 2,
+      "hightitle": "四川大学",
       "dualclass": [
         {
           "id": "542",
@@ -9038,22 +8972,7 @@
         "xyh_mb_2": "0",
         "xyh_mb_3": "0",
         "tws_china": "21"
-      },
-      "label_list": [
-        "985",
-        "211",
-        "双一流",
-        "强基",
-        "101计划"
-      ],
-      "recommend_master_level": "3.5",
-      "is_top": 2,
-      "attr_list": [
-        "综合类",
-        "公办",
-        "教育部直属"
-      ],
-      "hightitle": "四川大学"
+      }
     },
     {
       "school_id": 109,
@@ -9090,6 +9009,7 @@
       "num_academician": "12",
       "num_library": "417.00万",
       "recommend_master_rate": "34.99",
+      "recommend_master_level": 4,
       "upgrading_rate": "0.00",
       "ruanke_rank": "16",
       "xyh_rank": "20",
@@ -9097,6 +9017,16 @@
       "qs_rank": "26",
       "us_rank": "155",
       "qs_world": "392",
+      "label_list": [
+        "985",
+        "211",
+        "双一流",
+        "强基",
+        "101计划",
+        "E9",
+        "中坚九校",
+        "建筑老八校"
+      ],
       "label_list_detail": [
         {
           "name": "985",
@@ -9139,11 +9069,13 @@
           "value": "86014"
         }
       ],
-      "attr_list_detail": [
+      "attr_list": [
         "公办",
         "综合类",
         "教育部直属"
       ],
+      "is_top": 2,
+      "hightitle": "东南大学",
       "dualclass": [
         {
           "id": "692",
@@ -9607,25 +9539,7 @@
         "xyh_mb_2": "0",
         "xyh_mb_3": "0",
         "tws_china": "27"
-      },
-      "label_list": [
-        "985",
-        "211",
-        "双一流",
-        "强基",
-        "101计划",
-        "E9",
-        "中坚九校",
-        "建筑老八校"
-      ],
-      "recommend_master_level": "4",
-      "is_top": 2,
-      "attr_list": [
-        "综合类",
-        "公办",
-        "教育部直属"
-      ],
-      "hightitle": "东南大学"
+      }
     },
     {
       "school_id": 46,
@@ -9662,6 +9576,7 @@
       "num_academician": "0",
       "num_library": "439.00万",
       "recommend_master_rate": "40.29",
+      "recommend_master_level": 5,
       "upgrading_rate": "0.00",
       "ruanke_rank": "17",
       "xyh_rank": "12",
@@ -9669,6 +9584,14 @@
       "qs_rank": "14",
       "us_rank": "394",
       "qs_world": "566",
+      "label_list": [
+        "985",
+        "211",
+        "双一流",
+        "强基",
+        "五院四系",
+        "101计划"
+      ],
       "label_list_detail": [
         {
           "name": "985",
@@ -9701,11 +9624,13 @@
           "value": "86001"
         }
       ],
-      "attr_list_detail": [
+      "attr_list": [
         "公办",
         "综合类",
         "教育部直属"
       ],
+      "is_top": 2,
+      "hightitle": "中国人民大学",
       "dualclass": [
         {
           "id": "905",
@@ -10173,23 +10098,7 @@
         "xyh_mb_2": "0",
         "xyh_mb_3": "0",
         "tws_china": "0"
-      },
-      "label_list": [
-        "985",
-        "211",
-        "双一流",
-        "强基",
-        "101计划",
-        "五院四系"
-      ],
-      "recommend_master_level": "5",
-      "is_top": 2,
-      "attr_list": [
-        "综合类",
-        "公办",
-        "教育部直属"
-      ],
-      "hightitle": "中国人民大学"
+      }
     },
     {
       "school_id": 73,
@@ -10226,6 +10135,7 @@
       "num_academician": "0",
       "num_library": "473.00万",
       "recommend_master_rate": "37.72",
+      "recommend_master_level": 4.5,
       "upgrading_rate": "0.00",
       "ruanke_rank": "18",
       "xyh_rank": "17",
@@ -10233,6 +10143,15 @@
       "qs_rank": "12",
       "us_rank": "124",
       "qs_world": "177",
+      "label_list": [
+        "985",
+        "211",
+        "双一流",
+        "强基",
+        "建筑老八校",
+        "101计划",
+        "E9"
+      ],
       "label_list_detail": [
         {
           "name": "985",
@@ -10270,11 +10189,13 @@
           "value": "86003"
         }
       ],
-      "attr_list_detail": [
+      "attr_list": [
         "公办",
         "综合类",
         "教育部直属"
       ],
+      "is_top": 2,
+      "hightitle": "同济大学",
       "dualclass": [
         {
           "id": "751",
@@ -10712,24 +10633,7 @@
         "xyh_mb_2": "0",
         "xyh_mb_3": "0",
         "tws_china": "16"
-      },
-      "label_list": [
-        "985",
-        "211",
-        "双一流",
-        "强基",
-        "101计划",
-        "E9",
-        "建筑老八校"
-      ],
-      "recommend_master_level": "4.5",
-      "is_top": 2,
-      "attr_list": [
-        "综合类",
-        "公办",
-        "教育部直属"
-      ],
-      "hightitle": "同济大学"
+      }
     },
     {
       "school_id": 52,
@@ -10766,6 +10670,7 @@
       "num_academician": "7",
       "num_library": "584.00万",
       "recommend_master_rate": "39.44",
+      "recommend_master_level": 4.5,
       "upgrading_rate": "0.00",
       "ruanke_rank": "19",
       "xyh_rank": "14",
@@ -10773,6 +10678,14 @@
       "qs_rank": "13",
       "us_rank": "173",
       "qs_world": "247",
+      "label_list": [
+        "985",
+        "211",
+        "双一流",
+        "强基",
+        "师大六姐妹",
+        "101计划"
+      ],
       "label_list_detail": [
         {
           "name": "985",
@@ -10805,11 +10718,13 @@
           "value": "86001"
         }
       ],
-      "attr_list_detail": [
+      "attr_list": [
         "公办",
         "综合类",
         "教育部直属"
       ],
+      "is_top": 2,
+      "hightitle": "北京师范大学",
       "dualclass": [
         {
           "id": "851",
@@ -11267,23 +11182,7 @@
         "xyh_mb_2": "0",
         "xyh_mb_3": "0",
         "tws_china": "15"
-      },
-      "label_list": [
-        "985",
-        "211",
-        "双一流",
-        "强基",
-        "101计划",
-        "师大六姐妹"
-      ],
-      "recommend_master_level": "4.5",
-      "is_top": 2,
-      "attr_list": [
-        "综合类",
-        "公办",
-        "教育部直属"
-      ],
-      "hightitle": "北京师范大学"
+      }
     }
   ]
 }
