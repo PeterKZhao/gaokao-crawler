@@ -41,16 +41,66 @@ class SchoolCrawler(BaseCrawler):
     
     def get_school_static_info(self, school_id):
         """获取学校完整静态信息（包含介绍、邮箱等）"""
-        url = f"https://static-data.gaokao.cn/www/2.0/school/{school_id}/info.json"
+        # 方式1：带参数的URL
+        url = f"https://static-data.gaokao.cn/www/2.0/school/{school_id}/info.json?a=www.gaokao.cn"
         
         try:
             response = self.session.get(url, timeout=10)
             if response.status_code == 200:
                 result = response.json()
+                
+                # 打印第一次获取的数据结构（仅首次调试）
+                if not hasattr(self, '_debug_printed'):
+                    print(f"\n🔍 调试信息 - 学校ID {school_id} 的静态接口返回字段：")
+                    if result.get('code') == 0 and 'data' in result:
+                        print(f"   可用字段: {list(result['data'].keys())[:20]}")  # 显示前20个字段
+                        # 检查是否有content字段
+                        if 'content' in result['data']:
+                            content_preview = result['data']['content'][:100] if result['data']['content'] else "空"
+                            print(f"   ✓ 找到content字段: {content_preview}...")
+                        else:
+                            print(f"   ✗ 没有content字段")
+                    self._debug_printed = True
+                
                 if result.get('code') == 0 and 'data' in result:
                     return result['data']
+                    
         except Exception as e:
             print(f"⚠️  获取学校静态信息失败 (ID: {school_id}): {str(e)}")
+        
+        return None
+    
+    def get_school_content(self, school_id):
+        """专门获取学校介绍内容（尝试多个可能的接口）"""
+        
+        # 方法1: 通过主API获取
+        payload = {
+            "school_id": school_id,
+            "uri": "apidata/api/gkv3/school/detail"
+        }
+        
+        data = self.make_request(payload, retry=2)
+        if data and 'data' in data:
+            detail_data = data['data']
+            # 检查是否有content相关字段
+            if 'content' in detail_data:
+                return detail_data['content']
+            if 'intro' in detail_data:
+                return detail_data['intro']
+            if 'introduction' in detail_data:
+                return detail_data['introduction']
+        
+        # 方法2: 尝试另一个静态接口
+        try:
+            url = f"https://static-data.gaokao.cn/www/2.0/schoolSpecial/{school_id}/pc_special.json"
+            response = self.session.get(url, timeout=10)
+            if response.status_code == 200:
+                result = response.json()
+                if result.get('code') == 0 and 'data' in result:
+                    if 'content' in result['data']:
+                        return result['data']['content']
+        except:
+            pass
         
         return None
 
@@ -260,22 +310,34 @@ class SchoolCrawler(BaseCrawler):
                     if static_info:
                         school_info.update({
                             'content': static_info.get('content'),  # 学校介绍
+                            'introduction': static_info.get('intro') or static_info.get('introduction'),  # 备用字段
                             'central': static_info.get('central'),  # 是否部属
                             'school_site': static_info.get('school_site'),  # 官网
-                            'emails': static_info.get('emails'),  # 邮箱（可能是列表）
+                            'emails': static_info.get('emails') or static_info.get('email'),  # 邮箱
                             'colleges_level': static_info.get('colleges_level'),  # 院校层次
                             'old_name': static_info.get('old_name'),  # 曾用名
-                            'create_year': static_info.get('create_year'),  # 创建年份
+                            'create_year': static_info.get('create_date') or static_info.get('create_year'),  # 创建年份
                             'province_id': static_info.get('province_id'),
                             'city_id': static_info.get('city_id'),
-                            'town': static_info.get('town'),  # 所在镇/街道
+                            'town': static_info.get('town_name') or static_info.get('town'),  # 所在镇/街道
                             'level_name': static_info.get('level_name'),
-                            'department': static_info.get('department'),  # 主管部门
+                            'department': static_info.get('department') or static_info.get('belong'),  # 主管部门
                             'member': static_info.get('member'),  # 学校成员资格
-                            'special_id_str': static_info.get('special_id_str'),
-                            'inner_rate': static_info.get('inner_rate'),  # 保研率
-                            'exclusive': static_info.get('exclusive'),  # 特色专业
+                            'area': static_info.get('area'),  # 占地面积
+                            'num_doctor': static_info.get('num_doctor'),  # 博士点
+                            'num_master': static_info.get('num_master'),  # 硕士点
+                            'num_subject': static_info.get('num_subject'),  # 重点学科
+                            'ruanke_rank': static_info.get('ruanke_rank'),  # 软科排名
+                            'xyh_rank': static_info.get('xyh_rank'),  # 校友会排名
+                            'wsl_rank': static_info.get('wsl_rank'),  # 武书连排名
                         })
+                        
+                        # 如果没有content，尝试专门获取
+                        if not school_info.get('content'):
+                            content = self.get_school_content(school_id)
+                            if content:
+                                school_info['content'] = content
+                        
                         self.polite_sleep(2.0, 4.0)
                 
                 schools.append(school_info)
@@ -304,7 +366,7 @@ class SchoolCrawler(BaseCrawler):
 if __name__ == "__main__":
     import sys
     
-    max_pages = int(sys.argv[1]) if len(sys.argv) > 1 else 5
+    max_pages = int(sys.argv[1]) if len(sys.argv) > 1 else 1  # 默认1页用于测试
     fetch_detail = sys.argv[2].lower() == 'true' if len(sys.argv) > 2 else True
     fetch_enhanced = sys.argv[3].lower() == 'true' if len(sys.argv) > 3 else True
     fetch_static_info = sys.argv[4].lower() == 'true' if len(sys.argv) > 4 else True
