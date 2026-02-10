@@ -3,35 +3,25 @@ import os
 import hashlib
 import hmac
 import base64
+import json
 from .base import BaseCrawler
 
 class SchoolCrawler(BaseCrawler):
     
     def generate_signsafe(self, params):
-        """
-        生成signsafe签名
-        待签名字符串格式：api-gaokao.zjzw.cn/apidata/web?参数
-        """
+        """生成signsafe签名"""
         secret = "D23ABC@#56"
-        
-        # 1. 按字母排序构建查询字符串
         sorted_keys = sorted(params.keys())
         query_string = '&'.join([f"{k}={params[k]}" for k in sorted_keys])
-        
-        # 2. 拼接域名和路径
         sign_string = f"api-gaokao.zjzw.cn/apidata/web?{query_string}"
         
-        # 3. HmacSHA1
         hmac_result = hmac.new(
             secret.encode('utf-8'),
             sign_string.encode('utf-8'),
             hashlib.sha1
         ).digest()
         
-        # 4. Base64编码
         base64_result = base64.b64encode(hmac_result).decode('utf-8')
-        
-        # 5. MD5
         final_signature = hashlib.md5(base64_result.encode('utf-8')).hexdigest()
         
         return final_signature
@@ -45,24 +35,20 @@ class SchoolCrawler(BaseCrawler):
         
         data = self.make_request(payload, retry=2)
         
-        if data and 'data' in data:
-            detail = data['data']
-            if isinstance(detail, dict):
-                return detail
+        if data and 'data' in data and isinstance(data['data'], dict):
+            return data['data']
         return None
 
-    def get_enhanced_school_list(self, page=1, size=20, local_type_id="2073"):
+    def get_enhanced_school_list(self, page=1, size=20):
         """获取增强版学校列表"""
         base_url = "https://api-gaokao.zjzw.cn/apidata/web"
-        
-        # 从环境变量获取Cookie
         cookie = os.getenv('GAOKAO_COOKIE', '')
         
-        # 构建参数（注意数字类型）
-        params_for_sign = {
+        # 构建参数
+        params = {
             "autosign": "",
             "keyword": "",
-            "local_type_id": str(local_type_id),
+            "local_type_id": "2073",
             "page": str(page),
             "platform": "2",
             "province_id": "",
@@ -74,51 +60,38 @@ class SchoolCrawler(BaseCrawler):
             "uri": "v1/school/lists"
         }
         
-        # 生成签名
-        signsafe = self.generate_signsafe(params_for_sign)
+        signsafe = self.generate_signsafe(params)
         
-        # 构建URL参数
-        sorted_keys = sorted(params_for_sign.keys())
-        query_parts = [f"{k}={params_for_sign[k]}" for k in sorted_keys]
-        query_parts.append(f"signsafe={signsafe}")
-        full_url = f"{base_url}?{'&'.join(query_parts)}"
+        # 构建URL
+        query_string = '&'.join([f"{k}={params[k]}" for k in sorted(params.keys())])
+        full_url = f"{base_url}?{query_string}&signsafe={signsafe}"
         
-        # 构建POST body（注意：数字类型不加引号）
+        # POST body（数字类型）
         post_body = {
             "autosign": "",
             "keyword": "",
-            "local_type_id": local_type_id,
-            "page": int(page),  # 数字类型
+            "local_type_id": 2073,
+            "page": int(page),
             "platform": "2",
             "province_id": "",
             "ranktype": "",
-            "request_type": 1,  # 数字类型
-            "signsafe": signsafe,  # 包含签名
-            "size": int(size),  # 数字类型
+            "request_type": 1,
+            "signsafe": signsafe,
+            "size": int(size),
             "spe_ids": "",
             "top_school_id": "",
             "uri": "v1/school/lists"
         }
         
-        # 准备请求头
-        headers = {
-            "accept": "application/json, text/plain, */*",
-            "accept-language": "zh-CN,zh;q=0.9",
-            "content-type": "application/json",
-            "origin": "https://www.gaokao.cn",
-            "referer": "https://www.gaokao.cn/",
-            "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"
-        }
-        
+        headers = self.headers.copy()
         if cookie:
             headers["cookie"] = cookie
         
         try:
-            import json
             response = self.session.post(
                 full_url,
                 headers=headers,
-                data=json.dumps(post_body),  # 发送JSON字符串
+                data=json.dumps(post_body),
                 timeout=15
             )
             
@@ -126,25 +99,19 @@ class SchoolCrawler(BaseCrawler):
                 result = response.json()
                 if result.get('code') == 0:
                     return result
+                elif result.get('code') == 1010001 and not cookie:
+                    print(f"⚠️  增强API需要Cookie认证")
                 else:
-                    if result.get('code') == 1010001 and not cookie:
-                        print(f"⚠️  增强API需要Cookie")
-                    else:
-                        print(f"⚠️  API返回: code={result.get('code')}, message={result.get('message')}")
-                    return None
-                    
+                    print(f"⚠️  API返回错误: code={result.get('code')}, message={result.get('message')}")
+            
         except Exception as e:
-            print(f"⚠️  请求出错: {str(e)}")
+            print(f"⚠️  增强数据请求失败: {str(e)}")
         
         return None
-
     
-    def merge_enhanced_data(self, schools_basic, max_pages=None):
+    def merge_enhanced_data(self, schools_basic, max_pages=10):
         """将增强数据合并到基础学校列表"""
         enhanced_dict = {}
-        
-        if max_pages is None:
-            max_pages = 10
         
         print(f"\n{'='*60}")
         print(f"开始获取增强版学校数据...")
@@ -154,13 +121,13 @@ class SchoolCrawler(BaseCrawler):
         total_fetched = 0
         
         while page <= max_pages:
-            enhanced_data = self.get_enhanced_school_list(page=page, size=20, local_type_id="2073")
+            enhanced_data = self.get_enhanced_school_list(page=page, size=20)
             
             if enhanced_data and enhanced_data.get('code') == 0:
                 items = enhanced_data.get('data', {}).get('item', [])
                 
                 if not items:
-                    print(f"✓ 增强数据第 {page} 页无数据，已完成")
+                    print(f"✓ 增强数据第 {page} 页无数据")
                     break
                 
                 for item in items:
@@ -176,18 +143,14 @@ class SchoolCrawler(BaseCrawler):
                         total_fetched += 1
                 
                 print(f"✓ 增强数据第 {page} 页：获取 {len(items)} 所学校（累计{total_fetched}所）")
-                time.sleep(1)
                 page += 1
+                self.polite_sleep()
             else:
-                if page == 1:
-                    print("⚠️  增强数据获取失败")
-                    if not os.getenv('GAOKAO_COOKIE'):
-                        print("\n解决方法：")
-                        print("1. 在浏览器访问 www.gaokao.cn 并登录")
-                        print("2. 按F12打开控制台，输入 document.cookie")
-                        print("3. 复制输出的Cookie字符串")
-                        print("4. 设置环境变量：export GAOKAO_COOKIE='你的cookie'")
-                        print("5. 或者在GitHub Secrets中添加GAOKAO_COOKIE\n")
+                if page == 1 and not os.getenv('GAOKAO_COOKIE'):
+                    print("\n💡 提示：增强数据需要Cookie")
+                    print("   1. 访问 www.gaokao.cn 并登录")
+                    print("   2. F12 控制台输入: document.cookie")
+                    print("   3. 设置环境变量: export GAOKAO_COOKIE='你的cookie'\n")
                 break
         
         # 合并数据
@@ -205,17 +168,14 @@ class SchoolCrawler(BaseCrawler):
     
     def crawl(self, max_pages=None, fetch_detail=True, fetch_enhanced=True):
         """爬取学校列表"""
-        if max_pages is None:
-            max_pages = int(os.getenv('MAX_PAGES', '10'))
-        
+        max_pages = max_pages or int(os.getenv('MAX_PAGES', '10'))
         fetch_detail = os.getenv('FETCH_DETAIL', str(fetch_detail)).lower() == 'true'
         fetch_enhanced = os.getenv('FETCH_ENHANCED', str(fetch_enhanced)).lower() == 'true'
         
         schools = []
         print(f"\n{'='*60}")
         print(f"开始爬取学校列表（最多 {max_pages} 页）")
-        print(f"详细信息模式: {'开启' if fetch_detail else '关闭'}")
-        print(f"增强数据模式: {'开启' if fetch_enhanced else '关闭'}")
+        print(f"详细信息: {'✓' if fetch_detail else '✗'} | 增强数据: {'✓' if fetch_enhanced else '✗'}")
         print(f"{'='*60}\n")
         
         for page in range(1, max_pages + 1):
@@ -232,65 +192,57 @@ class SchoolCrawler(BaseCrawler):
             
             data = self.make_request(payload)
             
-            if data and 'data' in data and 'item' in data['data']:
-                items = data['data']['item']
-                if not items:
-                    print(f"第 {page} 页无数据，停止爬取")
-                    break
-                
-                for item in items:
-                    school_id = item.get('school_id')
-                    
-                    school_info = {
-                        'school_id': school_id,
-                        'name': item.get('name'),
-                        'province': item.get('province_name'),
-                        'city': item.get('city_name'),
-                        'county': item.get('county_name'),
-                        'type': item.get('type_name'),
-                        'level': item.get('level_name'),
-                        'belong': item.get('belong'),
-                        'rank': item.get('rank'),
-                        'dual_class': item.get('dual_class_name'),
-                        'f985': item.get('f985'),
-                        'f211': item.get('f211'),
-                        'is_dual_class': item.get('dual_class'),
-                        'central': item.get('central'),
-                        'nature': item.get('nature_name'),
-                        'view_month': item.get('view_month'),
-                        'view_total': item.get('view_total'),
-                        'view_week': item.get('view_week'),
-                        'alumni': item.get('alumni'),
-                        'city_id': item.get('city_id'),
-                        'county_id': item.get('county_id'),
-                        'province_id': item.get('province_id'),
-                        'type_id': item.get('type'),
-                        'level_id': item.get('level'),
-                    }
-                    
-                    if fetch_detail and school_id:
-                        detail = self.get_school_detail(school_id)
-                        if detail and isinstance(detail, dict):
-                            school_info.update({
-                                'logo': detail.get('logo'),
-                                'img': detail.get('img'),
-                                'address': detail.get('address'),
-                                'phone': detail.get('phone'),
-                                'email': detail.get('email'),
-                                'website': detail.get('site'),
-                            })
-                            time.sleep(0.5)
-                    
-                    schools.append(school_info)
-                
-                print(f"✓ 第 {page} 页：获取 {len(items)} 所学校" + 
-                      (" (含详情)" if fetch_detail else ""))
-            else:
+            if not data or 'data' not in data or 'item' not in data['data']:
                 print(f"✗ 第 {page} 页：请求失败")
                 break
             
-            time.sleep(1)
+            items = data['data']['item']
+            if not items:
+                print(f"第 {page} 页无数据，停止爬取")
+                break
+            
+            for item in items:
+                school_id = item.get('school_id')
+                
+                school_info = {
+                    'school_id': school_id,
+                    'name': item.get('name'),
+                    'province': item.get('province_name'),
+                    'city': item.get('city_name'),
+                    'county': item.get('county_name'),
+                    'type': item.get('type_name'),
+                    'level': item.get('level_name'),
+                    'belong': item.get('belong'),
+                    'rank': item.get('rank'),
+                    'dual_class': item.get('dual_class_name'),
+                    'f985': item.get('f985'),
+                    'f211': item.get('f211'),
+                    'is_dual_class': item.get('dual_class'),
+                    'nature': item.get('nature_name'),
+                    'view_total': item.get('view_total'),
+                }
+                
+                # 获取详细信息
+                if fetch_detail and school_id:
+                    detail = self.get_school_detail(school_id)
+                    if detail:
+                        school_info.update({
+                            'logo': detail.get('logo'),
+                            'img': detail.get('img'),
+                            'address': detail.get('address'),
+                            'phone': detail.get('phone'),
+                            'email': detail.get('email'),
+                            'website': detail.get('site'),
+                        })
+                        self.polite_sleep(0.3, 0.7)
+                
+                schools.append(school_info)
+            
+            print(f"✓ 第 {page} 页：获取 {len(items)} 所学校" + 
+                  (" (含详情)" if fetch_detail else ""))
+            self.polite_sleep()
         
+        # 合并增强数据
         if fetch_enhanced and schools:
             enhanced_pages = max(max_pages, (len(schools) // 20) + 2)
             schools = self.merge_enhanced_data(schools, max_pages=enhanced_pages)
