@@ -17,9 +17,9 @@ class BaseCrawler:
         }
         self.session = requests.Session()
         self.session.headers.update(self.headers)
-        self.rate_limit_sleep = 1  # 初始延迟
+        self.rate_limit_sleep = 3  # 增加初始延迟从1秒到3秒
     
-    def make_request(self, payload, retry=3, delay=1):
+    def make_request(self, payload, retry=3, delay=2):
         """统一的请求方法，支持限流处理"""
         for attempt in range(retry):
             try:
@@ -42,7 +42,7 @@ class BaseCrawler:
                             print(f"⚠️  限流警告: {message}")
                             
                             # 指数退避：增加延迟时间
-                            self.rate_limit_sleep = min(self.rate_limit_sleep * 2, 30)
+                            self.rate_limit_sleep = min(self.rate_limit_sleep * 2, 60)  # 最大60秒
                             print(f"   等待 {self.rate_limit_sleep:.1f} 秒后重试...")
                             time.sleep(self.rate_limit_sleep)
                             
@@ -51,9 +51,9 @@ class BaseCrawler:
                                 continue
                             return None
                         
-                        # 成功请求，重置延迟
+                        # 成功请求，逐渐减少延迟（但不低于3秒）
                         if code == '0000' or code == 0:
-                            self.rate_limit_sleep = max(self.rate_limit_sleep * 0.8, 1)
+                            self.rate_limit_sleep = max(self.rate_limit_sleep * 0.9, 3)
                         
                         return result
                         
@@ -75,12 +75,12 @@ class BaseCrawler:
         
         return None
     
-    def polite_sleep(self, min_delay=1.0, max_delay=2.0):
+    def polite_sleep(self, min_delay=3.0, max_delay=6.0):
         """随机延迟，模拟人类行为，考虑限流因素"""
         base_delay = random.uniform(min_delay, max_delay)
         # 如果有限流警告，使用更长的延迟
-        total_delay = base_delay * (self.rate_limit_sleep / 1.0)
-        time.sleep(min(total_delay, 10))  # 最多10秒
+        total_delay = base_delay * (self.rate_limit_sleep / 3.0)
+        time.sleep(min(total_delay, 20))  # 最多20秒
     
     def save_to_json(self, data, filename):
         """保存数据到JSON文件"""
