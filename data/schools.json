@@ -1,5 +1,5 @@
 {
-  "update_time": "2026-02-10 01:29:07",
+  "update_time": "2026-02-10 01:41:00",
   "count": 100,
   "data": [
     {
@@ -26,7 +26,26 @@
       "county_id": "110108",
       "province_id": "11",
       "type_id": "5000",
-      "level_id": "2001"
+      "level_id": "2001",
+      "label_list": [
+        "985",
+        "211",
+        "双一流",
+        "强基",
+        "101计划",
+        "C9",
+        "机械五虎",
+        "电气四虎",
+        "建筑老八校"
+      ],
+      "recommend_master_level": "5",
+      "is_top": 2,
+      "attr_list": [
+        "综合类",
+        "公办",
+        "教育部直属"
+      ],
+      "hightitle": "清华大学"
     },
     {
       "school_id": 31,
@@ -52,7 +71,25 @@
       "county_id": "110108",
       "province_id": "11",
       "type_id": "5000",
-      "level_id": "2001"
+      "level_id": "2001",
+      "label_list": [
+        "985",
+        "211",
+        "双一流",
+        "强基",
+        "101计划",
+        "C9",
+        "五院四系",
+        "医药双雄"
+      ],
+      "recommend_master_level": "5",
+      "is_top": 2,
+      "attr_list": [
+        "综合类",
+        "公办",
+        "教育部直属"
+      ],
+      "hightitle": "北京大学"
     },
     {
       "school_id": 114,
@@ -78,7 +115,26 @@
       "county_id": "330106",
       "province_id": "33",
       "type_id": "5000",
-      "level_id": "2001"
+      "level_id": "2001",
+      "label_list": [
+        "985",
+        "211",
+        "双一流",
+        "强基",
+        "101计划",
+        "C9",
+        "华东五虎",
+        "电气四虎",
+        "建筑新八校"
+      ],
+      "recommend_master_level": "4.5",
+      "is_top": 2,
+      "attr_list": [
+        "综合类",
+        "公办",
+        "教育部直属"
+      ],
+      "hightitle": "浙江大学"
     },
     {
       "school_id": 125,
@@ -104,7 +160,26 @@
       "county_id": "310112",
       "province_id": "31",
       "type_id": "5000",
-      "level_id": "2001"
+      "level_id": "2001",
+      "label_list": [
+        "985",
+        "211",
+        "双一流",
+        "强基",
+        "101计划",
+        "C9",
+        "华东五虎",
+        "机械五虎",
+        "建筑新八校"
+      ],
+      "recommend_master_level": "5",
+      "is_top": 2,
+      "attr_list": [
+        "综合类",
+        "公办",
+        "教育部直属"
+      ],
+      "hightitle": "上海交通大学"
     },
     {
       "school_id": 132,
@@ -130,7 +205,25 @@
       "county_id": "310110",
       "province_id": "31",
       "type_id": "5000",
-      "level_id": "2001"
+      "level_id": "2001",
+      "label_list": [
+        "985",
+        "211",
+        "双一流",
+        "强基",
+        "101计划",
+        "C9",
+        "华东五虎",
+        "医药双雄"
+      ],
+      "recommend_master_level": "5",
+      "is_top": 2,
+      "attr_list": [
+        "综合类",
+        "公办",
+        "教育部直属"
+      ],
+      "hightitle": "复旦大学"
     },
     {
       "school_id": 111,
@@ -156,7 +249,25 @@
       "county_id": "320106",
       "province_id": "32",
       "type_id": "5000",
-      "level_id": "2001"
+      "level_id": "2001",
+      "label_list": [
+        "985",
+        "211",
+        "双一流",
+        "强基",
+        "101计划",
+        "C9",
+        "华东五虎",
+        "建筑新八校"
+      ],
+      "recommend_master_level": "5",
+      "is_top": 2,
+      "attr_list": [
+        "综合类",
+        "公办",
+        "教育部直属"
+      ],
+      "hightitle": "南京大学"
     },
     {
       "school_id": 66,
@@ -182,7 +293,24 @@
       "county_id": "340111",
       "province_id": "34",
       "type_id": "5001",
-      "level_id": "2001"
+      "level_id": "2001",
+      "label_list": [
+        "985",
+        "211",
+        "双一流",
+        "强基",
+        "101计划",
+        "C9",
+        "华东五虎"
+      ],
+      "recommend_master_level": "5",
+      "is_top": 2,
+      "attr_list": [
+        "理工类",
+        "公办",
+        "中科院直属"
+      ],
+      "hightitle": "中国科学技术大学"
     },
     {
       "school_id": 42,
@@ -208,7 +336,25 @@
       "county_id": "420106",
       "province_id": "42",
       "type_id": "5000",
-      "level_id": "2001"
+      "level_id": "2001",
+      "label_list": [
+        "985",
+        "211",
+        "双一流",
+        "强基",
+        "101计划",
+        "五院四系",
+        "中坚九校",
+        "电气二龙"
+      ],
+      "recommend_master_level": "4",
+      "is_top": 2,
+      "attr_list": [
+        "综合类",
+        "公办",
+        "教育部直属"
+      ],
+      "hightitle": "武汉大学"
     },
     {
       "school_id": 127,
@@ -234,7 +380,26 @@
       "county_id": "420111",
       "province_id": "42",
       "type_id": "5000",
-      "level_id": "2001"
+      "level_id": "2001",
+      "label_list": [
+        "985",
+        "211",
+        "双一流",
+        "强基",
+        "101计划",
+        "中坚九校",
+        "机械五虎",
+        "电气四虎",
+        "建筑新八校"
+      ],
+      "recommend_master_level": "4.5",
+      "is_top": 2,
+      "attr_list": [
+        "综合类",
+        "公办",
+        "教育部直属"
+      ],
+      "hightitle": "华中科技大学"
     },
     {
       "school_id": 330,
@@ -260,7 +425,26 @@
       "county_id": "610103",
       "province_id": "61",
       "type_id": "5000",
-      "level_id": "2001"
+      "level_id": "2001",
+      "label_list": [
+        "985",
+        "211",
+        "双一流",
+        "强基",
+        "101计划",
+        "C9",
+        "中坚九校",
+        "机械五虎",
+        "电气四虎"
+      ],
+      "recommend_master_level": "4.5",
+      "is_top": 2,
+      "attr_list": [
+        "综合类",
+        "公办",
+        "教育部直属"
+      ],
+      "hightitle": "西安交通大学"
     },
     {
       "school_id": 47,
@@ -286,7 +470,23 @@
       "county_id": "110108",
       "province_id": "11",
       "type_id": "5001",
-      "level_id": "2001"
+      "level_id": "2001",
+      "label_list": [
+        "985",
+        "211",
+        "双一流",
+        "强基",
+        "101计划",
+        "国防七子"
+      ],
+      "recommend_master_level": "5",
+      "is_top": 2,
+      "attr_list": [
+        "理工类",
+        "公办",
+        "工信部直属"
+      ],
+      "hightitle": "北京航空航天大学"
     },
     {
       "school_id": 104,
@@ -312,7 +512,23 @@
       "county_id": "0",
       "province_id": "44",
       "type_id": "5000",
-      "level_id": "2001"
+      "level_id": "2001",
+      "label_list": [
+        "985",
+        "211",
+        "双一流",
+        "强基",
+        "101计划",
+        "中坚九校"
+      ],
+      "recommend_master_level": "3.5",
+      "is_top": 2,
+      "attr_list": [
+        "综合类",
+        "公办",
+        "教育部直属"
+      ],
+      "hightitle": "中山大学"
     },
     {
       "school_id": 143,
@@ -338,7 +554,26 @@
       "county_id": "110108",
       "province_id": "11",
       "type_id": "5001",
-      "level_id": "2001"
+      "level_id": "2001",
+      "label_list": [
+        "985",
+        "211",
+        "双一流",
+        "强基",
+        "101计划",
+        "E9",
+        "国防七子",
+        "中坚九校",
+        "兵工七子"
+      ],
+      "recommend_master_level": "4",
+      "is_top": 2,
+      "attr_list": [
+        "理工类",
+        "公办",
+        "工信部直属"
+      ],
+      "hightitle": "北京理工大学"
     },
     {
       "school_id": 573,
@@ -364,7 +599,19 @@
       "county_id": "110101",
       "province_id": "11",
       "type_id": "5003",
-      "level_id": "2001"
+      "level_id": "2001",
+      "label_list": [
+        "双一流"
+      ],
+      "recommend_master_level": "4.5",
+      "is_top": 2,
+      "attr_list": [
+        "本科",
+        "医药类",
+        "公办",
+        "国家卫健委直属"
+      ],
+      "hightitle": "北京协和医学院"
     },
     {
       "school_id": 34,
@@ -390,7 +637,28 @@
       "county_id": "230103",
       "province_id": "23",
       "type_id": "5001",
-      "level_id": "2001"
+      "level_id": "2001",
+      "label_list": [
+        "985",
+        "211",
+        "双一流",
+        "强基",
+        "101计划",
+        "C9",
+        "E9",
+        "国防七子",
+        "中坚九校",
+        "机械五虎",
+        "建筑老八校"
+      ],
+      "recommend_master_level": "4.5",
+      "is_top": 2,
+      "attr_list": [
+        "理工类",
+        "公办",
+        "工信部直属"
+      ],
+      "hightitle": "哈尔滨工业大学"
     },
     {
       "school_id": 99,
@@ -416,7 +684,22 @@
       "county_id": "510107",
       "province_id": "51",
       "type_id": "5000",
-      "level_id": "2001"
+      "level_id": "2001",
+      "label_list": [
+        "985",
+        "211",
+        "双一流",
+        "强基",
+        "101计划"
+      ],
+      "recommend_master_level": "3.5",
+      "is_top": 2,
+      "attr_list": [
+        "综合类",
+        "公办",
+        "教育部直属"
+      ],
+      "hightitle": "四川大学"
     },
     {
       "school_id": 109,
@@ -442,7 +725,25 @@
       "county_id": "320102",
       "province_id": "32",
       "type_id": "5000",
-      "level_id": "2001"
+      "level_id": "2001",
+      "label_list": [
+        "985",
+        "211",
+        "双一流",
+        "强基",
+        "101计划",
+        "E9",
+        "中坚九校",
+        "建筑老八校"
+      ],
+      "recommend_master_level": "4",
+      "is_top": 2,
+      "attr_list": [
+        "综合类",
+        "公办",
+        "教育部直属"
+      ],
+      "hightitle": "东南大学"
     },
     {
       "school_id": 46,
@@ -468,7 +769,23 @@
       "county_id": "110108",
       "province_id": "11",
       "type_id": "5000",
-      "level_id": "2001"
+      "level_id": "2001",
+      "label_list": [
+        "985",
+        "211",
+        "双一流",
+        "强基",
+        "101计划",
+        "五院四系"
+      ],
+      "recommend_master_level": "5",
+      "is_top": 2,
+      "attr_list": [
+        "综合类",
+        "公办",
+        "教育部直属"
+      ],
+      "hightitle": "中国人民大学"
     },
     {
       "school_id": 73,
@@ -494,7 +811,24 @@
       "county_id": "310110",
       "province_id": "31",
       "type_id": "5000",
-      "level_id": "2001"
+      "level_id": "2001",
+      "label_list": [
+        "985",
+        "211",
+        "双一流",
+        "强基",
+        "101计划",
+        "E9",
+        "建筑老八校"
+      ],
+      "recommend_master_level": "4.5",
+      "is_top": 2,
+      "attr_list": [
+        "综合类",
+        "公办",
+        "教育部直属"
+      ],
+      "hightitle": "同济大学"
     },
     {
       "school_id": 52,
@@ -520,7 +854,23 @@
       "county_id": "110108",
       "province_id": "11",
       "type_id": "5000",
-      "level_id": "2001"
+      "level_id": "2001",
+      "label_list": [
+        "985",
+        "211",
+        "双一流",
+        "强基",
+        "101计划",
+        "师大六姐妹"
+      ],
+      "recommend_master_level": "4.5",
+      "is_top": 2,
+      "attr_list": [
+        "综合类",
+        "公办",
+        "教育部直属"
+      ],
+      "hightitle": "北京师范大学"
     },
     {
       "school_id": 60,
@@ -546,7 +896,25 @@
       "county_id": "120104",
       "province_id": "12",
       "type_id": "5000",
-      "level_id": "2001"
+      "level_id": "2001",
+      "label_list": [
+        "985",
+        "211",
+        "双一流",
+        "强基",
+        "101计划",
+        "E9",
+        "中坚九校",
+        "建筑老八校"
+      ],
+      "recommend_master_level": "4.5",
+      "is_top": 2,
+      "attr_list": [
+        "综合类",
+        "公办",
+        "教育部直属"
+      ],
+      "hightitle": "天津大学"
     },
     {
       "school_id": 107,
@@ -572,7 +940,24 @@
       "county_id": "610103",
       "province_id": "61",
       "type_id": "5001",
-      "level_id": "2001"
+      "level_id": "2001",
+      "label_list": [
+        "985",
+        "211",
+        "双一流",
+        "强基",
+        "101计划",
+        "E9",
+        "国防七子"
+      ],
+      "recommend_master_level": "4",
+      "is_top": 2,
+      "attr_list": [
+        "理工类",
+        "公办",
+        "工信部直属"
+      ],
+      "hightitle": "西北工业大学"
     },
     {
       "school_id": 126,
@@ -598,7 +983,22 @@
       "county_id": "370112",
       "province_id": "37",
       "type_id": "5000",
-      "level_id": "2001"
+      "level_id": "2001",
+      "label_list": [
+        "985",
+        "211",
+        "双一流",
+        "强基",
+        "101计划"
+      ],
+      "recommend_master_level": "4",
+      "is_top": 2,
+      "attr_list": [
+        "综合类",
+        "公办",
+        "教育部直属"
+      ],
+      "hightitle": "山东大学"
     },
     {
       "school_id": 59,
@@ -624,7 +1024,22 @@
       "county_id": "120104",
       "province_id": "12",
       "type_id": "5000",
-      "level_id": "2001"
+      "level_id": "2001",
+      "label_list": [
+        "985",
+        "211",
+        "双一流",
+        "强基",
+        "101计划"
+      ],
+      "recommend_master_level": "3.5",
+      "is_top": 2,
+      "attr_list": [
+        "综合类",
+        "公办",
+        "教育部直属"
+      ],
+      "hightitle": "南开大学"
     },
     {
       "school_id": 102,
@@ -650,7 +1065,23 @@
       "county_id": "350203",
       "province_id": "35",
       "type_id": "5000",
-      "level_id": "2001"
+      "level_id": "2001",
+      "label_list": [
+        "985",
+        "211",
+        "双一流",
+        "强基",
+        "101计划",
+        "中坚九校"
+      ],
+      "recommend_master_level": "3.5",
+      "is_top": 2,
+      "attr_list": [
+        "综合类",
+        "公办",
+        "教育部直属"
+      ],
+      "hightitle": "厦门大学"
     },
     {
       "school_id": 557,
@@ -676,7 +1107,22 @@
       "county_id": "110108",
       "province_id": "11",
       "type_id": "5002",
-      "level_id": "2001"
+      "level_id": "2001",
+      "label_list": [
+        "985",
+        "211",
+        "双一流",
+        "强基",
+        "101计划"
+      ],
+      "recommend_master_level": "3.5",
+      "is_top": 2,
+      "attr_list": [
+        "农林类",
+        "公办",
+        "教育部直属"
+      ],
+      "hightitle": "中国农业大学"
     },
     {
       "school_id": 122,
@@ -702,7 +1148,24 @@
       "county_id": "220104",
       "province_id": "22",
       "type_id": "5000",
-      "level_id": "2001"
+      "level_id": "2001",
+      "label_list": [
+        "985",
+        "211",
+        "双一流",
+        "强基",
+        "101计划",
+        "五院四系",
+        "机械四小龙"
+      ],
+      "recommend_master_level": "3",
+      "is_top": 2,
+      "attr_list": [
+        "综合类",
+        "公办",
+        "教育部直属"
+      ],
+      "hightitle": "吉林大学"
     },
     {
       "school_id": 123,
@@ -728,7 +1191,22 @@
       "county_id": "0",
       "province_id": "43",
       "type_id": "5000",
-      "level_id": "2001"
+      "level_id": "2001",
+      "label_list": [
+        "985",
+        "211",
+        "双一流",
+        "强基",
+        "101计划"
+      ],
+      "recommend_master_level": "3",
+      "is_top": 2,
+      "attr_list": [
+        "综合类",
+        "公办",
+        "教育部直属"
+      ],
+      "hightitle": "中南大学"
     },
     {
       "school_id": 138,
@@ -754,7 +1232,24 @@
       "county_id": "210211",
       "province_id": "21",
       "type_id": "5001",
-      "level_id": "2001"
+      "level_id": "2001",
+      "label_list": [
+        "985",
+        "211",
+        "双一流",
+        "强基",
+        "101计划",
+        "E9",
+        "建筑新八校"
+      ],
+      "recommend_master_level": "3",
+      "is_top": 2,
+      "attr_list": [
+        "理工类",
+        "公办",
+        "教育部直属"
+      ],
+      "hightitle": "大连理工大学"
     },
     {
       "school_id": 44,
@@ -780,7 +1275,24 @@
       "county_id": "430104",
       "province_id": "43",
       "type_id": "5000",
-      "level_id": "2001"
+      "level_id": "2001",
+      "label_list": [
+        "985",
+        "211",
+        "双一流",
+        "强基",
+        "101计划",
+        "机械四小龙",
+        "建筑新八校"
+      ],
+      "recommend_master_level": "3",
+      "is_top": 2,
+      "attr_list": [
+        "综合类",
+        "公办",
+        "教育部直属"
+      ],
+      "hightitle": "湖南大学"
     },
     {
       "school_id": 131,
@@ -806,7 +1318,23 @@
       "county_id": "310112",
       "province_id": "31",
       "type_id": "5004",
-      "level_id": "2001"
+      "level_id": "2001",
+      "label_list": [
+        "985",
+        "211",
+        "双一流",
+        "强基",
+        "101计划",
+        "师大六姐妹"
+      ],
+      "recommend_master_level": "3.5",
+      "is_top": 2,
+      "attr_list": [
+        "师范类",
+        "公办",
+        "教育部直属"
+      ],
+      "hightitle": "华东师范大学"
     },
     {
       "school_id": 105,
@@ -832,7 +1360,24 @@
       "county_id": "440106",
       "province_id": "44",
       "type_id": "5000",
-      "level_id": "2001"
+      "level_id": "2001",
+      "label_list": [
+        "985",
+        "211",
+        "双一流",
+        "强基",
+        "101计划",
+        "E9",
+        "建筑老八校"
+      ],
+      "recommend_master_level": "3",
+      "is_top": 2,
+      "attr_list": [
+        "综合类",
+        "公办",
+        "教育部直属"
+      ],
+      "hightitle": "华南理工大学"
     },
     {
       "school_id": 2941,
@@ -858,7 +1403,19 @@
       "county_id": "0",
       "province_id": "44",
       "type_id": "5001",
-      "level_id": "2001"
+      "level_id": "2001",
+      "label_list": [
+        "双一流",
+        "101计划"
+      ],
+      "recommend_master_level": "3.5",
+      "is_top": 2,
+      "attr_list": [
+        "本科",
+        "理工类",
+        "公办"
+      ],
+      "hightitle": "南方科技大学"
     },
     {
       "school_id": 661,
@@ -884,7 +1441,23 @@
       "county_id": "510108",
       "province_id": "51",
       "type_id": "5001",
-      "level_id": "2001"
+      "level_id": "2001",
+      "label_list": [
+        "985",
+        "211",
+        "双一流",
+        "强基",
+        "101计划",
+        "两电一邮"
+      ],
+      "recommend_master_level": "3.5",
+      "is_top": 2,
+      "attr_list": [
+        "理工类",
+        "公办",
+        "教育部直属"
+      ],
+      "hightitle": "电子科技大学"
     },
     {
       "school_id": 119,
@@ -910,7 +1483,24 @@
       "county_id": "500106",
       "province_id": "50",
       "type_id": "5000",
-      "level_id": "2001"
+      "level_id": "2001",
+      "label_list": [
+        "985",
+        "211",
+        "双一流",
+        "强基",
+        "101计划",
+        "E9",
+        "建筑老八校"
+      ],
+      "recommend_master_level": "3",
+      "is_top": 2,
+      "attr_list": [
+        "综合类",
+        "公办",
+        "教育部直属"
+      ],
+      "hightitle": "重庆大学"
     },
     {
       "school_id": 144,
@@ -936,7 +1526,19 @@
       "county_id": "110108",
       "province_id": "11",
       "type_id": "5001",
-      "level_id": "2001"
+      "level_id": "2001",
+      "label_list": [
+        "211",
+        "双一流"
+      ],
+      "recommend_master_level": "3",
+      "is_top": 2,
+      "attr_list": [
+        "理工类",
+        "公办",
+        "教育部直属"
+      ],
+      "hightitle": "北京科技大学"
     },
     {
       "school_id": 130,
@@ -962,7 +1564,21 @@
       "county_id": "310110",
       "province_id": "31",
       "type_id": "5006",
-      "level_id": "2001"
+      "level_id": "2001",
+      "label_list": [
+        "211",
+        "双一流",
+        "101计划",
+        "两财一贸"
+      ],
+      "recommend_master_level": "3",
+      "is_top": 2,
+      "attr_list": [
+        "财经类",
+        "公办",
+        "教育部直属"
+      ],
+      "hightitle": "上海财经大学"
     },
     {
       "school_id": 584,
@@ -988,7 +1604,16 @@
       "county_id": "110106",
       "province_id": "11",
       "type_id": "5003",
-      "level_id": "2001"
+      "level_id": "2001",
+      "label_list": [],
+      "recommend_master_level": "3",
+      "is_top": 2,
+      "attr_list": [
+        "本科",
+        "医药类",
+        "公办"
+      ],
+      "hightitle": "首都医科大学"
     },
     {
       "school_id": 77,
@@ -1014,7 +1639,21 @@
       "county_id": "320104",
       "province_id": "32",
       "type_id": "5001",
-      "level_id": "2001"
+      "level_id": "2001",
+      "label_list": [
+        "211",
+        "双一流",
+        "101计划",
+        "国防七子"
+      ],
+      "recommend_master_level": "3.5",
+      "is_top": 2,
+      "attr_list": [
+        "理工类",
+        "公办",
+        "工信部直属"
+      ],
+      "hightitle": "南京航空航天大学"
     },
     {
       "school_id": 134,
@@ -1040,7 +1679,21 @@
       "county_id": "210102",
       "province_id": "21",
       "type_id": "5001",
-      "level_id": "2001"
+      "level_id": "2001",
+      "label_list": [
+        "985",
+        "211",
+        "双一流",
+        "强基"
+      ],
+      "recommend_master_level": "3",
+      "is_top": 2,
+      "attr_list": [
+        "理工类",
+        "公办",
+        "教育部直属"
+      ],
+      "hightitle": "东北大学"
     },
     {
       "school_id": 112,
@@ -1066,7 +1719,22 @@
       "county_id": "320102",
       "province_id": "32",
       "type_id": "5001",
-      "level_id": "2001"
+      "level_id": "2001",
+      "label_list": [
+        "211",
+        "双一流",
+        "国防七子",
+        "军工六校",
+        "兵工七子"
+      ],
+      "recommend_master_level": "3",
+      "is_top": 2,
+      "attr_list": [
+        "理工类",
+        "公办",
+        "工信部直属"
+      ],
+      "hightitle": "南京理工大学"
     },
     {
       "school_id": 97,
@@ -1092,7 +1760,22 @@
       "county_id": "620102",
       "province_id": "62",
       "type_id": "5000",
-      "level_id": "2001"
+      "level_id": "2001",
+      "label_list": [
+        "985",
+        "211",
+        "双一流",
+        "强基",
+        "101计划"
+      ],
+      "recommend_master_level": "4",
+      "is_top": 2,
+      "attr_list": [
+        "综合类",
+        "公办",
+        "教育部直属"
+      ],
+      "hightitle": "兰州大学"
     },
     {
       "school_id": 960,
@@ -1118,7 +1801,19 @@
       "county_id": "440111",
       "province_id": "44",
       "type_id": "5003",
-      "level_id": "2001"
+      "level_id": "2001",
+      "label_list": [
+        "101计划",
+        "军地四医"
+      ],
+      "recommend_master_level": "2",
+      "is_top": 2,
+      "attr_list": [
+        "本科",
+        "医药类",
+        "公办"
+      ],
+      "hightitle": "南方医科大学"
     },
     {
       "school_id": 57,
@@ -1144,7 +1839,21 @@
       "county_id": "610113",
       "province_id": "61",
       "type_id": "5001",
-      "level_id": "2001"
+      "level_id": "2001",
+      "label_list": [
+        "211",
+        "双一流",
+        "101计划",
+        "两电一邮"
+      ],
+      "recommend_master_level": "3.5",
+      "is_top": 2,
+      "attr_list": [
+        "理工类",
+        "公办",
+        "教育部直属"
+      ],
+      "hightitle": "西安电子科技大学"
     },
     {
       "school_id": 3151,
@@ -1170,7 +1879,18 @@
       "county_id": "310115",
       "province_id": "31",
       "type_id": "5001",
-      "level_id": "2001"
+      "level_id": "2001",
+      "label_list": [
+        "双一流"
+      ],
+      "recommend_master_level": "5",
+      "is_top": 2,
+      "attr_list": [
+        "本科",
+        "理工类",
+        "公办"
+      ],
+      "hightitle": "上海科技大学"
     },
     {
       "school_id": 38,
@@ -1196,7 +1916,20 @@
       "county_id": "110108",
       "province_id": "11",
       "type_id": "5001",
-      "level_id": "2001"
+      "level_id": "2001",
+      "label_list": [
+        "211",
+        "双一流",
+        "101计划"
+      ],
+      "recommend_master_level": "3.5",
+      "is_top": 2,
+      "attr_list": [
+        "理工类",
+        "公办",
+        "教育部直属"
+      ],
+      "hightitle": "北京交通大学"
     },
     {
       "school_id": 124,
@@ -1222,7 +1955,21 @@
       "county_id": "230103",
       "province_id": "23",
       "type_id": "5001",
-      "level_id": "2001"
+      "level_id": "2001",
+      "label_list": [
+        "211",
+        "双一流",
+        "国防七子",
+        "军工六校"
+      ],
+      "recommend_master_level": "3.5",
+      "is_top": 2,
+      "attr_list": [
+        "理工类",
+        "公办",
+        "工信部直属"
+      ],
+      "hightitle": "哈尔滨工程大学"
     },
     {
       "school_id": 133,
@@ -1248,7 +1995,20 @@
       "county_id": "310104",
       "province_id": "31",
       "type_id": "5001",
-      "level_id": "2001"
+      "level_id": "2001",
+      "label_list": [
+        "211",
+        "双一流",
+        "101计划"
+      ],
+      "recommend_master_level": "3",
+      "is_top": 2,
+      "attr_list": [
+        "理工类",
+        "公办",
+        "教育部直属"
+      ],
+      "hightitle": "华东理工大学"
     },
     {
       "school_id": 142,
@@ -1274,7 +2034,21 @@
       "county_id": "220102",
       "province_id": "22",
       "type_id": "5004",
-      "level_id": "2001"
+      "level_id": "2001",
+      "label_list": [
+        "211",
+        "双一流",
+        "101计划",
+        "师大六姐妹"
+      ],
+      "recommend_master_level": "3",
+      "is_top": 2,
+      "attr_list": [
+        "师范类",
+        "公办",
+        "教育部直属"
+      ],
+      "hightitle": "东北师范大学"
     },
     {
       "school_id": 566,
@@ -1300,7 +2074,21 @@
       "county_id": "110108",
       "province_id": "11",
       "type_id": "5006",
-      "level_id": "2001"
+      "level_id": "2001",
+      "label_list": [
+        "211",
+        "双一流",
+        "101计划",
+        "两财一贸"
+      ],
+      "recommend_master_level": "3",
+      "is_top": 2,
+      "attr_list": [
+        "财经类",
+        "公办",
+        "教育部直属"
+      ],
+      "hightitle": "中央财经大学"
     },
     {
       "school_id": 3202,
@@ -1326,7 +2114,18 @@
       "county_id": "440307",
       "province_id": "44",
       "type_id": "5000",
-      "level_id": "2001"
+      "level_id": "2001",
+      "label_list": [
+        "101计划"
+      ],
+      "recommend_master_level": "0",
+      "is_top": 2,
+      "attr_list": [
+        "本科",
+        "综合类",
+        "内地与港澳台地区合作办学"
+      ],
+      "hightitle": "香港中文大学（深圳）"
     },
     {
       "school_id": 118,
@@ -1352,7 +2151,18 @@
       "county_id": "0",
       "province_id": "32",
       "type_id": "5000",
-      "level_id": "2001"
+      "level_id": "2001",
+      "label_list": [
+        "211",
+        "双一流"
+      ],
+      "recommend_master_level": "2",
+      "is_top": 2,
+      "attr_list": [
+        "综合类",
+        "公办"
+      ],
+      "hightitle": "苏州大学"
     },
     {
       "school_id": 417,
@@ -1378,7 +2188,20 @@
       "county_id": "420111",
       "province_id": "42",
       "type_id": "5002",
-      "level_id": "2001"
+      "level_id": "2001",
+      "label_list": [
+        "211",
+        "双一流",
+        "101计划"
+      ],
+      "recommend_master_level": "3",
+      "is_top": 2,
+      "attr_list": [
+        "农林类",
+        "公办",
+        "教育部直属"
+      ],
+      "hightitle": "华中农业大学"
     },
     {
       "school_id": 128,
@@ -1404,7 +2227,19 @@
       "county_id": "420111",
       "province_id": "42",
       "type_id": "5001",
-      "level_id": "2001"
+      "level_id": "2001",
+      "label_list": [
+        "211",
+        "双一流"
+      ],
+      "recommend_master_level": "2.5",
+      "is_top": 2,
+      "attr_list": [
+        "理工类",
+        "公办",
+        "教育部直属"
+      ],
+      "hightitle": "武汉理工大学"
     },
     {
       "school_id": 832,
@@ -1430,7 +2265,19 @@
       "county_id": "110114",
       "province_id": "11",
       "type_id": "5001",
-      "level_id": "2001"
+      "level_id": "2001",
+      "label_list": [
+        "211",
+        "双一流"
+      ],
+      "recommend_master_level": "3.5",
+      "is_top": 2,
+      "attr_list": [
+        "理工类",
+        "公办",
+        "教育部直属"
+      ],
+      "hightitle": "中国石油大学（北京）"
     },
     {
       "school_id": 62,
@@ -1456,7 +2303,19 @@
       "county_id": "410172",
       "province_id": "41",
       "type_id": "5000",
-      "level_id": "2001"
+      "level_id": "2001",
+      "label_list": [
+        "211",
+        "双一流",
+        "101计划"
+      ],
+      "recommend_master_level": "2",
+      "is_top": 2,
+      "attr_list": [
+        "综合类",
+        "公办"
+      ],
+      "hightitle": "郑州大学"
     },
     {
       "school_id": 86,
@@ -1482,7 +2341,19 @@
       "county_id": "320211",
       "province_id": "32",
       "type_id": "5000",
-      "level_id": "2001"
+      "level_id": "2001",
+      "label_list": [
+        "211",
+        "双一流"
+      ],
+      "recommend_master_level": "2.5",
+      "is_top": 2,
+      "attr_list": [
+        "综合类",
+        "公办",
+        "教育部直属"
+      ],
+      "hightitle": "江南大学"
     },
     {
       "school_id": 51,
@@ -1508,7 +2379,19 @@
       "county_id": "510117",
       "province_id": "51",
       "type_id": "5001",
-      "level_id": "2001"
+      "level_id": "2001",
+      "label_list": [
+        "211",
+        "双一流"
+      ],
+      "recommend_master_level": "2.5",
+      "is_top": 2,
+      "attr_list": [
+        "理工类",
+        "公办",
+        "教育部直属"
+      ],
+      "hightitle": "西南交通大学"
     },
     {
       "school_id": 168,
@@ -1534,7 +2417,19 @@
       "county_id": "320115",
       "province_id": "32",
       "type_id": "5003",
-      "level_id": "2001"
+      "level_id": "2001",
+      "label_list": [
+        "双一流",
+        "101计划"
+      ],
+      "recommend_master_level": "2",
+      "is_top": 2,
+      "attr_list": [
+        "本科",
+        "医药类",
+        "公办"
+      ],
+      "hightitle": "南京医科大学"
     },
     {
       "school_id": 113,
@@ -1560,7 +2455,20 @@
       "county_id": "320102",
       "province_id": "32",
       "type_id": "5002",
-      "level_id": "2001"
+      "level_id": "2001",
+      "label_list": [
+        "211",
+        "双一流",
+        "101计划"
+      ],
+      "recommend_master_level": "3",
+      "is_top": 2,
+      "attr_list": [
+        "农林类",
+        "公办",
+        "教育部直属"
+      ],
+      "hightitle": "南京农业大学"
     },
     {
       "school_id": 121,
@@ -1586,7 +2494,19 @@
       "county_id": "420111",
       "province_id": "42",
       "type_id": "5001",
-      "level_id": "2001"
+      "level_id": "2001",
+      "label_list": [
+        "211",
+        "双一流"
+      ],
+      "recommend_master_level": "3",
+      "is_top": 2,
+      "attr_list": [
+        "理工类",
+        "公办",
+        "教育部直属"
+      ],
+      "hightitle": "中国地质大学（武汉）"
     },
     {
       "school_id": 53,
@@ -1612,7 +2532,21 @@
       "county_id": "110105",
       "province_id": "11",
       "type_id": "5006",
-      "level_id": "2001"
+      "level_id": "2001",
+      "label_list": [
+        "211",
+        "双一流",
+        "101计划",
+        "两财一贸"
+      ],
+      "recommend_master_level": "3",
+      "is_top": 2,
+      "attr_list": [
+        "财经类",
+        "公办",
+        "教育部直属"
+      ],
+      "hightitle": "对外经济贸易大学"
     },
     {
       "school_id": 106,
@@ -1638,7 +2572,19 @@
       "county_id": "440106",
       "province_id": "44",
       "type_id": "5000",
-      "level_id": "2001"
+      "level_id": "2001",
+      "label_list": [
+        "211",
+        "双一流"
+      ],
+      "recommend_master_level": "1.5",
+      "is_top": 2,
+      "attr_list": [
+        "综合类",
+        "公办",
+        "统战部直属"
+      ],
+      "hightitle": "暨南大学"
     },
     {
       "school_id": 420,
@@ -1664,7 +2610,21 @@
       "county_id": "420111",
       "province_id": "42",
       "type_id": "5004",
-      "level_id": "2001"
+      "level_id": "2001",
+      "label_list": [
+        "211",
+        "双一流",
+        "101计划",
+        "师大六姐妹"
+      ],
+      "recommend_master_level": "1.5",
+      "is_top": 2,
+      "attr_list": [
+        "师范类",
+        "公办",
+        "教育部直属"
+      ],
+      "hightitle": "华中师范大学"
     },
     {
       "school_id": 61,
@@ -1690,7 +2650,22 @@
       "county_id": "370212",
       "province_id": "37",
       "type_id": "5000",
-      "level_id": "2001"
+      "level_id": "2001",
+      "label_list": [
+        "985",
+        "211",
+        "双一流",
+        "强基",
+        "101计划"
+      ],
+      "recommend_master_level": "3",
+      "is_top": 2,
+      "attr_list": [
+        "综合类",
+        "公办",
+        "教育部直属"
+      ],
+      "hightitle": "中国海洋大学"
     },
     {
       "school_id": 569,
@@ -1716,7 +2691,20 @@
       "county_id": "110114",
       "province_id": "11",
       "type_id": "5007",
-      "level_id": "2001"
+      "level_id": "2001",
+      "label_list": [
+        "211",
+        "双一流",
+        "五院四系"
+      ],
+      "recommend_master_level": "3",
+      "is_top": 2,
+      "attr_list": [
+        "政法类",
+        "公办",
+        "教育部直属"
+      ],
+      "hightitle": "中国政法大学"
     },
     {
       "school_id": 115,
@@ -1742,7 +2730,19 @@
       "county_id": "320113",
       "province_id": "32",
       "type_id": "5004",
-      "level_id": "2001"
+      "level_id": "2001",
+      "label_list": [
+        "211",
+        "双一流",
+        "101计划"
+      ],
+      "recommend_master_level": "2.5",
+      "is_top": 2,
+      "attr_list": [
+        "师范类",
+        "公办"
+      ],
+      "hightitle": "南京师范大学"
     },
     {
       "school_id": 110,
@@ -1768,7 +2768,19 @@
       "county_id": "320312",
       "province_id": "32",
       "type_id": "5000",
-      "level_id": "2001"
+      "level_id": "2001",
+      "label_list": [
+        "211",
+        "双一流"
+      ],
+      "recommend_master_level": "3",
+      "is_top": 2,
+      "attr_list": [
+        "综合类",
+        "公办",
+        "教育部直属"
+      ],
+      "hightitle": "中国矿业大学"
     },
     {
       "school_id": 78,
@@ -1794,7 +2806,18 @@
       "county_id": "120101",
       "province_id": "12",
       "type_id": "5003",
-      "level_id": "2001"
+      "level_id": "2001",
+      "label_list": [
+        "211",
+        "双一流"
+      ],
+      "recommend_master_level": "3.5",
+      "is_top": 2,
+      "attr_list": [
+        "医药类",
+        "公办"
+      ],
+      "hightitle": "天津医科大学"
     },
     {
       "school_id": 230,
@@ -1820,7 +2843,16 @@
       "county_id": "210113",
       "province_id": "21",
       "type_id": "5003",
-      "level_id": "2001"
+      "level_id": "2001",
+      "label_list": [],
+      "recommend_master_level": "3",
+      "is_top": 2,
+      "attr_list": [
+        "本科",
+        "医药类",
+        "公办"
+      ],
+      "hightitle": "中国医科大学"
     },
     {
       "school_id": 48,
@@ -1846,7 +2878,21 @@
       "county_id": "110108",
       "province_id": "11",
       "type_id": "5001",
-      "level_id": "2001"
+      "level_id": "2001",
+      "label_list": [
+        "211",
+        "双一流",
+        "101计划",
+        "两电一邮"
+      ],
+      "recommend_master_level": "3",
+      "is_top": 2,
+      "attr_list": [
+        "理工类",
+        "公办",
+        "教育部直属"
+      ],
+      "hightitle": "北京邮电大学"
     },
     {
       "school_id": 76,
@@ -1872,7 +2918,18 @@
       "county_id": "310113",
       "province_id": "31",
       "type_id": "5000",
-      "level_id": "2001"
+      "level_id": "2001",
+      "label_list": [
+        "211",
+        "双一流"
+      ],
+      "recommend_master_level": "2",
+      "is_top": 2,
+      "attr_list": [
+        "综合类",
+        "公办"
+      ],
+      "hightitle": "上海大学"
     },
     {
       "school_id": 49,
@@ -1898,7 +2955,20 @@
       "county_id": "110105",
       "province_id": "11",
       "type_id": "5003",
-      "level_id": "2001"
+      "level_id": "2001",
+      "label_list": [
+        "211",
+        "双一流",
+        "101计划"
+      ],
+      "recommend_master_level": "2.5",
+      "is_top": 2,
+      "attr_list": [
+        "医药类",
+        "公办",
+        "教育部直属"
+      ],
+      "hightitle": "北京中医药大学"
     },
     {
       "school_id": 242,
@@ -1924,7 +2994,16 @@
       "county_id": "0",
       "province_id": "33",
       "type_id": "5001",
-      "level_id": "2001"
+      "level_id": "2001",
+      "label_list": [],
+      "recommend_master_level": "2",
+      "is_top": 2,
+      "attr_list": [
+        "本科",
+        "理工类",
+        "公办"
+      ],
+      "hightitle": "浙江工业大学"
     },
     {
       "school_id": 414,
@@ -1950,7 +3029,20 @@
       "county_id": "420112",
       "province_id": "42",
       "type_id": "5006",
-      "level_id": "2001"
+      "level_id": "2001",
+      "label_list": [
+        "211",
+        "双一流",
+        "五院四系"
+      ],
+      "recommend_master_level": "2",
+      "is_top": 2,
+      "attr_list": [
+        "财经类",
+        "公办",
+        "教育部直属"
+      ],
+      "hightitle": "中南财经政法大学"
     },
     {
       "school_id": 556,
@@ -1976,7 +3068,20 @@
       "county_id": "110105",
       "province_id": "11",
       "type_id": "5001",
-      "level_id": "2001"
+      "level_id": "2001",
+      "label_list": [
+        "211",
+        "双一流",
+        "101计划"
+      ],
+      "recommend_master_level": "2.5",
+      "is_top": 2,
+      "attr_list": [
+        "理工类",
+        "公办",
+        "教育部直属"
+      ],
+      "hightitle": "北京化工大学"
     },
     {
       "school_id": 116,
@@ -2002,7 +3107,19 @@
       "county_id": "320115",
       "province_id": "32",
       "type_id": "5000",
-      "level_id": "2001"
+      "level_id": "2001",
+      "label_list": [
+        "211",
+        "双一流"
+      ],
+      "recommend_master_level": "2.5",
+      "is_top": 2,
+      "attr_list": [
+        "综合类",
+        "公办",
+        "教育部直属"
+      ],
+      "hightitle": "河海大学"
     },
     {
       "school_id": 334,
@@ -2028,7 +3145,20 @@
       "county_id": "610116",
       "province_id": "61",
       "type_id": "5004",
-      "level_id": "2001"
+      "level_id": "2001",
+      "label_list": [
+        "211",
+        "双一流",
+        "师大六姐妹"
+      ],
+      "recommend_master_level": "3",
+      "is_top": 2,
+      "attr_list": [
+        "师范类",
+        "公办",
+        "教育部直属"
+      ],
+      "hightitle": "陕西师范大学"
     },
     {
       "school_id": 101,
@@ -2054,7 +3184,20 @@
       "county_id": "510105",
       "province_id": "51",
       "type_id": "5006",
-      "level_id": "2001"
+      "level_id": "2001",
+      "label_list": [
+        "211",
+        "双一流",
+        "101计划"
+      ],
+      "recommend_master_level": "2.5",
+      "is_top": 2,
+      "attr_list": [
+        "财经类",
+        "公办",
+        "教育部直属"
+      ],
+      "hightitle": "西南财经大学"
     },
     {
       "school_id": 934,
@@ -2080,7 +3223,20 @@
       "county_id": "500109",
       "province_id": "50",
       "type_id": "5000",
-      "level_id": "2001"
+      "level_id": "2001",
+      "label_list": [
+        "211",
+        "双一流",
+        "师大六姐妹"
+      ],
+      "recommend_master_level": "2",
+      "is_top": 2,
+      "attr_list": [
+        "综合类",
+        "公办",
+        "教育部直属"
+      ],
+      "hightitle": "西南大学"
     },
     {
       "school_id": 120,
@@ -2106,7 +3262,19 @@
       "county_id": "370211",
       "province_id": "37",
       "type_id": "5001",
-      "level_id": "2001"
+      "level_id": "2001",
+      "label_list": [
+        "211",
+        "双一流"
+      ],
+      "recommend_master_level": "3",
+      "is_top": 2,
+      "attr_list": [
+        "理工类",
+        "公办",
+        "教育部直属"
+      ],
+      "hightitle": "中国石油大学（华东）"
     },
     {
       "school_id": 284,
@@ -2132,7 +3300,18 @@
       "county_id": "440305",
       "province_id": "44",
       "type_id": "5000",
-      "level_id": "2001"
+      "level_id": "2001",
+      "label_list": [
+        "建筑新八校"
+      ],
+      "recommend_master_level": "1.5",
+      "is_top": 2,
+      "attr_list": [
+        "本科",
+        "综合类",
+        "公办"
+      ],
+      "hightitle": "深圳大学"
     },
     {
       "school_id": 310,
@@ -2158,7 +3337,19 @@
       "county_id": "310115",
       "province_id": "31",
       "type_id": "5003",
-      "level_id": "2001"
+      "level_id": "2001",
+      "label_list": [
+        "双一流",
+        "101计划"
+      ],
+      "recommend_master_level": "1.5",
+      "is_top": 2,
+      "attr_list": [
+        "本科",
+        "医药类",
+        "公办"
+      ],
+      "hightitle": "上海中医药大学"
     },
     {
       "school_id": 35,
@@ -2184,7 +3375,19 @@
       "county_id": "530114",
       "province_id": "53",
       "type_id": "5000",
-      "level_id": "2001"
+      "level_id": "2001",
+      "label_list": [
+        "211",
+        "双一流",
+        "101计划"
+      ],
+      "recommend_master_level": "2",
+      "is_top": 2,
+      "attr_list": [
+        "综合类",
+        "公办"
+      ],
+      "hightitle": "云南大学"
     },
     {
       "school_id": 37,
@@ -2210,7 +3413,19 @@
       "county_id": "610103",
       "province_id": "61",
       "type_id": "5000",
-      "level_id": "2001"
+      "level_id": "2001",
+      "label_list": [
+        "211",
+        "双一流",
+        "101计划"
+      ],
+      "recommend_master_level": "3",
+      "is_top": 2,
+      "attr_list": [
+        "综合类",
+        "公办"
+      ],
+      "hightitle": "西北大学"
     },
     {
       "school_id": 332,
@@ -2236,7 +3451,22 @@
       "county_id": "610403",
       "province_id": "61",
       "type_id": "5002",
-      "level_id": "2001"
+      "level_id": "2001",
+      "label_list": [
+        "985",
+        "211",
+        "双一流",
+        "强基",
+        "101计划"
+      ],
+      "recommend_master_level": "3",
+      "is_top": 2,
+      "attr_list": [
+        "农林类",
+        "公办",
+        "教育部直属"
+      ],
+      "hightitle": "西北农林科技大学"
     },
     {
       "school_id": 30,
@@ -2262,7 +3492,18 @@
       "county_id": "110105",
       "province_id": "11",
       "type_id": "5001",
-      "level_id": "2001"
+      "level_id": "2001",
+      "label_list": [
+        "211",
+        "双一流"
+      ],
+      "recommend_master_level": "2.5",
+      "is_top": 2,
+      "attr_list": [
+        "理工类",
+        "公办"
+      ],
+      "hightitle": "北京工业大学"
     },
     {
       "school_id": 108,
@@ -2288,7 +3529,18 @@
       "county_id": "360111",
       "province_id": "36",
       "type_id": "5000",
-      "level_id": "2001"
+      "level_id": "2001",
+      "label_list": [
+        "211",
+        "双一流"
+      ],
+      "recommend_master_level": "2",
+      "is_top": 2,
+      "attr_list": [
+        "综合类",
+        "公办"
+      ],
+      "hightitle": "南昌大学"
     },
     {
       "school_id": 3039,
@@ -2314,7 +3566,16 @@
       "county_id": "310115",
       "province_id": "31",
       "type_id": "5000",
-      "level_id": "2001"
+      "level_id": "2001",
+      "label_list": [],
+      "recommend_master_level": "0",
+      "is_top": 2,
+      "attr_list": [
+        "本科",
+        "综合类",
+        "中外合作办学"
+      ],
+      "hightitle": "上海纽约大学"
     },
     {
       "school_id": 135,
@@ -2340,7 +3601,19 @@
       "county_id": "310117",
       "province_id": "31",
       "type_id": "5000",
-      "level_id": "2001"
+      "level_id": "2001",
+      "label_list": [
+        "211",
+        "双一流"
+      ],
+      "recommend_master_level": "2",
+      "is_top": 2,
+      "attr_list": [
+        "综合类",
+        "公办",
+        "教育部直属"
+      ],
+      "hightitle": "东华大学"
     },
     {
       "school_id": 830,
@@ -2366,7 +3639,19 @@
       "county_id": "110108",
       "province_id": "11",
       "type_id": "5001",
-      "level_id": "2001"
+      "level_id": "2001",
+      "label_list": [
+        "211",
+        "双一流"
+      ],
+      "recommend_master_level": "3.5",
+      "is_top": 2,
+      "attr_list": [
+        "理工类",
+        "公办",
+        "教育部直属"
+      ],
+      "hightitle": "中国地质大学（北京）"
     },
     {
       "school_id": 1006,
@@ -2392,7 +3677,19 @@
       "county_id": "110108",
       "province_id": "11",
       "type_id": "5001",
-      "level_id": "2001"
+      "level_id": "2001",
+      "label_list": [
+        "211",
+        "双一流"
+      ],
+      "recommend_master_level": "3",
+      "is_top": 2,
+      "attr_list": [
+        "理工类",
+        "公办",
+        "教育部直属"
+      ],
+      "hightitle": "中国矿业大学（北京）"
     },
     {
       "school_id": 1216,
@@ -2418,7 +3715,16 @@
       "county_id": "0",
       "province_id": "33",
       "type_id": "5000",
-      "level_id": "2001"
+      "level_id": "2001",
+      "label_list": [],
+      "recommend_master_level": "0",
+      "is_top": 2,
+      "attr_list": [
+        "本科",
+        "综合类",
+        "中外合作办学"
+      ],
+      "hightitle": "宁波诺丁汉大学"
     },
     {
       "school_id": 429,
@@ -2444,7 +3750,16 @@
       "county_id": "230103",
       "province_id": "23",
       "type_id": "5003",
-      "level_id": "2001"
+      "level_id": "2001",
+      "label_list": [],
+      "recommend_master_level": "2",
+      "is_top": 2,
+      "attr_list": [
+        "本科",
+        "医药类",
+        "公办"
+      ],
+      "hightitle": "哈尔滨医科大学"
     },
     {
       "school_id": 295,
@@ -2470,7 +3785,18 @@
       "county_id": "0",
       "province_id": "44",
       "type_id": "5003",
-      "level_id": "2001"
+      "level_id": "2001",
+      "label_list": [
+        "双一流"
+      ],
+      "recommend_master_level": "1.5",
+      "is_top": 2,
+      "attr_list": [
+        "本科",
+        "医药类",
+        "公办"
+      ],
+      "hightitle": "广州医科大学"
     },
     {
       "school_id": 103,
@@ -2496,7 +3822,19 @@
       "county_id": "350102",
       "province_id": "35",
       "type_id": "5001",
-      "level_id": "2001"
+      "level_id": "2001",
+      "label_list": [
+        "211",
+        "双一流",
+        "101计划"
+      ],
+      "recommend_master_level": "2",
+      "is_top": 2,
+      "attr_list": [
+        "理工类",
+        "公办"
+      ],
+      "hightitle": "福州大学"
     },
     {
       "school_id": 240,
@@ -2522,7 +3860,18 @@
       "county_id": "330205",
       "province_id": "33",
       "type_id": "5000",
-      "level_id": "2001"
+      "level_id": "2001",
+      "label_list": [
+        "双一流"
+      ],
+      "recommend_master_level": "2",
+      "is_top": 2,
+      "attr_list": [
+        "本科",
+        "综合类",
+        "公办"
+      ],
+      "hightitle": "宁波大学"
     },
     {
       "school_id": 63,
@@ -2548,7 +3897,20 @@
       "county_id": "340103",
       "province_id": "34",
       "type_id": "5001",
-      "level_id": "2001"
+      "level_id": "2001",
+      "label_list": [
+        "211",
+        "双一流",
+        "机械四小龙"
+      ],
+      "recommend_master_level": "2.5",
+      "is_top": 2,
+      "attr_list": [
+        "理工类",
+        "公办",
+        "教育部直属"
+      ],
+      "hightitle": "合肥工业大学"
     },
     {
       "school_id": 98,
@@ -2574,7 +3936,19 @@
       "county_id": "440106",
       "province_id": "44",
       "type_id": "5004",
-      "level_id": "2001"
+      "level_id": "2001",
+      "label_list": [
+        "211",
+        "双一流",
+        "101计划"
+      ],
+      "recommend_master_level": "1.5",
+      "is_top": 2,
+      "attr_list": [
+        "师范类",
+        "公办"
+      ],
+      "hightitle": "华南师范大学"
     },
     {
       "school_id": 45,
@@ -2600,7 +3974,21 @@
       "county_id": "110108",
       "province_id": "11",
       "type_id": "5010",
-      "level_id": "2001"
+      "level_id": "2001",
+      "label_list": [
+        "985",
+        "211",
+        "双一流",
+        "强基"
+      ],
+      "recommend_master_level": "2.5",
+      "is_top": 2,
+      "attr_list": [
+        "民族类",
+        "公办",
+        "国家民委直属"
+      ],
+      "hightitle": "中央民族大学"
     }
   ]
 }
