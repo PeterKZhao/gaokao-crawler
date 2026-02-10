@@ -93,14 +93,14 @@ class ScoreCrawler(BaseCrawler):
                     
                     school_score_count += len(items)
                 
-                self.polite_sleep(1.5, 3.0)  # 增加延迟
+                self.polite_sleep(3.0, 6.0)  # 增加延迟
             
             if school_score_count > 0:
                 print(f"✓ [{idx}/{len(school_ids)}] 学校ID {school_id}：{school_score_count} 条分数线")
             else:
                 print(f"⚠️  [{idx}/{len(school_ids)}] 学校ID {school_id}：无分数线数据")
             
-            self.polite_sleep(2.0, 4.0)  # 学校间更长延迟
+            self.polite_sleep(5.0, 8.0)  # 学校间更长延迟
         
         self.save_to_json(all_scores, 'scores.json')
         print(f"\n{'='*60}")
