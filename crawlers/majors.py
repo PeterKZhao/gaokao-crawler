@@ -1,4 +1,5 @@
 import time
+import json
 from .base import BaseCrawler
 
 class MajorCrawler(BaseCrawler):
@@ -30,10 +31,23 @@ class MajorCrawler(BaseCrawler):
                     print("⚠️  API 可能已更改，请检查参数")
                 break
             
-            # 尝试不同的数据结构
-            items = data['data'].get('item') or data['data'].get('items') or []
-            if isinstance(data['data'], list):
-                items = data['data']
+            # 处理不同的数据结构
+            data_content = data['data']
+            
+            # 如果 data 是字符串，尝试解析
+            if isinstance(data_content, str):
+                try:
+                    data_content = json.loads(data_content)
+                except Exception as e:
+                    print(f"✗ 第 {page} 页：数据解析失败 - {str(e)}")
+                    break
+            
+            # 提取 items
+            items = []
+            if isinstance(data_content, dict):
+                items = data_content.get('item') or data_content.get('items') or []
+            elif isinstance(data_content, list):
+                items = data_content
             
             if not items:
                 print(f"第 {page} 页无数据，爬取完成")
@@ -53,6 +67,11 @@ class MajorCrawler(BaseCrawler):
                 majors.append(major_info)
             
             print(f"✓ 第 {page} 页：获取 {len(items)} 个专业")
+            
+            # 每10页显示进度
+            if page % 10 == 0:
+                print(f"📊 进度：已爬取 {len(majors)} 个专业...")
+            
             page += 1
             self.polite_sleep()
         
