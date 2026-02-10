@@ -35,72 +35,93 @@ class SchoolCrawler(BaseCrawler):
         
         data = self.make_request(payload, retry=2)
         
+        # 调试输出 - 打印API返回的所有字段
+        if data and 'data' in data and isinstance(data['data'], dict) and not hasattr(self, '_detail_debug_printed'):
+            print(f"\n🔍 API详情接口返回的字段:")
+            print(f"   字段列表: {list(data['data'].keys())}")
+            # 检查是否有content相关字段
+            for key in data['data'].keys():
+                if 'content' in key.lower() or 'intro' in key.lower() or 'desc' in key.lower():
+                    value = data['data'][key]
+                    preview = str(value)[:150] if value else "空"
+                    print(f"   >>> 发现 '{key}': {preview}...")
+            self._detail_debug_printed = True
+        
         if data and 'data' in data and isinstance(data['data'], dict):
             return data['data']
         return None
     
     def get_school_static_info(self, school_id):
         """获取学校完整静态信息（包含介绍、邮箱等）"""
-        # 方式1：带参数的URL
-        url = f"https://static-data.gaokao.cn/www/2.0/school/{school_id}/info.json?a=www.gaokao.cn"
+        # 尝试多个可能的URL
+        urls = [
+            f"https://static-data.gaokao.cn/www/2.0/school/{school_id}/info.json",
+            f"https://static-data.gaokao.cn/www/2.0/school/{school_id}/info.json?a=www.gaokao.cn",
+        ]
         
-        try:
-            response = self.session.get(url, timeout=10)
-            if response.status_code == 200:
-                result = response.json()
-                
-                # 打印第一次获取的数据结构（仅首次调试）
-                if not hasattr(self, '_debug_printed'):
-                    print(f"\n🔍 调试信息 - 学校ID {school_id} 的静态接口返回字段：")
-                    if result.get('code') == 0 and 'data' in result:
-                        print(f"   可用字段: {list(result['data'].keys())[:20]}")  # 显示前20个字段
-                        # 检查是否有content字段
-                        if 'content' in result['data']:
-                            content_preview = result['data']['content'][:100] if result['data']['content'] else "空"
-                            print(f"   ✓ 找到content字段: {content_preview}...")
-                        else:
-                            print(f"   ✗ 没有content字段")
-                    self._debug_printed = True
-                
-                if result.get('code') == 0 and 'data' in result:
-                    return result['data']
+        for url_idx, url in enumerate(urls):
+            try:
+                response = self.session.get(url, timeout=10)
+                if response.status_code == 200:
+                    result = response.json()
                     
-        except Exception as e:
-            print(f"⚠️  获取学校静态信息失败 (ID: {school_id}): {str(e)}")
+                    # 调试输出 - 打印静态接口返回的所有数据
+                    if not hasattr(self, '_static_debug_printed'):
+                        print(f"\n🔍 静态接口 URL{url_idx+1} 返回数据:")
+                        print(f"   完整响应: {json.dumps(result, ensure_ascii=False, indent=2)[:500]}...\n")
+                        
+                        if result.get('code') == 0 and 'data' in result:
+                            print(f"   data字段类型: {type(result['data'])}")
+                            if isinstance(result['data'], dict):
+                                print(f"   所有字段: {list(result['data'].keys())}")
+                                # 查找包含content/intro的字段
+                                for key, value in result['data'].items():
+                                    if 'content' in key.lower() or 'intro' in key.lower() or 'desc' in key.lower():
+                                        preview = str(value)[:150] if value else "空"
+                                        print(f"   >>> 发现 '{key}': {preview}...")
+                            elif isinstance(result['data'], list):
+                                print(f"   data是列表，长度: {len(result['data'])}")
+                        else:
+                            print(f"   错误码: {result.get('code')}, 消息: {result.get('message')}")
+                        
+                        self._static_debug_printed = True
+                    
+                    if result.get('code') == 0 and 'data' in result:
+                        return result['data']
+                        
+            except Exception as e:
+                print(f"⚠️  URL{url_idx+1} 获取失败: {str(e)}")
         
         return None
     
-    def get_school_content(self, school_id):
-        """专门获取学校介绍内容（尝试多个可能的接口）"""
+    def get_school_content_alternative(self, school_id):
+        """尝试其他可能的接口获取学校介绍"""
+        alternative_urls = [
+            f"https://static-data.gaokao.cn/www/2.0/schoolSpecial/{school_id}/pc_special.json",
+            f"https://static-data.gaokao.cn/www/2.0/schoolInfo/{school_id}/info.json",
+        ]
         
-        # 方法1: 通过主API获取
-        payload = {
-            "school_id": school_id,
-            "uri": "apidata/api/gkv3/school/detail"
-        }
-        
-        data = self.make_request(payload, retry=2)
-        if data and 'data' in data:
-            detail_data = data['data']
-            # 检查是否有content相关字段
-            if 'content' in detail_data:
-                return detail_data['content']
-            if 'intro' in detail_data:
-                return detail_data['intro']
-            if 'introduction' in detail_data:
-                return detail_data['introduction']
-        
-        # 方法2: 尝试另一个静态接口
-        try:
-            url = f"https://static-data.gaokao.cn/www/2.0/schoolSpecial/{school_id}/pc_special.json"
-            response = self.session.get(url, timeout=10)
-            if response.status_code == 200:
-                result = response.json()
-                if result.get('code') == 0 and 'data' in result:
-                    if 'content' in result['data']:
-                        return result['data']['content']
-        except:
-            pass
+        for url in alternative_urls:
+            try:
+                response = self.session.get(url, timeout=10)
+                if response.status_code == 200:
+                    result = response.json()
+                    
+                    # 调试输出
+                    if not hasattr(self, '_alt_debug_printed'):
+                        print(f"\n🔍 备用接口 {url} 返回:")
+                        print(f"   响应片段: {json.dumps(result, ensure_ascii=False)[:300]}...\n")
+                        self._alt_debug_printed = True
+                    
+                    if result.get('code') == 0 and 'data' in result:
+                        data = result['data']
+                        if isinstance(data, dict):
+                            # 查找content相关字段
+                            for key in ['content', 'intro', 'introduction', 'school_intro', 'description']:
+                                if key in data and data[key]:
+                                    return data[key]
+            except:
+                continue
         
         return None
 
@@ -302,41 +323,43 @@ class SchoolCrawler(BaseCrawler):
                             'email': detail.get('email'),
                             'website': detail.get('site'),
                         })
+                        # 检查detail中是否有content
+                        if 'content' in detail:
+                            school_info['content'] = detail['content']
+                        if 'intro' in detail:
+                            school_info['intro'] = detail['intro']
+                        
                         self.polite_sleep(1.0, 2.0)
                 
-                # 获取静态完整信息（包含介绍等）
+                # 获取静态完整信息
                 if fetch_static_info and school_id:
                     static_info = self.get_school_static_info(school_id)
                     if static_info:
+                        # 尝试各种可能的字段名
+                        for content_key in ['content', 'intro', 'introduction', 'school_intro', 'description']:
+                            if content_key in static_info:
+                                school_info[content_key] = static_info[content_key]
+                        
+                        # 其他字段
                         school_info.update({
-                            'content': static_info.get('content'),  # 学校介绍
-                            'introduction': static_info.get('intro') or static_info.get('introduction'),  # 备用字段
-                            'central': static_info.get('central'),  # 是否部属
-                            'school_site': static_info.get('school_site'),  # 官网
-                            'emails': static_info.get('emails') or static_info.get('email'),  # 邮箱
-                            'colleges_level': static_info.get('colleges_level'),  # 院校层次
-                            'old_name': static_info.get('old_name'),  # 曾用名
-                            'create_year': static_info.get('create_date') or static_info.get('create_year'),  # 创建年份
+                            'central': static_info.get('central'),
+                            'school_site': static_info.get('school_site') or static_info.get('site'),
+                            'emails': static_info.get('emails') or static_info.get('email'),
+                            'colleges_level': static_info.get('colleges_level'),
+                            'old_name': static_info.get('old_name'),
+                            'create_year': static_info.get('create_date') or static_info.get('create_year'),
                             'province_id': static_info.get('province_id'),
                             'city_id': static_info.get('city_id'),
-                            'town': static_info.get('town_name') or static_info.get('town'),  # 所在镇/街道
+                            'town': static_info.get('town_name') or static_info.get('town'),
                             'level_name': static_info.get('level_name'),
-                            'department': static_info.get('department') or static_info.get('belong'),  # 主管部门
-                            'member': static_info.get('member'),  # 学校成员资格
-                            'area': static_info.get('area'),  # 占地面积
-                            'num_doctor': static_info.get('num_doctor'),  # 博士点
-                            'num_master': static_info.get('num_master'),  # 硕士点
-                            'num_subject': static_info.get('num_subject'),  # 重点学科
-                            'ruanke_rank': static_info.get('ruanke_rank'),  # 软科排名
-                            'xyh_rank': static_info.get('xyh_rank'),  # 校友会排名
-                            'wsl_rank': static_info.get('wsl_rank'),  # 武书连排名
+                            'department': static_info.get('department') or static_info.get('belong'),
                         })
                         
-                        # 如果没有content，尝试专门获取
-                        if not school_info.get('content'):
-                            content = self.get_school_content(school_id)
-                            if content:
-                                school_info['content'] = content
+                        # 如果还没有content，尝试备用接口
+                        if not school_info.get('content') and not school_info.get('intro'):
+                            alt_content = self.get_school_content_alternative(school_id)
+                            if alt_content:
+                                school_info['content'] = alt_content
                         
                         self.polite_sleep(2.0, 4.0)
                 
@@ -356,6 +379,14 @@ class SchoolCrawler(BaseCrawler):
             enhanced_pages = max(max_pages, (len(schools) // 20) + 2)
             schools = self.merge_enhanced_data(schools, max_pages=enhanced_pages)
         
+        # 最终输出 - 显示第一所学校的完整数据用于调试
+        if schools:
+            print(f"\n{'='*60}")
+            print(f"📊 第一所学校的完整数据（用于检查）:")
+            print(f"{'='*60}")
+            print(json.dumps(schools[0], ensure_ascii=False, indent=2))
+            print(f"{'='*60}\n")
+        
         self.save_to_json(schools, 'schools.json')
         print(f"\n{'='*60}")
         print(f"学校爬取完成！共 {len(schools)} 所")
@@ -366,7 +397,7 @@ class SchoolCrawler(BaseCrawler):
 if __name__ == "__main__":
     import sys
     
-    max_pages = int(sys.argv[1]) if len(sys.argv) > 1 else 1  # 默认1页用于测试
+    max_pages = int(sys.argv[1]) if len(sys.argv) > 1 else 1
     fetch_detail = sys.argv[2].lower() == 'true' if len(sys.argv) > 2 else True
     fetch_enhanced = sys.argv[3].lower() == 'true' if len(sys.argv) > 3 else True
     fetch_static_info = sys.argv[4].lower() == 'true' if len(sys.argv) > 4 else True
