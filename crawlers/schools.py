@@ -18,7 +18,7 @@ class SchoolCrawler(BaseCrawler):
         sorted_keys = sorted(params.keys())
         query_string = '&'.join([f"{k}={params[k]}" for k in sorted_keys])
         
-        # 2. 拼接域名和路径（关键！）
+        # 2. 拼接域名和路径
         sign_string = f"api-gaokao.zjzw.cn/apidata/web?{query_string}"
         
         # 3. HmacSHA1
@@ -52,10 +52,13 @@ class SchoolCrawler(BaseCrawler):
         return None
     
     def get_enhanced_school_list(self, page=1, size=20, local_type_id="2073"):
-        """获取增强版学校列表"""
+        """获取增强版学校列表（需要Cookie）"""
         base_url = "https://api-gaokao.zjzw.cn/apidata/web"
         
-        # 构建参数（注意：使用2073作为默认值）
+        # 从环境变量获取Cookie
+        cookie = os.getenv('GAOKAO_COOKIE', '')
+        
+        # 构建参数
         params_for_sign = {
             "autosign": "",
             "keyword": "",
@@ -80,17 +83,24 @@ class SchoolCrawler(BaseCrawler):
         query_parts.append(f"signsafe={signsafe}")
         full_url = f"{base_url}?{'&'.join(query_parts)}"
         
+        # 准备请求头
+        headers = {
+            "accept": "application/json, text/plain, */*",
+            "accept-language": "zh-CN,zh;q=0.9",
+            "content-type": "application/json",
+            "origin": "https://www.gaokao.cn",
+            "referer": "https://www.gaokao.cn/",
+            "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"
+        }
+        
+        # 如果有Cookie，添加到请求头
+        if cookie:
+            headers["cookie"] = cookie
+        
         try:
             response = self.session.post(
                 full_url,
-                headers={
-                    "accept": "application/json, text/plain, */*",
-                    "accept-language": "zh-CN,zh;q=0.9",
-                    "content-type": "application/json",
-                    "origin": "https://www.gaokao.cn",
-                    "referer": "https://www.gaokao.cn/",
-                    "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"
-                },
+                headers=headers,
                 timeout=15
             )
             
@@ -99,8 +109,10 @@ class SchoolCrawler(BaseCrawler):
                 if result.get('code') == 0:
                     return result
                 elif result.get('code') == 1010001:
-                    # 可能需要Cookie，尝试添加
-                    print(f"⚠️  增强API可能需要登录Cookie")
+                    if not cookie:
+                        print(f"⚠️  增强API需要Cookie，请设置GAOKAO_COOKIE环境变量")
+                    else:
+                        print(f"⚠️  Cookie可能已过期")
                     return None
                 else:
                     print(f"⚠️  API返回: {result.get('message')}")
@@ -152,11 +164,14 @@ class SchoolCrawler(BaseCrawler):
                 page += 1
             else:
                 if page == 1:
-                    print("⚠️  增强数据获取失败（可能需要登录）")
-                    print("    解决方法：")
-                    print("    1. 在浏览器中登录 www.gaokao.cn")
-                    print("    2. 复制Cookie并设置环境变量")
-                    print("    3. 或者禁用增强数据获取")
+                    print("⚠️  增强数据获取失败")
+                    if not os.getenv('GAOKAO_COOKIE'):
+                        print("\n解决方法：")
+                        print("1. 在浏览器访问 www.gaokao.cn 并登录")
+                        print("2. 按F12打开控制台，输入 document.cookie")
+                        print("3. 复制输出的Cookie字符串")
+                        print("4. 设置环境变量：export GAOKAO_COOKIE='你的cookie'")
+                        print("5. 或者在GitHub Secrets中添加GAOKAO_COOKIE\n")
                 break
         
         # 合并数据
