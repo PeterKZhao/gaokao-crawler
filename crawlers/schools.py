@@ -50,19 +50,15 @@ class SchoolCrawler(BaseCrawler):
             if isinstance(detail, dict):
                 return detail
         return None
-    
+
     def get_enhanced_school_list(self, page=1, size=20, local_type_id="2073"):
-        """获取增强版学校列表（需要Cookie）"""
+        """获取增强版学校列表"""
         base_url = "https://api-gaokao.zjzw.cn/apidata/web"
         
         # 从环境变量获取Cookie
         cookie = os.getenv('GAOKAO_COOKIE', '')
-
-        # 调试信息
-        print(f"[DEBUG] GAOKAO_COOKIE长度: {len(cookie)}")
-        print(f"[DEBUG] GAOKAO_COOKIE前50字符: {cookie[:50] if cookie else '(空)'}")
         
-        # 构建参数
+        # 构建参数（注意数字类型）
         params_for_sign = {
             "autosign": "",
             "keyword": "",
@@ -81,11 +77,28 @@ class SchoolCrawler(BaseCrawler):
         # 生成签名
         signsafe = self.generate_signsafe(params_for_sign)
         
-        # 构建完整URL
+        # 构建URL参数
         sorted_keys = sorted(params_for_sign.keys())
         query_parts = [f"{k}={params_for_sign[k]}" for k in sorted_keys]
         query_parts.append(f"signsafe={signsafe}")
         full_url = f"{base_url}?{'&'.join(query_parts)}"
+        
+        # 构建POST body（注意：数字类型不加引号）
+        post_body = {
+            "autosign": "",
+            "keyword": "",
+            "local_type_id": local_type_id,
+            "page": int(page),  # 数字类型
+            "platform": "2",
+            "province_id": "",
+            "ranktype": "",
+            "request_type": 1,  # 数字类型
+            "signsafe": signsafe,  # 包含签名
+            "size": int(size),  # 数字类型
+            "spe_ids": "",
+            "top_school_id": "",
+            "uri": "v1/school/lists"
+        }
         
         # 准备请求头
         headers = {
@@ -97,14 +110,15 @@ class SchoolCrawler(BaseCrawler):
             "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"
         }
         
-        # 如果有Cookie，添加到请求头
         if cookie:
             headers["cookie"] = cookie
         
         try:
+            import json
             response = self.session.post(
                 full_url,
                 headers=headers,
+                data=json.dumps(post_body),  # 发送JSON字符串
                 timeout=15
             )
             
@@ -112,20 +126,18 @@ class SchoolCrawler(BaseCrawler):
                 result = response.json()
                 if result.get('code') == 0:
                     return result
-                elif result.get('code') == 1010001:
-                    if not cookie:
-                        print(f"⚠️  增强API需要Cookie，请设置GAOKAO_COOKIE环境变量")
-                    else:
-                        print(f"⚠️  Cookie可能已过期")
-                    return None
                 else:
-                    print(f"⚠️  API返回: {result.get('message')}")
+                    if result.get('code') == 1010001 and not cookie:
+                        print(f"⚠️  增强API需要Cookie")
+                    else:
+                        print(f"⚠️  API返回: code={result.get('code')}, message={result.get('message')}")
                     return None
                     
         except Exception as e:
             print(f"⚠️  请求出错: {str(e)}")
         
         return None
+
     
     def merge_enhanced_data(self, schools_basic, max_pages=None):
         """将增强数据合并到基础学校列表"""
