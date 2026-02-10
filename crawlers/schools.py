@@ -68,7 +68,7 @@ class SchoolCrawler(BaseCrawler):
                     # 调试输出 - 打印静态接口返回的所有数据
                     if not hasattr(self, '_static_debug_printed'):
                         print(f"\n🔍 静态接口 URL{url_idx+1} 返回数据:")
-                        print(f"   完整响应: {json.dumps(result, ensure_ascii=False, indent=2)[:500]}...\n")
+                        print(f"   完整响应: {json.dumps(result, ensure_ascii=False, indent=2)}...\n")
                         
                         if result.get('code') == 0 and 'data' in result:
                             print(f"   data字段类型: {type(result['data'])}")
@@ -110,7 +110,7 @@ class SchoolCrawler(BaseCrawler):
                     # 调试输出
                     if not hasattr(self, '_alt_debug_printed'):
                         print(f"\n🔍 备用接口 {url} 返回:")
-                        print(f"   响应片段: {json.dumps(result, ensure_ascii=False)[:300]}...\n")
+                        print(f"   响应片段: {json.dumps(result, ensure_ascii=False)}...\n")
                         self._alt_debug_printed = True
                     
                     if result.get('code') == 0 and 'data' in result:
