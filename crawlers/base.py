@@ -17,9 +17,10 @@ class BaseCrawler:
         }
         self.session = requests.Session()
         self.session.headers.update(self.headers)
+        self.rate_limit_sleep = 1  # 初始延迟
     
     def make_request(self, payload, retry=3, delay=1):
-        """统一的请求方法"""
+        """统一的请求方法，支持限流处理"""
         for attempt in range(retry):
             try:
                 response = self.session.post(
@@ -30,7 +31,32 @@ class BaseCrawler:
                 
                 if response.status_code == 200:
                     try:
-                        return response.json()
+                        result = response.json()
+                        
+                        # 检查业务错误码
+                        code = result.get('code')
+                        
+                        # 限流错误处理
+                        if code == '1069' or code == 1069:
+                            message = result.get('message', '访问太过频繁')
+                            print(f"⚠️  限流警告: {message}")
+                            
+                            # 指数退避：增加延迟时间
+                            self.rate_limit_sleep = min(self.rate_limit_sleep * 2, 30)
+                            print(f"   等待 {self.rate_limit_sleep:.1f} 秒后重试...")
+                            time.sleep(self.rate_limit_sleep)
+                            
+                            # 重试当前请求
+                            if attempt < retry - 1:
+                                continue
+                            return None
+                        
+                        # 成功请求，重置延迟
+                        if code == '0000' or code == 0:
+                            self.rate_limit_sleep = max(self.rate_limit_sleep * 0.8, 1)
+                        
+                        return result
+                        
                     except json.JSONDecodeError as e:
                         print(f"⚠️  JSON解析失败: {str(e)}")
                         print(f"   响应内容类型: {response.headers.get('content-type')}")
@@ -49,9 +75,12 @@ class BaseCrawler:
         
         return None
     
-    def polite_sleep(self, min_delay=0.5, max_delay=1.5):
-        """随机延迟，模拟人类行为"""
-        time.sleep(random.uniform(min_delay, max_delay))
+    def polite_sleep(self, min_delay=1.0, max_delay=2.0):
+        """随机延迟，模拟人类行为，考虑限流因素"""
+        base_delay = random.uniform(min_delay, max_delay)
+        # 如果有限流警告，使用更长的延迟
+        total_delay = base_delay * (self.rate_limit_sleep / 1.0)
+        time.sleep(min(total_delay, 10))  # 最多10秒
     
     def save_to_json(self, data, filename):
         """保存数据到JSON文件"""
