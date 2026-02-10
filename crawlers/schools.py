@@ -27,7 +27,7 @@ class SchoolCrawler(BaseCrawler):
         return final_signature
     
     def get_school_detail(self, school_id):
-        """获取学校详细信息"""
+        """获取学校详细信息（通过API）"""
         payload = {
             "school_id": school_id,
             "uri": "apidata/api/gkv3/school/detail"
@@ -37,6 +37,21 @@ class SchoolCrawler(BaseCrawler):
         
         if data and 'data' in data and isinstance(data['data'], dict):
             return data['data']
+        return None
+    
+    def get_school_static_info(self, school_id):
+        """获取学校完整静态信息（包含介绍、邮箱等）"""
+        url = f"https://static-data.gaokao.cn/www/2.0/school/{school_id}/info.json"
+        
+        try:
+            response = self.session.get(url, timeout=10)
+            if response.status_code == 200:
+                result = response.json()
+                if result.get('code') == 0 and 'data' in result:
+                    return result['data']
+        except Exception as e:
+            print(f"⚠️  获取学校静态信息失败 (ID: {school_id}): {str(e)}")
+        
         return None
 
     def get_enhanced_school_list(self, page=1, size=20):
@@ -166,16 +181,19 @@ class SchoolCrawler(BaseCrawler):
         
         return schools_basic
     
-    def crawl(self, max_pages=None, fetch_detail=True, fetch_enhanced=True):
+    def crawl(self, max_pages=None, fetch_detail=True, fetch_enhanced=True, fetch_static_info=True):
         """爬取学校列表"""
         max_pages = max_pages or int(os.getenv('MAX_PAGES', '10'))
         fetch_detail = os.getenv('FETCH_DETAIL', str(fetch_detail)).lower() == 'true'
         fetch_enhanced = os.getenv('FETCH_ENHANCED', str(fetch_enhanced)).lower() == 'true'
+        fetch_static_info = os.getenv('FETCH_STATIC_INFO', str(fetch_static_info)).lower() == 'true'
         
         schools = []
         print(f"\n{'='*60}")
         print(f"开始爬取学校列表（最多 {max_pages} 页）")
-        print(f"详细信息: {'✓' if fetch_detail else '✗'} | 增强数据: {'✓' if fetch_enhanced else '✗'}")
+        print(f"详细信息: {'✓' if fetch_detail else '✗'} | "
+              f"增强数据: {'✓' if fetch_enhanced else '✗'} | "
+              f"完整信息: {'✓' if fetch_static_info else '✗'}")
         print(f"{'='*60}\n")
         
         for page in range(1, max_pages + 1):
@@ -222,7 +240,7 @@ class SchoolCrawler(BaseCrawler):
                     'view_total': item.get('view_total'),
                 }
                 
-                # 获取详细信息
+                # 获取API详细信息
                 if fetch_detail and school_id:
                     detail = self.get_school_detail(school_id)
                     if detail:
@@ -236,10 +254,39 @@ class SchoolCrawler(BaseCrawler):
                         })
                         self.polite_sleep(1.0, 2.0)
                 
+                # 获取静态完整信息（包含介绍等）
+                if fetch_static_info and school_id:
+                    static_info = self.get_school_static_info(school_id)
+                    if static_info:
+                        school_info.update({
+                            'content': static_info.get('content'),  # 学校介绍
+                            'central': static_info.get('central'),  # 是否部属
+                            'school_site': static_info.get('school_site'),  # 官网
+                            'emails': static_info.get('emails'),  # 邮箱（可能是列表）
+                            'colleges_level': static_info.get('colleges_level'),  # 院校层次
+                            'old_name': static_info.get('old_name'),  # 曾用名
+                            'create_year': static_info.get('create_year'),  # 创建年份
+                            'province_id': static_info.get('province_id'),
+                            'city_id': static_info.get('city_id'),
+                            'town': static_info.get('town'),  # 所在镇/街道
+                            'level_name': static_info.get('level_name'),
+                            'department': static_info.get('department'),  # 主管部门
+                            'member': static_info.get('member'),  # 学校成员资格
+                            'special_id_str': static_info.get('special_id_str'),
+                            'inner_rate': static_info.get('inner_rate'),  # 保研率
+                            'exclusive': static_info.get('exclusive'),  # 特色专业
+                        })
+                        self.polite_sleep(2.0, 4.0)
+                
                 schools.append(school_info)
             
-            print(f"✓ 第 {page} 页：获取 {len(items)} 所学校" + 
-                  (" (含详情)" if fetch_detail else ""))
+            info_str = ""
+            if fetch_detail:
+                info_str += "(含详情)"
+            if fetch_static_info:
+                info_str += "(含完整信息)"
+            
+            print(f"✓ 第 {page} 页：获取 {len(items)} 所学校 {info_str}")
             self.polite_sleep(3.0, 6.0)
         
         # 合并增强数据
@@ -258,8 +305,14 @@ if __name__ == "__main__":
     import sys
     
     max_pages = int(sys.argv[1]) if len(sys.argv) > 1 else 5
-    fetch_detail = sys.argv[2].lower() == 'true' if len(sys.argv) > 2 else False
+    fetch_detail = sys.argv[2].lower() == 'true' if len(sys.argv) > 2 else True
     fetch_enhanced = sys.argv[3].lower() == 'true' if len(sys.argv) > 3 else True
+    fetch_static_info = sys.argv[4].lower() == 'true' if len(sys.argv) > 4 else True
     
     crawler = SchoolCrawler()
-    crawler.crawl(max_pages=max_pages, fetch_detail=fetch_detail, fetch_enhanced=fetch_enhanced)
+    crawler.crawl(
+        max_pages=max_pages, 
+        fetch_detail=fetch_detail, 
+        fetch_enhanced=fetch_enhanced,
+        fetch_static_info=fetch_static_info
+    )
