@@ -43,8 +43,15 @@ class SchoolCrawler(BaseCrawler):
         
         data = self.make_request(payload, retry=2)
         
+        # 检查返回数据的类型
         if data and 'data' in data:
-            return data['data']
+            detail = data['data']
+            # 确保返回的是字典类型
+            if isinstance(detail, dict):
+                return detail
+            else:
+                print(f"⚠️  学校 {school_id} 详情返回类型异常: {type(detail)}")
+                return None
         return None
     
     def get_enhanced_school_list(self, page=1, size=20, local_type_id=""):
@@ -228,7 +235,8 @@ class SchoolCrawler(BaseCrawler):
                     
                     if fetch_detail and school_id:
                         detail = self.get_school_detail(school_id)
-                        if detail:
+                        # 确保detail是字典类型才进行更新
+                        if detail and isinstance(detail, dict):
                             school_info.update({
                                 'logo': detail.get('logo'),
                                 'img': detail.get('img'),
