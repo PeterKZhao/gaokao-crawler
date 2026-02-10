@@ -1,5 +1,306 @@
 {
-  "update_time": "2026-02-10 04:06:37",
-  "count": 0,
-  "data": []
+  "update_time": "2026-02-10 15:51:18",
+  "count": 30,
+  "data": [
+    {
+      "special_id": "172",
+      "code": null,
+      "name": "计算机科学与技术",
+      "level1_name": "本科(普通)",
+      "level2_name": "工学",
+      "level3_name": "计算机类",
+      "degree": "理学学士,工学学士",
+      "years": "四年"
+    },
+    {
+      "special_id": "173",
+      "code": null,
+      "name": "软件工程",
+      "level1_name": "本科(普通)",
+      "level2_name": "工学",
+      "level3_name": "计算机类",
+      "degree": "工学学士",
+      "years": "四年"
+    },
+    {
+      "special_id": "177",
+      "code": null,
+      "name": "数字媒体技术",
+      "level1_name": "本科(普通)",
+      "level2_name": "工学",
+      "level3_name": "计算机类",
+      "degree": "工学学士",
+      "years": "四年"
+    },
+    {
+      "special_id": "176",
+      "code": null,
+      "name": "物联网工程",
+      "level1_name": "本科(普通)",
+      "level2_name": "工学",
+      "level3_name": "计算机类",
+      "degree": "工学学士",
+      "years": "四年"
+    },
+    {
+      "special_id": "1283",
+      "code": null,
+      "name": "数据科学与大数据技术",
+      "level1_name": "本科(普通)",
+      "level2_name": "工学",
+      "level3_name": "计算机类",
+      "degree": "理学学士,工学学士",
+      "years": "四年"
+    },
+    {
+      "special_id": "175",
+      "code": null,
+      "name": "信息安全",
+      "level1_name": "本科(普通)",
+      "level2_name": "工学",
+      "level3_name": "计算机类",
+      "degree": "理学学士,工学学士,管理学学士",
+      "years": "四年"
+    },
+    {
+      "special_id": "174",
+      "code": null,
+      "name": "网络工程",
+      "level1_name": "本科(普通)",
+      "level2_name": "工学",
+      "level3_name": "计算机类",
+      "degree": "工学学士",
+      "years": "四年"
+    },
+    {
+      "special_id": "1170",
+      "code": null,
+      "name": "电子与计算机工程",
+      "level1_name": "本科(普通)",
+      "level2_name": "工学",
+      "level3_name": "计算机类",
+      "degree": "工学学士",
+      "years": "四年"
+    },
+    {
+      "special_id": "1168",
+      "code": null,
+      "name": "智能科学与技术",
+      "level1_name": "本科(普通)",
+      "level2_name": "工学",
+      "level3_name": "计算机类",
+      "degree": "理学学士,工学学士",
+      "years": "四年"
+    },
+    {
+      "special_id": "1284",
+      "code": null,
+      "name": "网络空间安全",
+      "level1_name": "本科(普通)",
+      "level2_name": "工学",
+      "level3_name": "计算机类",
+      "degree": "工学学士",
+      "years": "四年"
+    },
+    {
+      "special_id": "1169",
+      "code": null,
+      "name": "空间信息与数字技术",
+      "level1_name": "本科(普通)",
+      "level2_name": "工学",
+      "level3_name": "计算机类",
+      "degree": "工学学士",
+      "years": "四年"
+    },
+    {
+      "special_id": "8390",
+      "code": null,
+      "name": "新媒体技术",
+      "level1_name": "本科(普通)",
+      "level2_name": "工学",
+      "level3_name": "计算机类",
+      "degree": "工学学士",
+      "years": "四年"
+    },
+    {
+      "special_id": "8696",
+      "code": null,
+      "name": "虚拟现实技术",
+      "level1_name": "本科(普通)",
+      "level2_name": "工学",
+      "level3_name": "计算机类",
+      "degree": "工学学士",
+      "years": "四年"
+    },
+    {
+      "special_id": "8708",
+      "code": null,
+      "name": "区块链工程",
+      "level1_name": "本科(普通)",
+      "level2_name": "工学",
+      "level3_name": "计算机类",
+      "degree": "工学学士",
+      "years": "四年"
+    },
+    {
+      "special_id": "8391",
+      "code": null,
+      "name": "电影制作",
+      "level1_name": "本科(普通)",
+      "level2_name": "工学",
+      "level3_name": "计算机类",
+      "degree": "工学学士",
+      "years": "四年"
+    },
+    {
+      "special_id": "8809",
+      "code": null,
+      "name": "密码科学与技术",
+      "level1_name": "本科(普通)",
+      "level2_name": "工学",
+      "level3_name": "计算机类",
+      "degree": "工学学士",
+      "years": "四年"
+    },
+    {
+      "special_id": "8392",
+      "code": null,
+      "name": "保密技术",
+      "level1_name": "本科(普通)",
+      "level2_name": "工学",
+      "level3_name": "计算机类",
+      "degree": "工学学士",
+      "years": "四年"
+    },
+    {
+      "special_id": "8694",
+      "code": null,
+      "name": "服务科学与工程",
+      "level1_name": "本科(普通)",
+      "level2_name": "工学",
+      "level3_name": "计算机类",
+      "degree": "工学学士",
+      "years": "四年"
+    },
+    {
+      "special_id": "10119",
+      "code": null,
+      "name": "工业软件",
+      "level1_name": "本科(普通)",
+      "level2_name": "工学",
+      "level3_name": "计算机类",
+      "degree": "工学学士",
+      "years": "四年"
+    },
+    {
+      "special_id": "165",
+      "code": null,
+      "name": "电子信息工程",
+      "level1_name": "本科(普通)",
+      "level2_name": "工学",
+      "level3_name": "电子信息类",
+      "degree": "理学学士,工学学士",
+      "years": "四年"
+    },
+    {
+      "special_id": "167",
+      "code": null,
+      "name": "通信工程",
+      "level1_name": "本科(普通)",
+      "level2_name": "工学",
+      "level3_name": "电子信息类",
+      "degree": "工学学士",
+      "years": "四年"
+    },
+    {
+      "special_id": "8387",
+      "code": null,
+      "name": "人工智能",
+      "level1_name": "本科(普通)",
+      "level2_name": "工学",
+      "level3_name": "电子信息类",
+      "degree": "工学学士",
+      "years": "四年"
+    },
+    {
+      "special_id": "1164",
+      "code": null,
+      "name": "电子信息科学与技术",
+      "level1_name": "本科(普通)",
+      "level2_name": "工学",
+      "level3_name": "电子信息类",
+      "degree": "理学学士,工学学士",
+      "years": "四年"
+    },
+    {
+      "special_id": "166",
+      "code": null,
+      "name": "电子科学与技术",
+      "level1_name": "本科(普通)",
+      "level2_name": "工学",
+      "level3_name": "电子信息类",
+      "degree": "理学学士,工学学士",
+      "years": "四年"
+    },
+    {
+      "special_id": "169",
+      "code": null,
+      "name": "光电信息科学与工程",
+      "level1_name": "本科(普通)",
+      "level2_name": "工学",
+      "level3_name": "电子信息类",
+      "degree": "理学学士,工学学士",
+      "years": "四年"
+    },
+    {
+      "special_id": "168",
+      "code": null,
+      "name": "微电子科学与工程",
+      "level1_name": "本科(普通)",
+      "level2_name": "工学",
+      "level3_name": "电子信息类",
+      "degree": "理学学士,工学学士",
+      "years": "四年"
+    },
+    {
+      "special_id": "1160",
+      "code": null,
+      "name": "集成电路设计与集成系统",
+      "level1_name": "本科(普通)",
+      "level2_name": "工学",
+      "level3_name": "电子信息类",
+      "degree": "工学学士",
+      "years": "四年"
+    },
+    {
+      "special_id": "170",
+      "code": null,
+      "name": "信息工程",
+      "level1_name": "本科(普通)",
+      "level2_name": "工学",
+      "level3_name": "电子信息类",
+      "degree": "工学学士",
+      "years": "四年"
+    },
+    {
+      "special_id": "1158",
+      "code": null,
+      "name": "水声工程",
+      "level1_name": "本科(普通)",
+      "level2_name": "工学",
+      "level3_name": "电子信息类",
+      "degree": "工学学士",
+      "years": "四年"
+    },
+    {
+      "special_id": "1159",
+      "code": null,
+      "name": "电子封装技术",
+      "level1_name": "本科(普通)",
+      "level2_name": "工学",
+      "level3_name": "电子信息类",
+      "degree": "工学学士",
+      "years": "四年"
+    }
+  ]
 }
