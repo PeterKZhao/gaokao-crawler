@@ -43,6 +43,7 @@ jobs:
         MAX_PAGES: '1'
         FETCH_DETAIL: 'true'
         FETCH_ENHANCED: 'true'
+        FETCH_STATIC_INFO: 'true'
         GAOKAO_COOKIE: ${{ secrets.GAOKAO_COOKIE }}
       run: python -m crawlers.schools
     
@@ -52,6 +53,7 @@ jobs:
         MAX_PAGES: '200'
         FETCH_DETAIL: 'true'
         FETCH_ENHANCED: 'true'
+        FETCH_STATIC_INFO: 'true'
         GAOKAO_COOKIE: ${{ secrets.GAOKAO_COOKIE }}
       run: python -m crawlers.schools
       
