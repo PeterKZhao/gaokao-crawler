@@ -8,12 +8,9 @@ class MajorCrawler(BaseCrawler):
         """爬取专业列表"""
         majors = []
         page = 1
-        debug = os.getenv('DEBUG_MODE', 'false').lower() == 'true'
         
         print(f"\n{'='*60}")
         print(f"开始爬取专业列表")
-        if debug:
-            print(f"🔍 调试模式已开启")
         print(f"{'='*60}\n")
         
         while page <= max_pages:
@@ -27,12 +24,22 @@ class MajorCrawler(BaseCrawler):
                 "uri": "apidata/api/gkv3/special/lists"
             }
             
-            data = self.make_request(payload)
+            data = self.make_request(payload, retry=5)
             
-            if not data or 'data' not in data:
+            if not data:
                 print(f"✗ 第 {page} 页：请求失败")
                 if page == 1:
                     print("⚠️  API 可能已更改，请检查参数")
+                break
+            
+            # 检查错误码
+            code = data.get('code')
+            if code != '0000' and code != 0:
+                if page == 1:
+                    print(f"⚠️  API返回错误: code={code}, message={data.get('message')}")
+                continue
+            
+            if 'data' not in data:
                 break
             
             # 处理不同的数据结构
@@ -40,35 +47,8 @@ class MajorCrawler(BaseCrawler):
             
             # 如果 data 是字符串，尝试解析
             if isinstance(data_content, str):
-                if debug or page >= 10:  # 在问题页显示调试信息
-                    print(f"\n🔍 第 {page} 页调试信息:")
-                    print(f"   data类型: str")
-                    print(f"   data长度: {len(data_content)}")
-                    print(f"   data前100字符: {data_content[:100]}")
-                    print(f"   data后100字符: {data_content[-100:]}")
-                
                 try:
                     data_content = json.loads(data_content)
-                    if debug or page >= 10:
-                        print(f"   ✓ JSON解析成功")
-                except json.JSONDecodeError as e:
-                    print(f"✗ 第 {page} 页：JSON解析失败 - {str(e)}")
-                    print(f"   错误位置: 第{e.lineno}行 第{e.colno}列")
-                    print(f"   原始内容（前200字符）: {data_content[:200]}")
-                    print(f"   原始内容（后200字符）: {data_content[-200:]}")
-                    
-                    # 尝试修复常见问题
-                    # 1. 去除 BOM
-                    data_content = data_content.strip('\ufeff')
-                    # 2. 去除前后空白
-                    data_content = data_content.strip()
-                    
-                    try:
-                        data_content = json.loads(data_content)
-                        print(f"   ✓ 修复后解析成功")
-                    except:
-                        print(f"   ✗ 修复失败，跳过此页")
-                        break
                 except Exception as e:
                     print(f"✗ 第 {page} 页：数据解析失败 - {str(e)}")
                     break
@@ -77,16 +57,8 @@ class MajorCrawler(BaseCrawler):
             items = []
             if isinstance(data_content, dict):
                 items = data_content.get('item') or data_content.get('items') or []
-                if debug or (page >= 10 and not items):
-                    print(f"   data_content类型: dict")
-                    print(f"   可用字段: {list(data_content.keys())}")
             elif isinstance(data_content, list):
                 items = data_content
-                if debug or page >= 10:
-                    print(f"   data_content类型: list, 长度: {len(items)}")
-            else:
-                if debug or page >= 10:
-                    print(f"   ⚠️  未知的data_content类型: {type(data_content)}")
             
             if not items:
                 print(f"第 {page} 页无数据，爬取完成")
@@ -112,7 +84,7 @@ class MajorCrawler(BaseCrawler):
                 print(f"📊 进度：已爬取 {len(majors)} 个专业...")
             
             page += 1
-            self.polite_sleep()
+            self.polite_sleep(1.0, 2.0)  # 增加延迟
         
         self.save_to_json(majors, 'majors.json')
         print(f"\n{'='*60}")
