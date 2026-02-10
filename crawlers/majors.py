@@ -84,7 +84,7 @@ class MajorCrawler(BaseCrawler):
                 print(f"📊 进度：已爬取 {len(majors)} 个专业...")
             
             page += 1
-            self.polite_sleep(1.0, 2.0)  # 增加延迟
+            self.polite_sleep(3.0, 6.0)  # 增加延迟到3-6秒
         
         self.save_to_json(majors, 'majors.json')
         print(f"\n{'='*60}")
