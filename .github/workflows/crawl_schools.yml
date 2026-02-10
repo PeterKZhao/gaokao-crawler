@@ -42,8 +42,6 @@ jobs:
       env:
         MAX_PAGES: '1'
         FETCH_COMPLETE_INFO: 'true'
-        FETCH_ENHANCED: 'true'
-        GAOKAO_COOKIE: ${{ secrets.GAOKAO_COOKIE }}
       run: python -m crawlers.schools
     
     - name: 爬取学校数据（完整模式）
@@ -51,8 +49,6 @@ jobs:
       env:
         MAX_PAGES: '200'
         FETCH_COMPLETE_INFO: 'true'
-        FETCH_ENHANCED: 'true'
-        GAOKAO_COOKIE: ${{ secrets.GAOKAO_COOKIE }}
       run: python -m crawlers.schools
       
     - name: 提交并推送更改
