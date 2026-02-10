@@ -16,21 +16,21 @@ on:
         required: false
         default: '10'
       fetch_school_detail:
-        description: '获取学校详细信息（更全但更慢）'
+        description: '获取学校详细信息'
         required: true
         type: choice
         options:
           - 'true'
           - 'false'
-        default: 'true'
+        default: 'false'
       fetch_enhanced:
-        description: '获取增强数据（label_list等新字段）'
+        description: '获取增强数据（需要Cookie）'
         required: true
         type: choice
         options:
           - 'true'
           - 'false'
-        default: 'true'
+        default: 'false'
       crawl_majors:
         description: '爬取专业数据'
         required: true
@@ -76,16 +76,27 @@ jobs:
     - name: 创建数据目录
       run: mkdir -p data
     
+    # 添加调试步骤
+    - name: 检查Cookie Secret
+      if: ${{ github.event.inputs.crawl_schools == 'true' && github.event.inputs.fetch_enhanced == 'true' }}
+      run: |
+        if [ -z "${{ secrets.GAOKAO_COOKIE }}" ]; then
+          echo "⚠️  GAOKAO_COOKIE Secret未设置或为空"
+          echo "请在 Settings -> Secrets and variables -> Actions 中添加 GAOKAO_COOKIE"
+        else
+          echo "✓ GAOKAO_COOKIE Secret已设置（长度: ${#GAOKAO_COOKIE}）"
+        fi
+      env:
+        GAOKAO_COOKIE: ${{ secrets.GAOKAO_COOKIE }}
+    
     - name: 爬取学校数据
       if: ${{ github.event.inputs.crawl_schools == 'true' }}
       env:
         MAX_PAGES: ${{ github.event.inputs.max_school_pages }}
         FETCH_DETAIL: ${{ github.event.inputs.fetch_school_detail }}
-        FETCH_ENHANCED: "true"
-        ENHANCED_SIGNSAFE_MAP: ${{ secrets.ENHANCED_SIGNSAFE_MAP }}
-        ENHANCED_LOCAL_TYPE_ID: "2073"
+        FETCH_ENHANCED: ${{ github.event.inputs.fetch_enhanced }}
+        GAOKAO_COOKIE: ${{ secrets.GAOKAO_COOKIE }}
       run: python -m crawlers.schools
-
     
     - name: 爬取专业数据
       if: ${{ github.event.inputs.crawl_majors == 'true' }}
