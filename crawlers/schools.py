@@ -8,34 +8,19 @@ from .base import BaseCrawler
 class SchoolCrawler(BaseCrawler):
     
     def generate_signsafe(self, params):
-        """
-        生成signsafe签名
-        算法：MD5(Base64(HmacSHA1(参数字符串, 密钥)))
-        """
+        """生成signsafe签名"""
         secret = "D23ABC@#56"
-        
-        # 1. 按字母排序（保留所有参数，包括空值）
         sorted_keys = sorted(params.keys())
-        
-        # 2. 构建查询字符串（包含空值）
         query_string = '&'.join([f"{k}={params[k]}" for k in sorted_keys])
         
-        print(f"[DEBUG] 待签名字符串: {query_string}")
-        
-        # 3. HmacSHA1
         hmac_result = hmac.new(
             secret.encode('utf-8'),
             query_string.encode('utf-8'),
             hashlib.sha1
         ).digest()
         
-        # 4. Base64编码
         base64_result = base64.b64encode(hmac_result).decode('utf-8')
-        
-        # 5. MD5
         final_signature = hashlib.md5(base64_result.encode('utf-8')).hexdigest()
-        
-        print(f"[DEBUG] 生成签名: {final_signature}")
         
         return final_signature
     
@@ -55,13 +40,16 @@ class SchoolCrawler(BaseCrawler):
         return None
     
     def get_enhanced_school_list(self, page=1, size=20, local_type_id=""):
-        """
-        获取增强版学校列表（包含label_list等新字段）
-        """
-        # 手动构建URL，避免自动编码问题
+        """获取增强版学校列表（需要Cookie）"""
         base_url = "https://api-gaokao.zjzw.cn/apidata/web"
         
-        # 构建参数字典用于签名（不包含signsafe）
+        # 从环境变量获取Cookie
+        cookie = os.getenv('GAOKAO_COOKIE', '')
+        
+        if not cookie:
+            print("⚠️  未设置GAOKAO_COOKIE环境变量，跳过增强数据获取")
+            return None
+        
         params_for_sign = {
             "autosign": "",
             "keyword": "",
@@ -77,26 +65,14 @@ class SchoolCrawler(BaseCrawler):
             "uri": "v1/school/lists"
         }
         
-        # 生成签名
         signsafe = self.generate_signsafe(params_for_sign)
         
-        # 手动构建URL，保持斜杠不被编码
         sorted_keys = sorted(params_for_sign.keys())
-        query_parts = []
-        for k in sorted_keys:
-            # 对于uri参数，不编码斜杠
-            if k == 'uri':
-                query_parts.append(f"{k}={params_for_sign[k]}")
-            else:
-                query_parts.append(f"{k}={params_for_sign[k]}")
-        
+        query_parts = [f"{k}={params_for_sign[k]}" for k in sorted_keys]
         query_parts.append(f"signsafe={signsafe}")
         full_url = f"{base_url}?{'&'.join(query_parts)}"
         
-        print(f"[DEBUG] 完整URL: {full_url}")
-        
         try:
-            # 直接使用完整URL发送POST请求
             response = self.session.post(
                 full_url,
                 headers={
@@ -105,23 +81,24 @@ class SchoolCrawler(BaseCrawler):
                     "content-type": "application/json",
                     "origin": "https://www.gaokao.cn",
                     "referer": "https://www.gaokao.cn/",
-                    "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"
+                    "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+                    "cookie": cookie  # 添加Cookie
                 },
                 timeout=15
             )
             
-            print(f"[DEBUG] 实际请求URL: {response.url}")
-            print(f"[DEBUG] 响应状态: {response.status_code}")
-            
             if response.status_code == 200:
                 result = response.json()
-                print(f"[DEBUG] 响应code: {result.get('code')}, message: {result.get('message')}")
-                return result
+                if result.get('code') == 0:
+                    return result
+                else:
+                    print(f"⚠️  增强API返回错误: {result.get('message')}")
+                    return None
             else:
-                print(f"增强接口请求失败，状态码: {response.status_code}")
+                print(f"⚠️  增强接口请求失败，状态码: {response.status_code}")
                 
         except Exception as e:
-            print(f"增强接口请求出错: {str(e)}")
+            print(f"⚠️  增强接口请求出错: {str(e)}")
         
         return None
     
@@ -165,11 +142,9 @@ class SchoolCrawler(BaseCrawler):
                 time.sleep(1)
                 page += 1
             else:
-                error_msg = enhanced_data.get('message', '未知错误') if enhanced_data else '请求失败'
-                print(f"✗ 增强数据第 {page} 页：{error_msg}")
-                
                 if page == 1:
-                    print("\n[提示] 增强数据获取失败，将只保存基础数据")
+                    print("⚠️  增强数据获取失败，可能需要登录Cookie")
+                    print("    设置方法：export GAOKAO_COOKIE='你的cookie字符串'")
                 break
         
         merged_count = 0
@@ -180,8 +155,7 @@ class SchoolCrawler(BaseCrawler):
                 merged_count += 1
         
         if merged_count > 0:
-            print(f"\n✓ 成功合并 {merged_count}/{len(schools_basic)} 所学校的增强数据")
-            print(f"  (增强数据库共{len(enhanced_dict)}所，基础数据{len(schools_basic)}所)\n")
+            print(f"\n✓ 成功合并 {merged_count}/{len(schools_basic)} 所学校的增强数据\n")
         
         return schools_basic
     
