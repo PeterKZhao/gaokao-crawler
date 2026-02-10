@@ -3,6 +3,7 @@ import os
 import hashlib
 import hmac
 import base64
+from urllib.parse import quote
 from .base import BaseCrawler
 
 class SchoolCrawler(BaseCrawler):
@@ -15,22 +16,28 @@ class SchoolCrawler(BaseCrawler):
         secret = "D23ABC@#56"
         
         # 1. 过滤空参数并按字母排序
-        filtered = {k: v for k, v in params.items() if v}
+        filtered = {k: v for k, v in params.items() if v and k != 'signsafe'}
         sorted_keys = sorted(filtered.keys())
+        
+        # 2. 构建查询字符串（不包含signsafe）
         query_string = '&'.join([f"{k}={filtered[k]}" for k in sorted_keys])
         
-        # 2. HmacSHA1
+        print(f"[DEBUG] 待签名字符串: {query_string}")
+        
+        # 3. HmacSHA1
         hmac_result = hmac.new(
             secret.encode('utf-8'),
             query_string.encode('utf-8'),
             hashlib.sha1
         ).digest()
         
-        # 3. Base64编码
+        # 4. Base64编码
         base64_result = base64.b64encode(hmac_result).decode('utf-8')
         
-        # 4. MD5
+        # 5. MD5
         final_signature = hashlib.md5(base64_result.encode('utf-8')).hexdigest()
+        
+        print(f"[DEBUG] 生成签名: {final_signature}")
         
         return final_signature
     
@@ -46,11 +53,11 @@ class SchoolCrawler(BaseCrawler):
         # 检查返回数据的类型
         if data and 'data' in data:
             detail = data['data']
-            # 确保返回的是字典类型
+            # 如果是字符串，可能是加密的，暂时跳过
             if isinstance(detail, dict):
                 return detail
-            else:
-                print(f"⚠️  学校 {school_id} 详情返回类型异常: {type(detail)}")
+            elif isinstance(detail, str):
+                # 数据可能被加密了，暂时返回None
                 return None
         return None
     
@@ -60,7 +67,7 @@ class SchoolCrawler(BaseCrawler):
         """
         enhanced_url = "https://api-gaokao.zjzw.cn/apidata/web"
         
-        # 构建参数
+        # 构建参数 - 注意：所有值都转为字符串
         params = {
             "autosign": "",
             "keyword": "",
@@ -73,18 +80,20 @@ class SchoolCrawler(BaseCrawler):
             "size": str(size),
             "spe_ids": "",
             "top_school_id": "",
-            "uri": "v1/school/lists",
+            "uri": "v1/school/lists"
         }
         
         # 生成签名
         signsafe = self.generate_signsafe(params)
+        
+        # 将签名添加到参数中
         params["signsafe"] = signsafe
         
         try:
+            # POST请求，参数在URL中
             response = self.session.post(
                 enhanced_url,
                 params=params,
-                json={},
                 headers={
                     "accept": "application/json, text/plain, */*",
                     "accept-language": "zh-CN,zh;q=0.9",
@@ -96,8 +105,13 @@ class SchoolCrawler(BaseCrawler):
                 timeout=15
             )
             
+            print(f"[DEBUG] 请求URL: {response.url}")
+            print(f"[DEBUG] 响应状态: {response.status_code}")
+            
             if response.status_code == 200:
-                return response.json()
+                result = response.json()
+                print(f"[DEBUG] 响应: {result}")
+                return result
             else:
                 print(f"增强接口请求失败，状态码: {response.status_code}")
                 
@@ -148,6 +162,10 @@ class SchoolCrawler(BaseCrawler):
             else:
                 error_msg = enhanced_data.get('message', '未知错误') if enhanced_data else '请求失败'
                 print(f"✗ 增强数据第 {page} 页：{error_msg}")
+                
+                # 只在第一页失败时中断
+                if page == 1:
+                    print("\n[提示] 增强数据获取失败，将只保存基础数据")
                 break
         
         # 合并数据
@@ -158,17 +176,15 @@ class SchoolCrawler(BaseCrawler):
                 school.update(enhanced_dict[school_id])
                 merged_count += 1
         
-        print(f"\n✓ 成功合并 {merged_count}/{len(schools_basic)} 所学校的增强数据")
-        print(f"  (增强数据库共{len(enhanced_dict)}所，基础数据{len(schools_basic)}所)\n")
+        if merged_count > 0:
+            print(f"\n✓ 成功合并 {merged_count}/{len(schools_basic)} 所学校的增强数据")
+            print(f"  (增强数据库共{len(enhanced_dict)}所，基础数据{len(schools_basic)}所)\n")
         
         return schools_basic
     
     def crawl(self, max_pages=None, fetch_detail=True, fetch_enhanced=True):
         """
         爬取学校列表
-        :param max_pages: 最大页数
-        :param fetch_detail: 是否获取详细信息
-        :param fetch_enhanced: 是否获取增强数据（label_list等新字段）
         """
         if max_pages is None:
             max_pages = int(os.getenv('MAX_PAGES', '10'))
@@ -235,7 +251,6 @@ class SchoolCrawler(BaseCrawler):
                     
                     if fetch_detail and school_id:
                         detail = self.get_school_detail(school_id)
-                        # 确保detail是字典类型才进行更新
                         if detail and isinstance(detail, dict):
                             school_info.update({
                                 'logo': detail.get('logo'),
