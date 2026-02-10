@@ -22,7 +22,7 @@ on:
         options:
           - 'true'
           - 'false'
-        default: 'false'
+        default: 'true'
       fetch_enhanced:
         description: '获取增强数据（需要Cookie）'
         required: true
@@ -30,7 +30,7 @@ on:
         options:
           - 'true'
           - 'false'
-        default: 'false'
+        default: 'true'
       crawl_majors:
         description: '爬取专业数据'
         required: true
@@ -38,7 +38,7 @@ on:
         options:
           - 'true'
           - 'false'
-        default: 'false'
+        default: 'true'
       crawl_scores:
         description: '爬取分数线数据'
         required: true
@@ -46,7 +46,7 @@ on:
         options:
           - 'true'
           - 'false'
-        default: 'false'
+        default: 'true'
       sample_schools:
         description: '爬取分数线的学校数量'
         required: false
