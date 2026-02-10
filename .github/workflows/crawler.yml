@@ -81,8 +81,11 @@ jobs:
       env:
         MAX_PAGES: ${{ github.event.inputs.max_school_pages }}
         FETCH_DETAIL: ${{ github.event.inputs.fetch_school_detail }}
-        FETCH_ENHANCED: ${{ github.event.inputs.fetch_enhanced }}
+        FETCH_ENHANCED: "true"
+        ENHANCED_SIGNSAFE_MAP: ${{ secrets.ENHANCED_SIGNSAFE_MAP }}
+        ENHANCED_LOCAL_TYPE_ID: "2073"
       run: python -m crawlers.schools
+
     
     - name: 爬取专业数据
       if: ${{ github.event.inputs.crawl_majors == 'true' }}
