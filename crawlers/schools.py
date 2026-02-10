@@ -3,7 +3,6 @@ import os
 import hashlib
 import hmac
 import base64
-from urllib.parse import quote
 from .base import BaseCrawler
 
 class SchoolCrawler(BaseCrawler):
@@ -15,12 +14,11 @@ class SchoolCrawler(BaseCrawler):
         """
         secret = "D23ABC@#56"
         
-        # 1. 过滤空参数并按字母排序
-        filtered = {k: v for k, v in params.items() if v and k != 'signsafe'}
-        sorted_keys = sorted(filtered.keys())
+        # 1. 按字母排序（保留所有参数，包括空值）
+        sorted_keys = sorted(params.keys())
         
-        # 2. 构建查询字符串（不包含signsafe）
-        query_string = '&'.join([f"{k}={filtered[k]}" for k in sorted_keys])
+        # 2. 构建查询字符串（包含空值）
+        query_string = '&'.join([f"{k}={params[k]}" for k in sorted_keys])
         
         print(f"[DEBUG] 待签名字符串: {query_string}")
         
@@ -50,25 +48,21 @@ class SchoolCrawler(BaseCrawler):
         
         data = self.make_request(payload, retry=2)
         
-        # 检查返回数据的类型
         if data and 'data' in data:
             detail = data['data']
-            # 如果是字符串，可能是加密的，暂时跳过
             if isinstance(detail, dict):
                 return detail
-            elif isinstance(detail, str):
-                # 数据可能被加密了，暂时返回None
-                return None
         return None
     
     def get_enhanced_school_list(self, page=1, size=20, local_type_id=""):
         """
         获取增强版学校列表（包含label_list等新字段）
         """
-        enhanced_url = "https://api-gaokao.zjzw.cn/apidata/web"
+        # 手动构建URL，避免自动编码问题
+        base_url = "https://api-gaokao.zjzw.cn/apidata/web"
         
-        # 构建参数 - 注意：所有值都转为字符串
-        params = {
+        # 构建参数字典用于签名（不包含signsafe）
+        params_for_sign = {
             "autosign": "",
             "keyword": "",
             "local_type_id": str(local_type_id) if local_type_id else "",
@@ -84,16 +78,27 @@ class SchoolCrawler(BaseCrawler):
         }
         
         # 生成签名
-        signsafe = self.generate_signsafe(params)
+        signsafe = self.generate_signsafe(params_for_sign)
         
-        # 将签名添加到参数中
-        params["signsafe"] = signsafe
+        # 手动构建URL，保持斜杠不被编码
+        sorted_keys = sorted(params_for_sign.keys())
+        query_parts = []
+        for k in sorted_keys:
+            # 对于uri参数，不编码斜杠
+            if k == 'uri':
+                query_parts.append(f"{k}={params_for_sign[k]}")
+            else:
+                query_parts.append(f"{k}={params_for_sign[k]}")
+        
+        query_parts.append(f"signsafe={signsafe}")
+        full_url = f"{base_url}?{'&'.join(query_parts)}"
+        
+        print(f"[DEBUG] 完整URL: {full_url}")
         
         try:
-            # POST请求，参数在URL中
+            # 直接使用完整URL发送POST请求
             response = self.session.post(
-                enhanced_url,
-                params=params,
+                full_url,
                 headers={
                     "accept": "application/json, text/plain, */*",
                     "accept-language": "zh-CN,zh;q=0.9",
@@ -105,12 +110,12 @@ class SchoolCrawler(BaseCrawler):
                 timeout=15
             )
             
-            print(f"[DEBUG] 请求URL: {response.url}")
+            print(f"[DEBUG] 实际请求URL: {response.url}")
             print(f"[DEBUG] 响应状态: {response.status_code}")
             
             if response.status_code == 200:
                 result = response.json()
-                print(f"[DEBUG] 响应: {result}")
+                print(f"[DEBUG] 响应code: {result.get('code')}, message: {result.get('message')}")
                 return result
             else:
                 print(f"增强接口请求失败，状态码: {response.status_code}")
@@ -163,12 +168,10 @@ class SchoolCrawler(BaseCrawler):
                 error_msg = enhanced_data.get('message', '未知错误') if enhanced_data else '请求失败'
                 print(f"✗ 增强数据第 {page} 页：{error_msg}")
                 
-                # 只在第一页失败时中断
                 if page == 1:
                     print("\n[提示] 增强数据获取失败，将只保存基础数据")
                 break
         
-        # 合并数据
         merged_count = 0
         for school in schools_basic:
             school_id = school.get('school_id')
@@ -183,9 +186,7 @@ class SchoolCrawler(BaseCrawler):
         return schools_basic
     
     def crawl(self, max_pages=None, fetch_detail=True, fetch_enhanced=True):
-        """
-        爬取学校列表
-        """
+        """爬取学校列表"""
         if max_pages is None:
             max_pages = int(os.getenv('MAX_PAGES', '10'))
         
@@ -256,37 +257,9 @@ class SchoolCrawler(BaseCrawler):
                                 'logo': detail.get('logo'),
                                 'img': detail.get('img'),
                                 'address': detail.get('address'),
-                                'postcode': detail.get('postcode'),
                                 'phone': detail.get('phone'),
                                 'email': detail.get('email'),
                                 'website': detail.get('site'),
-                                'tags': detail.get('tags'),
-                                'feature': detail.get('feature'),
-                                'school_feature': detail.get('school_feature'),
-                                'academician': detail.get('academician'),
-                                'national_feature': detail.get('national_feature'),
-                                'key_discipline': detail.get('key_discipline'),
-                                'master_degree': detail.get('master_degree'),
-                                'doctor_degree': detail.get('doctor_degree'),
-                                'recruit': detail.get('recruit'),
-                                'admission_brochure': detail.get('admissions_brochure'),
-                                'history': detail.get('content'),
-                                'found_time': detail.get('create_date'),
-                                'area': detail.get('area'),
-                                'student_num': detail.get('student_num'),
-                                'teacher_num': detail.get('teacher_num'),
-                                'motto': detail.get('motto'),
-                                'anniversary': detail.get('anniversary'),
-                                'old_name': detail.get('old_name'),
-                                'dorm_condition': detail.get('dorm_condition'),
-                                'canteen_condition': detail.get('canteen_condition'),
-                                'is_985': detail.get('f985'),
-                                'is_211': detail.get('f211'),
-                                'is_double_first_class': detail.get('dual_class'),
-                                'has_graduate_school': detail.get('graduate_school'),
-                                'has_independent_enrollment': detail.get('independent_enrollment'),
-                                'subject_evaluate': detail.get('subject_evaluate'),
-                                'dual_class_disciplines': detail.get('dual_class_name_dict'),
                             })
                             time.sleep(0.5)
                     
@@ -315,7 +288,7 @@ if __name__ == "__main__":
     import sys
     
     max_pages = int(sys.argv[1]) if len(sys.argv) > 1 else 5
-    fetch_detail = sys.argv[2].lower() == 'true' if len(sys.argv) > 2 else True
+    fetch_detail = sys.argv[2].lower() == 'true' if len(sys.argv) > 2 else False
     fetch_enhanced = sys.argv[3].lower() == 'true' if len(sys.argv) > 3 else True
     
     crawler = SchoolCrawler()
