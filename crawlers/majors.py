@@ -119,17 +119,36 @@ class MajorCrawler(BaseCrawler):
                 print(f"   {'─'*55}\n")
                 self._first_logged = True
             
-            # 处理每个专业
+            # 处理每个专业 - 保存完整字段
             for item in items:
                 major_info = {
-                    'special_id': item.get('special_id') or item.get('id'),
-                    'code': item.get('code') or item.get('special_code'),
-                    'name': item.get('name') or item.get('special_name'),
-                    'level1_name': item.get('level1_name'),
-                    'level2_name': item.get('level2_name'),
-                    'level3_name': item.get('level3_name'),
+                    # 基础标识
+                    'special_id': item.get('special_id'),
+                    'code': item.get('spcode'),  # ⭐ 修正：使用spcode而不是code
+                    'name': item.get('name'),
+                    
+                    # 分类信息
+                    'level1_name': item.get('level1_name'),  # 学历层次
+                    'level2_name': item.get('level2_name'),  # 学科门类
+                    'level3_name': item.get('level3_name'),  # 专业类别
+                    
+                    # 学位学制
                     'degree': item.get('degree'),
-                    'years': item.get('years') or item.get('limit_year')
+                    'years': item.get('limit_year'),
+                    
+                    # 薪资数据 ⭐⭐⭐
+                    'salary_avg': item.get('salaryavg'),      # 平均年薪
+                    'salary_5year': item.get('fivesalaryavg'), # 5年后月薪
+                    
+                    # 性别比例 ⭐⭐
+                    'boy_rate': item.get('boy_rate'),
+                    'girl_rate': item.get('girl_rate'),
+                    
+                    # 热度数据 ⭐
+                    'rank': item.get('rank'),                 # 热度排名
+                    'view_total': item.get('view_total'),     # 总浏览量
+                    'view_month': item.get('view_month'),     # 月浏览量
+                    'view_week': item.get('view_week'),       # 周浏览量
                 }
                 majors.append(major_info)
             
@@ -152,7 +171,11 @@ class MajorCrawler(BaseCrawler):
             print(f"   字段数: {len(majors[0].keys())}")
             # 统计专业分类
             level1_set = set(m.get('level1_name') for m in majors if m.get('level1_name'))
-            print(f"   学科门类: {len(level1_set)} 个")
+            print(f"   学历层次: {len(level1_set)} 个")
+            
+            # 统计有薪资数据的专业
+            has_salary = sum(1 for m in majors if m.get('salary_avg'))
+            print(f"   有薪资数据: {has_salary} 个 ({has_salary*100//len(majors)}%)")
         print(f"{'='*60}\n")
         
         return majors
