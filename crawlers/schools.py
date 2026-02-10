@@ -144,7 +144,7 @@ class SchoolCrawler(BaseCrawler):
                 
                 print(f"✓ 增强数据第 {page} 页：获取 {len(items)} 所学校（累计{total_fetched}所）")
                 page += 1
-                self.polite_sleep()
+                self.polite_sleep(3.0, 6.0)
             else:
                 if page == 1 and not os.getenv('GAOKAO_COOKIE'):
                     print("\n💡 提示：增强数据需要Cookie")
@@ -234,13 +234,13 @@ class SchoolCrawler(BaseCrawler):
                             'email': detail.get('email'),
                             'website': detail.get('site'),
                         })
-                        self.polite_sleep(0.3, 0.7)
+                        self.polite_sleep(1.0, 2.0)
                 
                 schools.append(school_info)
             
             print(f"✓ 第 {page} 页：获取 {len(items)} 所学校" + 
                   (" (含详情)" if fetch_detail else ""))
-            self.polite_sleep()
+            self.polite_sleep(3.0, 6.0)
         
         # 合并增强数据
         if fetch_enhanced and schools:
