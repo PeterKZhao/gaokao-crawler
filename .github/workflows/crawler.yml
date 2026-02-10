@@ -67,6 +67,7 @@ jobs:
       uses: actions/setup-python@v4
       with:
         python-version: '3.10'
+        cache: 'pip'
         
     - name: 安装依赖
       run: |
@@ -75,19 +76,6 @@ jobs:
         
     - name: 创建数据目录
       run: mkdir -p data
-    
-    # 添加调试步骤
-    - name: 检查Cookie Secret
-      if: ${{ github.event.inputs.crawl_schools == 'true' && github.event.inputs.fetch_enhanced == 'true' }}
-      run: |
-        if [ -z "${{ secrets.GAOKAO_COOKIE }}" ]; then
-          echo "⚠️  GAOKAO_COOKIE Secret未设置或为空"
-          echo "请在 Settings -> Secrets and variables -> Actions 中添加 GAOKAO_COOKIE"
-        else
-          echo "✓ GAOKAO_COOKIE Secret已设置（长度: ${#GAOKAO_COOKIE}）"
-        fi
-      env:
-        GAOKAO_COOKIE: ${{ secrets.GAOKAO_COOKIE }}
     
     - name: 爬取学校数据
       if: ${{ github.event.inputs.crawl_schools == 'true' }}
@@ -111,7 +99,7 @@ jobs:
     - name: 提交并推送更改
       uses: stefanzweifel/git-auto-commit-action@v5
       with:
-        commit_message: 更新数据 ${{ github.run_number }}
+        commit_message: '🤖 更新数据 #${{ github.run_number }}'
         file_pattern: 'data/*.json'
         commit_user_name: GitHub Action
         commit_user_email: action@github.com
