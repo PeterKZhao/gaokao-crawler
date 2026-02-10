@@ -57,6 +57,10 @@ class SchoolCrawler(BaseCrawler):
         
         # 从环境变量获取Cookie
         cookie = os.getenv('GAOKAO_COOKIE', '')
+
+        # 调试信息
+        print(f"[DEBUG] GAOKAO_COOKIE长度: {len(cookie)}")
+        print(f"[DEBUG] GAOKAO_COOKIE前50字符: {cookie[:50] if cookie else '(空)'}")
         
         # 构建参数
         params_for_sign = {
