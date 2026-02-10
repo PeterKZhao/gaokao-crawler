@@ -29,7 +29,13 @@ class BaseCrawler:
                 )
                 
                 if response.status_code == 200:
-                    return response.json()
+                    try:
+                        return response.json()
+                    except json.JSONDecodeError as e:
+                        print(f"⚠️  JSON解析失败: {str(e)}")
+                        print(f"   响应内容类型: {response.headers.get('content-type')}")
+                        print(f"   响应前200字符: {response.text[:200]}")
+                        return None
                 else:
                     print(f"⚠️  请求失败，状态码: {response.status_code}")
                     
