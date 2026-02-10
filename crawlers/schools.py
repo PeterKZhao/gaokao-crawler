@@ -28,6 +28,8 @@ class SchoolCrawler(BaseCrawler):
     
     def get_school_detail(self, school_id):
         """获取学校详细信息（通过API）"""
+        print(f"\n📡 [接口2-详情] school_id={school_id}")
+        
         payload = {
             "school_id": school_id,
             "uri": "apidata/api/gkv3/school/detail"
@@ -35,98 +37,123 @@ class SchoolCrawler(BaseCrawler):
         
         data = self.make_request(payload, retry=2)
         
-        # 调试输出 - 打印API返回的所有字段
-        if data and 'data' in data and isinstance(data['data'], dict) and not hasattr(self, '_detail_debug_printed'):
-            print(f"\n🔍 API详情接口返回的字段:")
-            print(f"   字段列表: {list(data['data'].keys())}")
-            # 检查是否有content相关字段
-            for key in data['data'].keys():
-                if 'content' in key.lower() or 'intro' in key.lower() or 'desc' in key.lower():
-                    value = data['data'][key]
-                    preview = str(value)[:150] if value else "空"
-                    print(f"   >>> 发现 '{key}': {preview}...")
-            self._detail_debug_printed = True
-        
         if data and 'data' in data and isinstance(data['data'], dict):
-            return data['data']
-        return None
+            detail_data = data['data']
+            fields = list(detail_data.keys())
+            print(f"   ✓ 返回字段({len(fields)}个): {', '.join(fields[:10])}{'...' if len(fields) > 10 else ''}")
+            
+            # 查找content相关字段
+            content_fields = [k for k in fields if 'content' in k.lower() or 'intro' in k.lower() or 'desc' in k.lower()]
+            if content_fields:
+                for key in content_fields:
+                    value = detail_data[key]
+                    preview = str(value)[:80] if value else "空"
+                    print(f"   >>> 发现 '{key}': {preview}...")
+            else:
+                print(f"   ⚠️  无content/intro相关字段")
+            
+            return detail_data
+        else:
+            print(f"   ✗ 请求失败或无数据")
+            return None
     
     def get_school_static_info(self, school_id):
         """获取学校完整静态信息（包含介绍、邮箱等）"""
-        # 尝试多个可能的URL
         urls = [
             f"https://static-data.gaokao.cn/www/2.0/school/{school_id}/info.json",
             f"https://static-data.gaokao.cn/www/2.0/school/{school_id}/info.json?a=www.gaokao.cn",
         ]
         
-        for url_idx, url in enumerate(urls):
+        for url_idx, url in enumerate(urls, 1):
+            print(f"\n📡 [接口3-静态] URL{url_idx} school_id={school_id}")
+            print(f"   请求: {url}")
+            
             try:
                 response = self.session.get(url, timeout=10)
+                print(f"   状态码: {response.status_code}")
+                
                 if response.status_code == 200:
                     result = response.json()
+                    code = result.get('code')
+                    print(f"   业务码: {code}")
                     
-                    # 调试输出 - 打印静态接口返回的所有数据
-                    if not hasattr(self, '_static_debug_printed'):
-                        print(f"\n🔍 静态接口 URL{url_idx+1} 返回数据:")
-                        print(f"   完整响应: {json.dumps(result, ensure_ascii=False, indent=2)}...\n")
+                    if code == 0 and 'data' in result:
+                        static_data = result['data']
                         
-                        if result.get('code') == 0 and 'data' in result:
-                            print(f"   data字段类型: {type(result['data'])}")
-                            if isinstance(result['data'], dict):
-                                print(f"   所有字段: {list(result['data'].keys())}")
-                                # 查找包含content/intro的字段
-                                for key, value in result['data'].items():
-                                    if 'content' in key.lower() or 'intro' in key.lower() or 'desc' in key.lower():
-                                        preview = str(value)[:150] if value else "空"
-                                        print(f"   >>> 发现 '{key}': {preview}...")
-                            elif isinstance(result['data'], list):
-                                print(f"   data是列表，长度: {len(result['data'])}")
+                        if isinstance(static_data, dict):
+                            fields = list(static_data.keys())
+                            print(f"   ✓ 返回字段({len(fields)}个): {', '.join(fields[:15])}{'...' if len(fields) > 15 else ''}")
+                            
+                            # 查找content相关字段
+                            content_fields = [k for k in fields if 'content' in k.lower() or 'intro' in k.lower() or 'desc' in k.lower()]
+                            if content_fields:
+                                for key in content_fields:
+                                    value = static_data[key]
+                                    preview = str(value)[:80] if value else "空"
+                                    print(f"   >>> 发现 '{key}': {preview}...")
+                            else:
+                                print(f"   ⚠️  无content/intro相关字段")
+                            
+                            return static_data
+                        elif isinstance(static_data, list):
+                            print(f"   ⚠️  data是列表，长度: {len(static_data)}")
                         else:
-                            print(f"   错误码: {result.get('code')}, 消息: {result.get('message')}")
-                        
-                        self._static_debug_printed = True
-                    
-                    if result.get('code') == 0 and 'data' in result:
-                        return result['data']
+                            print(f"   ⚠️  data类型异常: {type(static_data)}")
+                    else:
+                        print(f"   ✗ 错误: {result.get('message', '未知错误')}")
                         
             except Exception as e:
-                print(f"⚠️  URL{url_idx+1} 获取失败: {str(e)}")
+                print(f"   ✗ 异常: {str(e)}")
         
         return None
     
     def get_school_content_alternative(self, school_id):
         """尝试其他可能的接口获取学校介绍"""
         alternative_urls = [
-            f"https://static-data.gaokao.cn/www/2.0/schoolSpecial/{school_id}/pc_special.json",
-            f"https://static-data.gaokao.cn/www/2.0/schoolInfo/{school_id}/info.json",
+            ("pc_special", f"https://static-data.gaokao.cn/www/2.0/schoolSpecial/{school_id}/pc_special.json"),
+            ("schoolInfo", f"https://static-data.gaokao.cn/www/2.0/schoolInfo/{school_id}/info.json"),
         ]
         
-        for url in alternative_urls:
+        for name, url in alternative_urls:
+            print(f"\n📡 [接口4-备用{name}] school_id={school_id}")
+            print(f"   请求: {url}")
+            
             try:
                 response = self.session.get(url, timeout=10)
+                print(f"   状态码: {response.status_code}")
+                
                 if response.status_code == 200:
                     result = response.json()
+                    code = result.get('code')
+                    print(f"   业务码: {code}")
                     
-                    # 调试输出
-                    if not hasattr(self, '_alt_debug_printed'):
-                        print(f"\n🔍 备用接口 {url} 返回:")
-                        print(f"   响应片段: {json.dumps(result, ensure_ascii=False)}...\n")
-                        self._alt_debug_printed = True
-                    
-                    if result.get('code') == 0 and 'data' in result:
+                    if code == 0 and 'data' in result:
                         data = result['data']
                         if isinstance(data, dict):
+                            fields = list(data.keys())
+                            print(f"   ✓ 返回字段({len(fields)}个): {', '.join(fields[:10])}{'...' if len(fields) > 10 else ''}")
+                            
                             # 查找content相关字段
                             for key in ['content', 'intro', 'introduction', 'school_intro', 'description']:
                                 if key in data and data[key]:
+                                    preview = str(data[key])[:80]
+                                    print(f"   >>> 发现 '{key}': {preview}...")
                                     return data[key]
-            except:
-                continue
+                        else:
+                            print(f"   ⚠️  data类型: {type(data)}")
+                    else:
+                        print(f"   ✗ 错误: {result.get('message', '未知错误')}")
+                else:
+                    print(f"   ✗ HTTP错误")
+            except Exception as e:
+                print(f"   ✗ 异常: {str(e)}")
         
         return None
 
     def get_enhanced_school_list(self, page=1, size=20):
         """获取增强版学校列表"""
+        print(f"\n📡 [接口5-增强列表] page={page}, size={size}")
+        
         base_url = "https://api-gaokao.zjzw.cn/apidata/web"
         cookie = os.getenv('GAOKAO_COOKIE', '')
         
@@ -172,6 +199,9 @@ class SchoolCrawler(BaseCrawler):
         headers = self.headers.copy()
         if cookie:
             headers["cookie"] = cookie
+            print(f"   使用Cookie: {cookie[:30]}...")
+        else:
+            print(f"   未配置Cookie")
         
         try:
             response = self.session.post(
@@ -181,17 +211,30 @@ class SchoolCrawler(BaseCrawler):
                 timeout=15
             )
             
+            print(f"   状态码: {response.status_code}")
+            
             if response.status_code == 200:
                 result = response.json()
-                if result.get('code') == 0:
+                code = result.get('code')
+                print(f"   业务码: {code}")
+                
+                if code == 0:
+                    items = result.get('data', {}).get('item', [])
+                    print(f"   ✓ 获取 {len(items)} 所学校")
+                    if items:
+                        sample = items[0]
+                        fields = list(sample.keys())
+                        print(f"   字段示例: {', '.join(fields[:10])}{'...' if len(fields) > 10 else ''}")
                     return result
-                elif result.get('code') == 1010001 and not cookie:
-                    print(f"⚠️  增强API需要Cookie认证")
+                elif code == 1010001:
+                    print(f"   ✗ 需要Cookie认证")
                 else:
-                    print(f"⚠️  API返回错误: code={result.get('code')}, message={result.get('message')}")
+                    print(f"   ✗ 错误: {result.get('message', '未知错误')}")
+            else:
+                print(f"   ✗ HTTP错误")
             
         except Exception as e:
-            print(f"⚠️  增强数据请求失败: {str(e)}")
+            print(f"   ✗ 异常: {str(e)}")
         
         return None
     
@@ -200,8 +243,8 @@ class SchoolCrawler(BaseCrawler):
         enhanced_dict = {}
         
         print(f"\n{'='*60}")
-        print(f"开始获取增强版学校数据...")
-        print(f"{'='*60}\n")
+        print(f"开始获取增强版学校数据（最多{max_pages}页）")
+        print(f"{'='*60}")
         
         page = 1
         total_fetched = 0
@@ -213,7 +256,7 @@ class SchoolCrawler(BaseCrawler):
                 items = enhanced_data.get('data', {}).get('item', [])
                 
                 if not items:
-                    print(f"✓ 增强数据第 {page} 页无数据")
+                    print(f"   第 {page} 页无数据，停止")
                     break
                 
                 for item in items:
@@ -228,15 +271,14 @@ class SchoolCrawler(BaseCrawler):
                         }
                         total_fetched += 1
                 
-                print(f"✓ 增强数据第 {page} 页：获取 {len(items)} 所学校（累计{total_fetched}所）")
                 page += 1
                 self.polite_sleep(3.0, 6.0)
             else:
                 if page == 1 and not os.getenv('GAOKAO_COOKIE'):
-                    print("\n💡 提示：增强数据需要Cookie")
-                    print("   1. 访问 www.gaokao.cn 并登录")
-                    print("   2. F12 控制台输入: document.cookie")
-                    print("   3. 设置环境变量: export GAOKAO_COOKIE='你的cookie'\n")
+                    print(f"\n💡 提示：增强数据需要Cookie")
+                    print(f"   1. 访问 www.gaokao.cn 并登录")
+                    print(f"   2. F12 控制台输入: document.cookie")
+                    print(f"   3. 设置 GitHub Secret: GAOKAO_COOKIE\n")
                 break
         
         # 合并数据
@@ -247,8 +289,7 @@ class SchoolCrawler(BaseCrawler):
                 school.update(enhanced_dict[school_id])
                 merged_count += 1
         
-        if merged_count > 0:
-            print(f"\n✓ 成功合并 {merged_count}/{len(schools_basic)} 所学校的增强数据\n")
+        print(f"\n✓ 成功合并 {merged_count}/{len(schools_basic)} 所学校的增强数据")
         
         return schools_basic
     
@@ -265,9 +306,11 @@ class SchoolCrawler(BaseCrawler):
         print(f"详细信息: {'✓' if fetch_detail else '✗'} | "
               f"增强数据: {'✓' if fetch_enhanced else '✗'} | "
               f"完整信息: {'✓' if fetch_static_info else '✗'}")
-        print(f"{'='*60}\n")
+        print(f"{'='*60}")
         
         for page in range(1, max_pages + 1):
+            print(f"\n📡 [接口1-基础列表] page={page}, size=20")
+            
             payload = {
                 "keyword": "",
                 "page": page,
@@ -282,20 +325,26 @@ class SchoolCrawler(BaseCrawler):
             data = self.make_request(payload)
             
             if not data or 'data' not in data or 'item' not in data['data']:
-                print(f"✗ 第 {page} 页：请求失败")
+                print(f"   ✗ 请求失败")
                 break
             
             items = data['data']['item']
             if not items:
-                print(f"第 {page} 页无数据，停止爬取")
+                print(f"   ✗ 无数据，停止爬取")
                 break
             
-            for item in items:
+            print(f"   ✓ 获取 {len(items)} 所学校")
+            print(f"\n{'─'*60}")
+            
+            for idx, item in enumerate(items, 1):
                 school_id = item.get('school_id')
+                school_name = item.get('name')
+                
+                print(f"\n[{idx}/{len(items)}] 学校: {school_name} (ID:{school_id})")
                 
                 school_info = {
                     'school_id': school_id,
-                    'name': item.get('name'),
+                    'name': school_name,
                     'province': item.get('province_name'),
                     'city': item.get('city_name'),
                     'county': item.get('county_name'),
@@ -365,13 +414,8 @@ class SchoolCrawler(BaseCrawler):
                 
                 schools.append(school_info)
             
-            info_str = ""
-            if fetch_detail:
-                info_str += "(含详情)"
-            if fetch_static_info:
-                info_str += "(含完整信息)"
-            
-            print(f"✓ 第 {page} 页：获取 {len(items)} 所学校 {info_str}")
+            print(f"\n{'─'*60}")
+            print(f"✓ 第 {page} 页完成")
             self.polite_sleep(3.0, 6.0)
         
         # 合并增强数据
@@ -379,17 +423,22 @@ class SchoolCrawler(BaseCrawler):
             enhanced_pages = max(max_pages, (len(schools) // 20) + 2)
             schools = self.merge_enhanced_data(schools, max_pages=enhanced_pages)
         
-        # 最终输出 - 显示第一所学校的完整数据用于调试
+        # 最终输出
         if schools:
             print(f"\n{'='*60}")
-            print(f"📊 第一所学校的完整数据（用于检查）:")
+            print(f"📊 第一所学校的完整数据:")
             print(f"{'='*60}")
-            print(json.dumps(schools[0], ensure_ascii=False, indent=2))
-            print(f"{'='*60}\n")
+            first_school = schools[0]
+            for key, value in first_school.items():
+                if isinstance(value, str) and len(value) > 100:
+                    print(f"  {key}: {value[:100]}...")
+                else:
+                    print(f"  {key}: {value}")
+            print(f"{'='*60}")
         
         self.save_to_json(schools, 'schools.json')
         print(f"\n{'='*60}")
-        print(f"学校爬取完成！共 {len(schools)} 所")
+        print(f"🎉 学校爬取完成！共 {len(schools)} 所")
         print(f"{'='*60}\n")
         
         return schools
