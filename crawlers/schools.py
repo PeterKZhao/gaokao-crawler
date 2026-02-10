@@ -8,6 +8,11 @@ from .base import BaseCrawler
 
 class SchoolCrawler(BaseCrawler):
     
+    def __init__(self):
+        super().__init__()
+        self._first_school_logged = False
+        self._api_fields_logged = False
+    
     def generate_signsafe(self, params):
         """生成signsafe签名"""
         secret = "D23ABC@#56"
@@ -26,16 +31,17 @@ class SchoolCrawler(BaseCrawler):
         
         return final_signature
     
-    def get_school_complete_info(self, school_id):
+    def get_school_complete_info(self, school_id, is_first=False):
         """获取学校完整信息（包含介绍、邮箱等所有数据）"""
-        print(f"\n📡 [接口2-完整信息] school_id={school_id}")
+        if is_first:
+            print(f"\n📡 [接口2-完整信息] school_id={school_id} (首次调用，显示完整字段)")
+        else:
+            print(f"\n📡 [接口2-完整信息] school_id={school_id}")
         
-        # 修复：使用GET请求，而不是POST
         url = f"https://static-data.gaokao.cn/www/2.0/school/{school_id}/info.json"
         print(f"   请求: {url}")
         
         try:
-            # 使用GET方法
             response = self.session.get(url, timeout=10)
             print(f"   状态码: {response.status_code}")
             
@@ -51,6 +57,26 @@ class SchoolCrawler(BaseCrawler):
                         fields = list(data.keys())
                         print(f"   ✓ 返回字段({len(fields)}个)")
                         
+                        # 首次调用显示所有字段
+                        if is_first:
+                            print(f"\n   {'─'*55}")
+                            print(f"   完整字段列表:")
+                            print(f"   {'─'*55}")
+                            for i, field in enumerate(fields, 1):
+                                value = data[field]
+                                value_type = type(value).__name__
+                                # 显示值的预览
+                                if value is None:
+                                    preview = "None"
+                                elif isinstance(value, str):
+                                    preview = f'"{value[:30]}..."' if len(value) > 30 else f'"{value}"'
+                                elif isinstance(value, (list, dict)):
+                                    preview = f"{value_type}({len(value)}项)"
+                                else:
+                                    preview = str(value)
+                                print(f"   {i:3}. {field:30} = {preview}")
+                            print(f"   {'─'*55}\n")
+                        
                         # 检查关键字段
                         has_content = 'content' in data
                         has_email = 'email' in data or 'emails' in data
@@ -60,7 +86,7 @@ class SchoolCrawler(BaseCrawler):
                         print(f"   >>> email: {'✓' if has_email else '✗'}")
                         print(f"   >>> site: {'✓' if has_site else '✗'}")
                         
-                        if has_content:
+                        if has_content and not is_first:
                             content_preview = data['content'][:80] if data['content'] else "空"
                             print(f"   >>> 内容预览: {content_preview}...")
                         
@@ -79,13 +105,12 @@ class SchoolCrawler(BaseCrawler):
 
     def get_enhanced_school_list(self, page=1, size=20):
         """获取增强版学校列表"""
-        if page == 1:  # 只在第一页打印日志头
+        if page == 1:
             print(f"\n📡 [接口3-增强列表] page={page}, size={size}")
         
         base_url = "https://api-gaokao.zjzw.cn/apidata/web"
         cookie = os.getenv('GAOKAO_COOKIE', '')
         
-        # 构建参数
         params = {
             "autosign": "",
             "keyword": "",
@@ -102,12 +127,9 @@ class SchoolCrawler(BaseCrawler):
         }
         
         signsafe = self.generate_signsafe(params)
-        
-        # 构建URL
         query_string = '&'.join([f"{k}={params[k]}" for k in sorted(params.keys())])
         full_url = f"{base_url}?{query_string}&signsafe={signsafe}"
         
-        # POST body（数字类型）
         post_body = {
             "autosign": "",
             "keyword": "",
@@ -155,6 +177,14 @@ class SchoolCrawler(BaseCrawler):
                     items = result.get('data', {}).get('item', [])
                     if page == 1:
                         print(f"   ✓ 第{page}页获取 {len(items)} 所学校")
+                        
+                        # 显示增强数据的字段
+                        if items:
+                            sample = items[0]
+                            fields = list(sample.keys())
+                            print(f"\n   增强数据字段({len(fields)}个):")
+                            print(f"   {', '.join(fields)}")
+                            print()
                     return result
                 elif code == 1010001:
                     if page == 1:
@@ -162,9 +192,6 @@ class SchoolCrawler(BaseCrawler):
                 else:
                     if page == 1:
                         print(f"   ✗ 错误: {result.get('message', '未知错误')}")
-            else:
-                if page == 1:
-                    print(f"   ✗ HTTP错误")
             
         except Exception as e:
             if page == 1:
@@ -205,7 +232,7 @@ class SchoolCrawler(BaseCrawler):
                         }
                         total_fetched += 1
                 
-                if page > 1:  # 第2页起显示进度
+                if page > 1:
                     print(f"   ✓ 第{page}页获取 {len(items)} 所学校（累计{total_fetched}所）")
                 
                 page += 1
@@ -269,13 +296,26 @@ class SchoolCrawler(BaseCrawler):
                 break
             
             print(f"   ✓ 获取 {len(items)} 所学校")
+            
+            # 首次显示基础列表字段
+            if page == 1 and items:
+                sample_fields = list(items[0].keys())
+                print(f"\n   基础列表字段({len(sample_fields)}个):")
+                print(f"   {', '.join(sample_fields)}")
+            
             print(f"\n{'─'*60}")
             
             for idx, item in enumerate(items, 1):
                 school_id = item.get('school_id')
                 school_name = item.get('name')
                 
-                print(f"\n[{idx}/{len(items)}] {school_name} (ID:{school_id})")
+                # 第一所学校详细显示，后续简略
+                is_first = (page == 1 and idx == 1)
+                
+                if is_first:
+                    print(f"\n[{idx}/{len(items)}] {school_name} (ID:{school_id}) ⭐首次详细显示")
+                else:
+                    print(f"\n[{idx}/{len(items)}] {school_name} (ID:{school_id})")
                 
                 school_info = {
                     'school_id': school_id,
@@ -295,37 +335,36 @@ class SchoolCrawler(BaseCrawler):
                     'view_total': item.get('view_total'),
                 }
                 
-                # 获取完整信息（包含content、email、website等）
+                # 获取完整信息
                 if fetch_complete_info and school_id:
-                    complete_info = self.get_school_complete_info(school_id)
+                    complete_info = self.get_school_complete_info(school_id, is_first=is_first)
                     if complete_info:
-                        # 提取所有有用的字段
+                        # 提取所有字段
                         school_info.update({
-                            'content': complete_info.get('content'),  # 学校介绍
-                            'email': complete_info.get('email'),  # 邮箱
-                            'school_email': complete_info.get('school_email'),  # 学校邮箱
-                            'site': complete_info.get('site'),  # 招生网
-                            'school_site': complete_info.get('school_site'),  # 官网
-                            'address': complete_info.get('address'),  # 地址
-                            'phone': complete_info.get('phone'),  # 电话
-                            'school_phone': complete_info.get('school_phone'),  # 学校电话
-                            'postcode': complete_info.get('postcode'),  # 邮编
-                            'logo': complete_info.get('logo'),  # logo
-                            'create_date': complete_info.get('create_date'),  # 创建年份
-                            'old_name': complete_info.get('old_name'),  # 曾用名
-                            'area': complete_info.get('area'),  # 占地面积
-                            'num_doctor': complete_info.get('num_doctor'),  # 博士点
-                            'num_master': complete_info.get('num_master'),  # 硕士点
-                            'num_subject': complete_info.get('num_subject'),  # 重点学科
-                            'num_academician': complete_info.get('num_academician'),  # 院士数
-                            'num_library': complete_info.get('num_library'),  # 图书馆藏书
-                            'recommend_master_rate': complete_info.get('recommend_master_rate'),  # 保研率
-                            'motto': complete_info.get('motto'),  # 校训
-                            'ruanke_rank': complete_info.get('ruanke_rank'),  # 软科排名
-                            'xyh_rank': complete_info.get('xyh_rank'),  # 校友会排名
-                            'wsl_rank': complete_info.get('wsl_rank'),  # 武书连排名
-                            'qs_rank': complete_info.get('qs_rank'),  # QS排名
-                            'us_rank': complete_info.get('us_rank'),  # US排名
+                            'content': complete_info.get('content'),
+                            'email': complete_info.get('email'),
+                            'school_email': complete_info.get('school_email'),
+                            'site': complete_info.get('site'),
+                            'school_site': complete_info.get('school_site'),
+                            'address': complete_info.get('address'),
+                            'phone': complete_info.get('phone'),
+                            'school_phone': complete_info.get('school_phone'),
+                            'postcode': complete_info.get('postcode'),
+                            'create_date': complete_info.get('create_date'),
+                            'old_name': complete_info.get('old_name'),
+                            'area': complete_info.get('area'),
+                            'num_doctor': complete_info.get('num_doctor'),
+                            'num_master': complete_info.get('num_master'),
+                            'num_subject': complete_info.get('num_subject'),
+                            'num_academician': complete_info.get('num_academician'),
+                            'num_library': complete_info.get('num_library'),
+                            'recommend_master_rate': complete_info.get('recommend_master_rate'),
+                            'motto': complete_info.get('motto'),
+                            'ruanke_rank': complete_info.get('ruanke_rank'),
+                            'xyh_rank': complete_info.get('xyh_rank'),
+                            'wsl_rank': complete_info.get('wsl_rank'),
+                            'qs_rank': complete_info.get('qs_rank'),
+                            'us_rank': complete_info.get('us_rank'),
                         })
                         
                         self.polite_sleep(2.0, 4.0)
@@ -341,25 +380,64 @@ class SchoolCrawler(BaseCrawler):
             enhanced_pages = max(max_pages, (len(schools) // 20) + 2)
             schools = self.merge_enhanced_data(schools, max_pages=enhanced_pages)
         
-        # 最终输出
+        # 分析字段重复情况
         if schools:
             print(f"\n{'='*60}")
-            print(f"📊 第一所学校的完整数据:")
+            print(f"📊 字段分析:")
             print(f"{'='*60}")
+            
             first_school = schools[0]
+            all_fields = list(first_school.keys())
             
-            # 显示关键字段
-            key_fields = ['school_id', 'name', 'content', 'email', 'site', 'school_site', 
-                         'address', 'phone', 'motto', 'rank']
-            for key in key_fields:
-                if key in first_school:
-                    value = first_school[key]
-                    if isinstance(value, str) and len(value) > 100:
-                        print(f"  {key}: {value[:100]}...")
-                    else:
-                        print(f"  {key}: {value}")
+            # 按来源分类字段
+            basic_fields = ['school_id', 'name', 'province', 'city', 'county', 'type', 
+                           'level', 'belong', 'rank', 'dual_class', 'f985', 'f211', 
+                           'is_dual_class', 'nature', 'view_total']
             
-            print(f"  ... (共{len(first_school)}个字段)")
+            enhanced_fields = ['label_list', 'recommend_master_level', 'is_top', 
+                              'attr_list', 'hightitle']
+            
+            complete_fields = [f for f in all_fields if f not in basic_fields and f not in enhanced_fields]
+            
+            print(f"\n来源1-基础列表 ({len(basic_fields)}个字段):")
+            print(f"  {', '.join(basic_fields)}")
+            
+            print(f"\n来源2-完整信息 ({len(complete_fields)}个字段):")
+            print(f"  {', '.join(complete_fields)}")
+            
+            print(f"\n来源3-增强数据 ({len(enhanced_fields)}个字段):")
+            print(f"  {', '.join(enhanced_fields)}")
+            
+            print(f"\n总计: {len(all_fields)} 个字段")
+            
+            # 检查重复字段
+            print(f"\n{'─'*60}")
+            print(f"重复字段检查:")
+            duplicates = []
+            for field in basic_fields:
+                if field in complete_fields:
+                    duplicates.append(field)
+            
+            if duplicates:
+                print(f"  ⚠️  发现 {len(duplicates)} 个重复字段: {', '.join(duplicates)}")
+            else:
+                print(f"  ✓ 无重复字段")
+            
+            # 打印第一所学校完整数据
+            print(f"\n{'='*60}")
+            print(f"📊 第一所学校完整数据 ({first_school['name']}):")
+            print(f"{'='*60}")
+            
+            for key, value in first_school.items():
+                if isinstance(value, str) and len(value) > 100:
+                    print(f"  {key}: {value[:100]}...")
+                elif isinstance(value, list):
+                    print(f"  {key}: [列表,{len(value)}项] {value[:3] if len(value) <= 3 else f'{value[:2]}...'}")
+                elif isinstance(value, dict):
+                    print(f"  {key}: {{字典,{len(value)}项}}")
+                else:
+                    print(f"  {key}: {value}")
+            
             print(f"{'='*60}")
         
         self.save_to_json(schools, 'schools.json')
