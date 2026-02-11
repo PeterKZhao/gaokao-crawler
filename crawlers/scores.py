@@ -49,14 +49,35 @@ class ScoreCrawler(BaseCrawler):
             try:
                 with open('data/schools.json', 'r', encoding='utf-8') as f:
                     schools_data = json.load(f)
+                    
+                    # 处理不同的数据结构
+                    if isinstance(schools_data, list):
+                        schools = schools_data
+                    elif isinstance(schools_data, dict):
+                        # 可能是 {'data': [...]} 或 直接是学校字典列表
+                        schools = schools_data.get('data', [])
+                        if not schools:
+                            schools = [schools_data]  # 单个学校
+                    else:
+                        print(f"⚠️  schools.json 数据格式错误: {type(schools_data)}")
+                        return []
+                    
                     sample_count = int(os.getenv('SAMPLE_SCHOOLS', '3'))
-                    school_ids = [s['school_id'] for s in schools_data[:sample_count] if s.get('school_id')]
+                    school_ids = [s['school_id'] for s in schools[:sample_count] if isinstance(s, dict) and s.get('school_id')]
+                    
+                    if not school_ids:
+                        print("⚠️  未找到有效的学校ID")
+                        return []
+                    
                     print(f"从 schools.json 读取到 {len(school_ids)} 所学校")
+                    
             except FileNotFoundError:
                 print("⚠️  未找到 schools.json，请先运行学校爬虫")
                 return []
             except Exception as e:
                 print(f"⚠️  读取 schools.json 失败: {e}")
+                import traceback
+                traceback.print_exc()
                 return []
         
         all_scores = []
@@ -92,36 +113,39 @@ class ScoreCrawler(BaseCrawler):
                         print(f"      首次响应数据结构:")
                         print(f"      {'─'*50}")
                         print(f"      data类型: {type(data).__name__}")
-                        print(f"      data包含键: {list(data.keys())}")
                         
-                        # 查找第一个有数据的类型
-                        sample_item = None
-                        for major_type, major_info in data.items():
-                            items = major_info.get('item', [])
-                            if items:
-                                sample_item = items[0]
-                                print(f"      招生类型: {major_type}")
-                                print(f"      该类型数据条数: {len(items)}")
-                                break
-                        
-                        if sample_item:
-                            fields = list(sample_item.keys())
-                            print(f"\n      分数线数据字段({len(fields)}个):")
-                            print(f"      {'─'*50}")
-                            for i, field in enumerate(fields, 1):
-                                value = sample_item[field]
-                                value_type = type(value).__name__
-                                # 显示值的预览
-                                if value is None:
-                                    preview = "None"
-                                elif isinstance(value, str):
-                                    preview = f'"{value[:25]}..."' if len(value) > 25 else f'"{value}"'
-                                elif isinstance(value, (list, dict)):
-                                    preview = f"{value_type}({len(value)}项)"
-                                else:
-                                    preview = str(value)
-                                print(f"      {i:2}. {field:25} = {preview}")
-                            print(f"      {'─'*50}\n")
+                        if isinstance(data, dict):
+                            print(f"      data包含键: {list(data.keys())}")
+                            
+                            # 查找第一个有数据的类型
+                            sample_item = None
+                            for major_type, major_info in data.items():
+                                if isinstance(major_info, dict):
+                                    items = major_info.get('item', [])
+                                    if items:
+                                        sample_item = items[0]
+                                        print(f"      招生类型: {major_type}")
+                                        print(f"      该类型数据条数: {len(items)}")
+                                        break
+                            
+                            if sample_item and isinstance(sample_item, dict):
+                                fields = list(sample_item.keys())
+                                print(f"\n      分数线数据字段({len(fields)}个):")
+                                print(f"      {'─'*50}")
+                                for i, field in enumerate(fields, 1):
+                                    value = sample_item[field]
+                                    value_type = type(value).__name__
+                                    # 显示值的预览
+                                    if value is None:
+                                        preview = "None"
+                                    elif isinstance(value, str):
+                                        preview = f'"{value[:25]}..."' if len(value) > 25 else f'"{value}"'
+                                    elif isinstance(value, (list, dict)):
+                                        preview = f"{value_type}({len(value)}项)"
+                                    else:
+                                        preview = str(value)
+                                    print(f"      {i:2}. {field:25} = {preview}")
+                                print(f"      {'─'*50}\n")
                         
                         self._first_logged = True
                     
@@ -132,9 +156,15 @@ class ScoreCrawler(BaseCrawler):
                     elif data and isinstance(data, dict):
                         # 遍历所有招生类型（普通类、中外合作等）
                         for major_type, major_info in data.items():
+                            if not isinstance(major_info, dict):
+                                continue
+                                
                             items = major_info.get('item', [])
                             
                             for item in items:
+                                if not isinstance(item, dict):
+                                    continue
+                                    
                                 score_info = {
                                     # 基础标识
                                     'school_id': school_id,
