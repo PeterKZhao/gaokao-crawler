@@ -71,7 +71,7 @@ jobs:
     - name: 提交并推送更改
       uses: stefanzweifel/git-auto-commit-action@v5
       with:
-        commit_message: '📊 更新招生计划数据 [${{ github.event.inputs.mode || 'scheduled' }}] #${{ github.run_number }}'
+        commit_message: '📊 更新招生计划数据 [${{ github.event.inputs.mode }}] #${{ github.run_number }}'
         file_pattern: 'data/plans.json'
         commit_user_name: GitHub Action
         commit_user_email: action@github.com
