@@ -1,0 +1,69 @@
+name: 爬取大学最低分数线
+
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: '爬取模式'
+        required: true
+        type: choice
+        options:
+          - 'test'    # 测试模式：10所学校
+          - 'sample'  # 样本模式：50所学校
+          - 'full'    # 完整模式：全部学校
+        default: 'test'
+  
+  schedule:
+    # 每年6月底（高考后）自动运行一次
+    - cron: '0 3 30 6 *'
+
+permissions:
+  contents: write
+
+jobs:
+  crawl:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: 检出代码
+      uses: actions/checkout@v3
+      
+    - name: 设置Python环境
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'
+        cache: 'pip'
+        
+    - name: 安装依赖
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        
+    - name: 创建数据目录
+      run: mkdir -p data
+    
+    - name: 爬取大学最低分数线（测试模式）
+      if: ${{ github.event.inputs.mode == 'test' || github.event.inputs.mode == '' }}
+      env:
+        SAMPLE_SCHOOLS: '10'
+      run: python -m crawlers.school_scores
+    
+    - name: 爬取大学最低分数线（样本模式）
+      if: ${{ github.event.inputs.mode == 'sample' }}
+      env:
+        SAMPLE_SCHOOLS: '50'
+      run: python -m crawlers.school_scores
+    
+    - name: 爬取大学最低分数线（完整模式）
+      if: ${{ github.event.inputs.mode == 'full' }}
+      env:
+        SAMPLE_SCHOOLS: '999999'
+      run: python -m crawlers.school_scores
+      
+    - name: 提交并推送更改
+      uses: stefanzweifel/git-auto-commit-action@v5
+      with:
+        commit_message: '📈 更新大学最低分数线 [${{ github.event.inputs.mode || 'scheduled' }}] #${{ github.run_number }}'
+        file_pattern: 'data/school_scores.json'
+        commit_user_name: GitHub Action
+        commit_user_email: action@github.com
