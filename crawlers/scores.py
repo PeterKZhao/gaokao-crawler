@@ -83,7 +83,7 @@ class ScoreCrawler(BaseCrawler):
     
     def crawl(self, school_ids=None, years=None, province_ids=None):
         """爬取分数线数据"""
-        years = years or ["2025", "2024", "2023"]
+        years = years or ["2025", "2024", "2023", "2022", "2021", "2020"]
         province_ids = province_ids or list(self.province_dict.keys())
         
         # 从schools.json读取学校ID
